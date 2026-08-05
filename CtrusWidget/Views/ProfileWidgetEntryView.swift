@@ -54,7 +54,7 @@ struct ProfileWidgetEntryView: View {
             if entry.isPauseActive {
                 Label(
                     title: { Text("Paused") },
-                    icon: { stickerIcon("PauseStickerIcon", size: 14) }
+                    icon: { Image(systemName: "pause.circle.fill") }
                 )
             } else if entry.isBreakActive {
                 Label(
@@ -88,7 +88,8 @@ struct ProfileWidgetEntryView: View {
                     }
                 } else if entry.isPauseActive {
                     HStack(spacing: 4) {
-                        stickerIcon("PauseStickerIcon", size: 14)
+                        Image(systemName: "pause.circle.fill")
+                            .font(.caption2)
                         Text("Paused")
                             .font(.caption2)
                     }
@@ -172,7 +173,9 @@ struct ProfileWidgetEntryView: View {
                                 }
                             } else if entry.isPauseActive {
                                 HStack(spacing: 4) {
-                                    stickerIcon("PauseStickerIcon", size: 24)
+                                    Image(systemName: "pause.circle.fill")
+                                        .font(.body)
+                                        .foregroundColor(.white)
                                     Text("Paused")
                                         .font(.body)
                                         .fontWeight(.bold)
@@ -235,13 +238,6 @@ struct ProfileWidgetEntryView: View {
             }
         }
     }
-
-  private func stickerIcon(_ assetName: String, size: CGFloat) -> some View {
-    Image(assetName)
-      .resizable()
-      .scaledToFit()
-      .frame(width: size, height: size)
-  }
 
   // Helper function to count total blocked items
   private func getBlockedCount(from profile: SharedData.ProfileSnapshot) -> Int {

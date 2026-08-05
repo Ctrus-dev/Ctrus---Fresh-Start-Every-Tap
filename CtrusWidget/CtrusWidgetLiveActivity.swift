@@ -91,7 +91,7 @@ struct CtrusWidgetLiveActivity: Widget {
           if context.state.isPauseActive {
             statusView(
               label: "Paused",
-              assetName: "PauseStickerIcon",
+              showsPauseIcon: true,
               countdownRange: context.state.countdownRange,
               timerFont: .title,
               alignment: .trailing
@@ -99,7 +99,7 @@ struct CtrusWidgetLiveActivity: Widget {
           } else if context.state.isBreakActive {
             statusView(
               label: "On a Break",
-              assetName: nil,
+              showsPauseIcon: false,
               countdownRange: context.state.countdownRange,
               timerFont: .title,
               alignment: .trailing
@@ -166,7 +166,7 @@ struct CtrusWidgetLiveActivity: Widget {
     for state: CtrusWidgetAttributes.ContentState
   ) -> some View {
     if state.isPauseActive {
-      stickerStatusView(assetName: "PauseStickerIcon", size: 30)
+      pauseStatusSymbol(size: 30)
         .frame(width: expandedTimerWidth, alignment: .center)
     } else if state.isBreakActive {
       breakStatusSymbol(size: 30)
@@ -181,7 +181,7 @@ struct CtrusWidgetLiveActivity: Widget {
     for state: CtrusWidgetAttributes.ContentState
   ) -> some View {
     if state.isPauseActive {
-      stickerStatusView(assetName: "PauseStickerIcon", size: 20)
+      pauseStatusSymbol(size: 20)
         .frame(width: compactTimerWidth, alignment: .center)
     } else if state.isBreakActive {
       breakStatusSymbol(size: 20)
@@ -191,10 +191,11 @@ struct CtrusWidgetLiveActivity: Widget {
     }
   }
 
-  private func stickerStatusView(assetName: String, size: CGFloat) -> some View {
-    Image(assetName)
+  private func pauseStatusSymbol(size: CGFloat) -> some View {
+    Image(systemName: "pause.circle.fill")
       .resizable()
       .scaledToFit()
+      .foregroundColor(.primary)
       .frame(width: size, height: size)
   }
 
@@ -280,15 +281,15 @@ struct CtrusWidgetLiveActivity: Widget {
   @ViewBuilder
   private func statusView(
     label: String,
-    assetName: String?,
+    showsPauseIcon: Bool,
     countdownRange: ClosedRange<Date>?,
     timerFont: Font,
     alignment: TextAlignment
   ) -> some View {
     VStack(alignment: alignment == .trailing ? .trailing : .center, spacing: 4) {
       HStack(spacing: 6) {
-        if let assetName {
-          stickerStatusView(assetName: assetName, size: 28)
+        if showsPauseIcon {
+          pauseStatusSymbol(size: 28)
         }
         Text(label)
           .font(.subheadline)
