@@ -6,7 +6,6 @@ class NFCManualBlockingStrategy: BlockingStrategy {
 
   var name: String = "Manual + Ctrus NFC"
   var description: String = "Start in the app. Stop by tapping your Ctrus."
-  var iconAssetName: String = "Manual+NFCSticker"
   var color: Color = .yellow
   var pickerCategory: BlockingStrategyPickerCategory = .easyToStart
 

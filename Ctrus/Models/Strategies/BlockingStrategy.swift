@@ -11,7 +11,6 @@ protocol BlockingStrategy {
   static var id: String { get }
   var name: String { get }
   var description: String { get }
-  var iconAssetName: String { get }
   var color: Color { get }
   var pickerCategory: BlockingStrategyPickerCategory { get }
 
@@ -146,15 +145,5 @@ extension BlockingStrategy {
       systemImageName: isPauseActive ? "stop.fill" : "pause.fill",
       assetImageName: isPauseActive ? nil : "PauseStickerIcon"
     )
-  }
-}
-
-struct BlockingStrategyIconImage: View {
-  let strategy: BlockingStrategy?
-
-  var body: some View {
-    Image(strategy?.iconAssetName ?? "CtrusStickerLogo")
-      .resizable()
-      .scaledToFit()
   }
 }
