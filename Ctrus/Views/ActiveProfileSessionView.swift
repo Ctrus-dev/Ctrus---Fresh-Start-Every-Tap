@@ -141,11 +141,9 @@ struct ActiveProfileSessionView: View {
 
         if let statusMessage {
           HStack(spacing: 6) {
-            if let statusIconName {
-              Image(statusIconName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 18, height: 18)
+            if let statusSystemIconName {
+              Image(systemName: statusSystemIconName)
+                .font(.system(size: 15, weight: .semibold))
             }
 
             Text(statusMessage)
@@ -197,9 +195,9 @@ struct ActiveProfileSessionView: View {
     return nil
   }
 
-  private var statusIconName: String? {
+  private var statusSystemIconName: String? {
     if isPauseActive {
-      return "PauseStickerIcon"
+      return "pause.circle.fill"
     }
     return nil
   }

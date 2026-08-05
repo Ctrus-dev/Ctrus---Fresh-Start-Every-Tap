@@ -136,7 +136,7 @@ struct CtrusWidgetLiveActivity: Widget {
   }
 
   private func CtrusLogo(size: CGFloat) -> some View {
-    Image("CtrusStickerLogo")
+    Image(systemName: "lock.fill")
       .resizable()
       .scaledToFit()
       .frame(width: size, height: size)

@@ -68,11 +68,9 @@ struct HomeProfileLauncher: View {
   private var activeAccessory: some View {
     if let activeStateTitle {
       HStack(spacing: 6) {
-        if let activeStateImageName {
-          Image(activeStateImageName)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24, height: 24)
+        if let activeStateSystemImageName {
+          Image(systemName: activeStateSystemImageName)
+            .font(.system(size: 18, weight: .semibold))
         }
 
         Text(activeStateTitle)
@@ -101,9 +99,9 @@ struct HomeProfileLauncher: View {
     return nil
   }
 
-  private var activeStateImageName: String? {
+  private var activeStateSystemImageName: String? {
     if isPauseActive {
-      return "PauseStickerIcon"
+      return "pause.circle.fill"
     }
     return nil
   }

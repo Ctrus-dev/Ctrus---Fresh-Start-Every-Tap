@@ -143,7 +143,7 @@ extension BlockingStrategy {
     return BlockingStrategySessionAction(
       title: isPauseActive ? "End" : "Pause",
       systemImageName: isPauseActive ? "stop.fill" : "pause.fill",
-      assetImageName: isPauseActive ? nil : "PauseStickerIcon"
+      assetImageName: nil
     )
   }
 }
