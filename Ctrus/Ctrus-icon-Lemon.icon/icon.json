@@ -1,0 +1,53 @@
+{
+  "fill-specializations" : [
+    {
+      "value" : {
+        "solid" : "display-p3:0.97021,0.81706,0.27075,1.00000"
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : {
+        "solid" : "display-p3:0.97021,0.81706,0.27075,1.00000"
+      }
+    }
+  ],
+  "groups" : [
+    {
+      "blend-mode" : "normal",
+      "blur-material" : null,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : "automatic",
+          "glass" : false,
+          "hidden" : false,
+          "image-name" : "Ctrus_inv.png",
+          "name" : "Ctrus_inv",
+          "position" : {
+            "scale" : 1.12,
+            "translation-in-points" : [
+              -1.9499999999999318,
+              42.89999999999992
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 1
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
