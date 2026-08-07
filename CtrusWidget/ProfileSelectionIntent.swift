@@ -65,10 +65,10 @@ struct ProfileSelectionIntent: WidgetConfigurationIntent {
   var useProfileURL: Bool?
 
   init() {
-    self.useProfileURL = true
+    self.useProfileURL = false
   }
 
-  init(profile: WidgetProfileEntity?, useProfileURL: Bool = true) {
+  init(profile: WidgetProfileEntity?, useProfileURL: Bool = false) {
     self.profile = profile
     self.useProfileURL = useProfileURL
   }

@@ -23,7 +23,7 @@ struct ProfileControlProvider: AppIntentTimelineProvider {
       profileSnapshot: nil,
       deepLinkURL: URL(string: "https://ctrus.net/profile/placeholder"),
       focusMessage: "Stay focused and avoid distractions",
-      useProfileURL: true
+      useProfileURL: false
     )
   }
 
