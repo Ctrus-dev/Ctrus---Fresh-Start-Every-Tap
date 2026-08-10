@@ -61,7 +61,7 @@ struct HomeAlertDetailView: View {
   var body: some View {
     NavigationStack {
       VStack(spacing: 22) {
-        Spacer(minLength: 10)
+        Spacer().frame(height: 24)
 
         Image(systemName: alert.iconName)
           .font(.system(size: 50, weight: .semibold))
@@ -104,7 +104,6 @@ struct HomeAlertDetailView: View {
         )
       }
       .padding()
-      .navigationTitle("Details")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
