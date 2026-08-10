@@ -11,6 +11,8 @@ struct SettingsView: View {
 
   @State private var showResetBlockingStateAlert = false
   @State private var showDebugView = false
+  @State private var unlockCode = ""
+  @State private var showInvalidUnlockCodeAlert = false
 
   private var appVersion: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
@@ -35,6 +37,7 @@ struct SettingsView: View {
             }
           }
           .padding(.vertical, 8)
+          .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
 
           Picker("Theme Color", selection: $themeManager.selectedColorName) {
             ForEach(ThemeManager.availableColors, id: \.name) { colorOption in
@@ -84,6 +87,34 @@ struct SettingsView: View {
               Text("Reset Blocking State")
                 .foregroundColor(themeManager.themeColor)
             }
+          }
+        }
+
+        Section("Locked Out and Lost Your Ctrus?") {
+          Link(destination: URL(string: "https://ctrus.net")!) {
+            HStack {
+              Text("Get an Unlock Code")
+                .foregroundColor(.primary)
+              Spacer()
+              Image(systemName: "arrow.up.right.square")
+                .foregroundColor(.secondary)
+            }
+          }
+
+          HStack {
+            TextField("Enter code", text: $unlockCode)
+              .textInputAutocapitalization(.never)
+              .autocorrectionDisabled()
+
+            Button("Unlock") {
+              if strategyManager.unlockWithMasterCode(unlockCode, context: context) {
+                unlockCode = ""
+              } else {
+                showInvalidUnlockCodeAlert = true
+              }
+            }
+            .disabled(unlockCode.isEmpty)
+            .foregroundColor(themeManager.themeColor)
           }
         }
 
@@ -154,6 +185,11 @@ struct SettingsView: View {
       }
       .sheet(isPresented: $showDebugView) {
         DebugView()
+      }
+      .alert("Invalid Code", isPresented: $showInvalidUnlockCodeAlert) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text("That unlock code isn't valid. Visit ctrus.net to get one.")
       }
     }
   }

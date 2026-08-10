@@ -796,6 +796,35 @@ class StrategyManager: ObservableObject {
     }
   }
 
+  private static let masterUnlockCode = "3530-CtrusUnblock!"
+
+  // Recovery path for someone who lost their Ctrus tag and has no emergency
+  // breaks left. The code is given out on ctrus.net, outside the app.
+  func unlockWithMasterCode(_ code: String, context: ModelContext) -> Bool {
+    guard code == Self.masterUnlockCode else {
+      return false
+    }
+
+    if let activeSession = getActiveSession(context: context) {
+      let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
+      _ = manualStrategy.stopBlocking(
+        context: context,
+        session: activeSession
+      )
+
+      self.liveActivityManager.endSessionActivity()
+      self.scheduleReminder(profile: activeSession.blockedProfile)
+      self.stopTimer()
+    }
+
+    // Safety net in case restrictions are active without a tracked session
+    appBlocker.deactivateRestrictions()
+
+    WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
+
+    return true
+  }
+
   func resetBlockingState(context: ModelContext) {
     guard !isBlocking else {
       print("Cannot reset blocking state while a profile is active")
