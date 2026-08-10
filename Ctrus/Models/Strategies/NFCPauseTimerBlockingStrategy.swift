@@ -70,7 +70,7 @@ class NFCPauseTimerBlockingStrategy: BlockingStrategy {
         && !session.blockedProfile.canUnblock(withCode: tagId, type: .nfc)
       {
         self.onErrorMessage?(
-          "This NFC tag is not allowed to unblock this profile. Physical unblock setting is on for this profile"
+          "This is not allowed to unblock this profile."
         )
         return
       }

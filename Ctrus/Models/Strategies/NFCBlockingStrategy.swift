@@ -57,7 +57,7 @@ class NFCBlockingStrategy: BlockingStrategy {
       if session.blockedProfile.hasPhysicalUnblockItem(ofType: .nfc) {
         if !session.blockedProfile.canUnblock(withCode: tag, type: .nfc) {
           self.onErrorMessage?(
-            "This NFC tag is not allowed to unblock this profile. Physical unblock setting is on for this profile"
+            "This is not allowed to unblock this profile."
           )
           return
         }
