@@ -22252,6 +22252,12 @@
         }
       }
     },
+    "No unlocks remaining. Resets %@." : {
+
+    },
+    "No unlocks remaining. Resets in %lldh." : {
+
+    },
     "Not Authorized" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -26227,6 +26233,9 @@
           }
         }
       }
+    },
+    "Reset Recovery Unlocks" : {
+
     },
     "Resets %@" : {
       "extractionState" : "manual",
@@ -37960,6 +37969,9 @@
         }
       }
     },
+    "You have access to 2 unlocks every 4 weeks." : {
+
+    },
     "You have selected more than 50 apps and sites. This can lead to issues due to Apple's hard limit of 50." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -38244,13 +38256,7 @@
         }
       }
     },
-    "You only have access to 1 unlock every 4 weeks." : {
-
-    },
-    "You only have access to 1 unlock every 4 weeks. Resets %@." : {
-
-    },
-    "You only have access to 1 unlock every 4 weeks. Resets in %lldh." : {
+    "You only have 1 unlock left." : {
 
     },
     "You used all %lld opens for this session." : {

@@ -45,6 +45,14 @@ struct StrategyManagerDebugCard: View {
 
       Divider()
 
+      // Recovery Unlocks
+      DebugRow(
+        label: "Recovery Unlocks Remaining",
+        value: "\(strategyManager.getRemainingRecoveryUnlocks())"
+      )
+
+      Divider()
+
       // Available Strategies
       VStack(alignment: .leading, spacing: 4) {
         Text("Available Strategies:")

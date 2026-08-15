@@ -22,22 +22,34 @@ struct SettingsView: View {
       ?? "1.0"
   }
 
+  private var recoveryUnlocksRemaining: Int {
+    strategyManager.getRemainingRecoveryUnlocks()
+  }
+
   private var hasRecoveryUnlockRemaining: Bool {
-    strategyManager.getRemainingRecoveryUnlocks() > 0
+    recoveryUnlocksRemaining > 0
+  }
+
+  private var isRecoveryUnlockLow: Bool {
+    recoveryUnlocksRemaining <= 1
   }
 
   private var recoveryUnlockStatusText: Text {
+    if recoveryUnlocksRemaining == 1 {
+      return Text("You only have 1 unlock left.")
+    }
+
     guard let nextResetDate = strategyManager.getNextRecoveryResetDate() else {
-      return Text("You only have access to 1 unlock every 4 weeks.")
+      return Text("You have access to 2 unlocks every 4 weeks.")
     }
 
     let timeUntilReset = nextResetDate.timeIntervalSinceNow
     if timeUntilReset <= 24 * 60 * 60 {
       let hoursRemaining = max(1, Int(ceil(timeUntilReset / 3600)))
-      return Text("You only have access to 1 unlock every 4 weeks. Resets in \(hoursRemaining)h.")
+      return Text("No unlocks remaining. Resets in \(hoursRemaining)h.")
     } else {
       return Text(
-        "You only have access to 1 unlock every 4 weeks. Resets \(nextResetDate, format: .dateTime.month().day())."
+        "No unlocks remaining. Resets \(nextResetDate, format: .dateTime.month().day())."
       )
     }
   }
@@ -101,7 +113,7 @@ struct SettingsView: View {
 
       recoveryUnlockStatusText
         .font(.caption)
-        .foregroundStyle(hasRecoveryUnlockRemaining ? Color.secondary : Color.red)
+        .foregroundStyle(isRecoveryUnlockLow ? Color.red : Color.secondary)
     }
   }
 

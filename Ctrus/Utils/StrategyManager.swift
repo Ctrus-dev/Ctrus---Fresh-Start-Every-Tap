@@ -43,7 +43,7 @@ class StrategyManager: ObservableObject {
   @AppStorage("lastEmergencyUnblocksResetDate") private var lastEmergencyUnblocksResetDateTimestamp:
     Double = 0
 
-  @AppStorage("recoveryUnlocksRemaining") private var recoveryUnlocksRemaining: Int = 1
+  @AppStorage("recoveryUnlocksRemaining") private var recoveryUnlocksRemaining: Int = 2
   @AppStorage("recoveryUnlocksResetPeriodInWeeks") private
     var recoveryUnlocksResetPeriodInWeeks: Int = 4
   @AppStorage("lastRecoveryUnlockDate") private var lastRecoveryUnlockDateTimestamp: Double = 0
@@ -468,9 +468,14 @@ class StrategyManager: ObservableObject {
       recoveryUnlocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
 
     if Date().timeIntervalSince(lastUnlockDate) >= weeksInSeconds {
-      recoveryUnlocksRemaining = 1
+      recoveryUnlocksRemaining = 2
       lastRecoveryUnlockDateTimestamp = 0
     }
+  }
+
+  func resetRecoveryUnlocks() {
+    recoveryUnlocksRemaining = 2
+    lastRecoveryUnlockDateTimestamp = 0
   }
 
   func getNextRecoveryResetDate() -> Date? {
