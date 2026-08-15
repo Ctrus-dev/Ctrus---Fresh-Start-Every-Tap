@@ -10,15 +10,15 @@ enum PauseActiveSessionError: LocalizedError, Equatable {
   var errorDescription: String? {
     switch self {
     case .noActiveSession:
-      return "No active Ctrus session to pause."
+      return String(localized: "No active Ctrus session to pause.")
     case .unsupportedStrategy(let profileName):
-      return "\(profileName) does not use a strategy that supports pausing."
+      return String(localized: "\(profileName) does not use a strategy that supports pausing.")
     case .alreadyPaused(let profileName):
-      return "\(profileName) is already paused."
+      return String(localized: "\(profileName) is already paused.")
     case .breakActive(let profileName):
-      return "End the active break before pausing \(profileName)."
+      return String(localized: "End the active break before pausing \(profileName).")
     case .schedulingFailed(let profileName, let reason):
-      return "Could not pause \(profileName): \(reason)"
+      return String(localized: "Could not pause \(profileName): \(reason)")
     }
   }
 }

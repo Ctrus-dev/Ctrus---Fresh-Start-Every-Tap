@@ -61,15 +61,15 @@ enum BlockingStrategyTag: String, Hashable {
   var title: String {
     switch self {
     case .nfc:
-      return "NFC"
+      return String(localized: "NFC")
     case .timer:
-      return "Timer"
+      return String(localized: "Timer")
     case .pause:
-      return "Pause"
+      return String(localized: "Pause")
     case .manualStart:
-      return "Manual Start"
+      return String(localized: "Manual Start")
     case .beta:
-      return "Beta"
+      return String(localized: "Beta")
     }
   }
 }
@@ -81,7 +81,7 @@ struct BlockingStrategySessionAction {
 
   static func stop(isEnabled: Bool = true) -> BlockingStrategySessionAction {
     return BlockingStrategySessionAction(
-      title: isEnabled ? "Stop" : "Stop Locked",
+      title: isEnabled ? String(localized: "Stop") : String(localized: "Stop Locked"),
       systemImageName: isEnabled ? "stop.fill" : "lock.fill",
       assetImageName: nil
     )
@@ -130,7 +130,7 @@ extension BlockingStrategy {
   ) -> BlockingStrategySessionAction {
     guard isEnabled else {
       return BlockingStrategySessionAction(
-        title: hasPauseMode ? "Pause Locked" : "Stop Locked",
+        title: hasPauseMode ? String(localized: "Pause Locked") : String(localized: "Stop Locked"),
         systemImageName: "lock.fill",
         assetImageName: nil
       )
@@ -141,7 +141,7 @@ extension BlockingStrategy {
     }
 
     return BlockingStrategySessionAction(
-      title: isPauseActive ? "End" : "Pause",
+      title: isPauseActive ? String(localized: "End") : String(localized: "Pause"),
       systemImageName: isPauseActive ? "stop.fill" : "pause.fill",
       assetImageName: nil
     )

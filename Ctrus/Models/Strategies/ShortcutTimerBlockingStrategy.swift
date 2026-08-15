@@ -4,9 +4,9 @@ import SwiftUI
 class ShortcutTimerBlockingStrategy: BlockingStrategy {
   static var id: String = "ShortcutTimerBlockingStrategy"
 
-  var name: String = "Timer + Manual"
-  var description: String =
-    "Choose how long blocking should last. Stop early with the Stop button."
+  var name: String = String(localized: "Timer + Manual")
+  var description: String = String(
+    localized: "Choose how long blocking should last. Stop early with the Stop button.")
   var color: Color = .mint
   var pickerCategory: BlockingStrategyPickerCategory = .timers
 
@@ -52,7 +52,7 @@ class ShortcutTimerBlockingStrategy: BlockingStrategy {
     forceStart: Bool
   ) -> (any View)? {
     guard profile.strategyData != nil else {
-      self.onErrorMessage?("No timer duration specified for this profile")
+      self.onErrorMessage?(String(localized: "No timer duration specified for this profile"))
       return nil
     }
 

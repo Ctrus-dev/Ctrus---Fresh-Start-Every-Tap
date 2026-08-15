@@ -4,9 +4,11 @@ import SwiftUI
 final class NFCSoftUnblockBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCSoftUnblockBlockingStrategy"
 
-  var name: String = "Temporary Access + NFC"
-  var description: String =
-    "Block your apps, but allow a few short opens when you need them. Scan an NFC tag to stop the session."
+  var name: String = String(localized: "Temporary Access + NFC")
+  var description: String = String(
+    localized:
+      "Block your apps, but allow a few short opens when you need them. Scan an NFC tag to stop the session."
+  )
   var color: Color = .purple
   var pickerCategory: BlockingStrategyPickerCategory = .forever
 
@@ -36,7 +38,7 @@ final class NFCSoftUnblockBlockingStrategy: BlockingStrategy {
       initialConfiguration: SoftUnblockStrategyData.decode(profile.strategyData),
       onStart: { configuration in
         guard let data = SoftUnblockStrategyData.encode(configuration) else {
-          self.onErrorMessage?("Failed to save the temporary access settings.")
+          self.onErrorMessage?(String(localized: "Failed to save the temporary access settings."))
           return
         }
 
@@ -46,7 +48,7 @@ final class NFCSoftUnblockBlockingStrategy: BlockingStrategy {
         do {
           try context.save()
         } catch {
-          self.onErrorMessage?("Failed to save the temporary access settings.")
+          self.onErrorMessage?(String(localized: "Failed to save the temporary access settings."))
           return
         }
 
@@ -84,7 +86,7 @@ final class NFCSoftUnblockBlockingStrategy: BlockingStrategy {
         && !session.blockedProfile.canUnblock(withCode: code, type: .nfc)
       {
         self.onErrorMessage?(
-          "This NFC tag can't stop this profile."
+          String(localized: "This NFC tag can't stop this profile.")
         )
         return
       }
@@ -104,7 +106,7 @@ final class NFCSoftUnblockBlockingStrategy: BlockingStrategy {
     do {
       try context.save()
     } catch {
-      onErrorMessage?("Failed to save the completed session.")
+      onErrorMessage?(String(localized: "Failed to save the completed session."))
     }
 
     appBlocker.deactivateRestrictions()

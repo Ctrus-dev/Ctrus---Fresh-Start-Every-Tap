@@ -21,10 +21,10 @@ struct Welcome: View {
       .padding(.horizontal, 8)
 
       ShimmerLauncherButton(
-        title: "Create Profile",
+        title: String(localized: "Create Profile"),
         iconName: "person.crop.circle",
         height: 56,
-        accessibilityLabel: "Start guided profile setup",
+        accessibilityLabel: String(localized: "Start guided profile setup"),
         action: onGuidedTap
       )
       .padding(.top, 6)

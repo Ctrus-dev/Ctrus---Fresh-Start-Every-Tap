@@ -31,7 +31,7 @@ struct FamilyActivityUtil {
   {
     let count = countSelectedActivities(selection, allowMode: allowMode)
 
-    return "\(count) items"
+    return String(localized: "\(count) items")
   }
 
   /// Determines if a warning should be shown for allow mode category selection

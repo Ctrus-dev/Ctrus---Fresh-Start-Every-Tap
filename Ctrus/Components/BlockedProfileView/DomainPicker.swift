@@ -16,8 +16,10 @@ struct DomainPicker: View {
 
   private var message: String {
     return allowMode
-      ? "Apple limits this to 50 domains. Add domains that you want to remain accessible during sessions."
-      : "Apple limits this to 50 domains. Add domains that you want to restrict during sessions."
+      ? String(
+        localized: "Apple limits this to 50 domains. Add domains that you want to remain accessible during sessions.")
+      : String(
+        localized: "Apple limits this to 50 domains. Add domains that you want to restrict during sessions.")
   }
 
   var body: some View {
@@ -44,7 +46,9 @@ struct DomainPicker: View {
           Text("Add Domain")
         } footer: {
           Text(
-            "Enter a domain (e.g., reddit.com, facebook.com, instagram.com). This will also \(allowMode ? "allow" : "block") all subpaths (e.g., reddit.com/r/popular) automatically."
+            allowMode
+              ? "Enter a domain (e.g., reddit.com, facebook.com, instagram.com). This will also allow all subpaths (e.g., reddit.com/r/popular) automatically."
+              : "Enter a domain (e.g., reddit.com, facebook.com, instagram.com). This will also block all subpaths (e.g., reddit.com/r/popular) automatically."
           )
           .font(.caption)
         }
@@ -103,23 +107,24 @@ struct DomainPicker: View {
     let trimmedDomain = newDomain.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
     guard !trimmedDomain.isEmpty else {
-      showError("Please enter a domain")
+      showError(String(localized: "Please enter a domain"))
       return
     }
 
     guard domains.count < maxDomains else {
-      showError("Maximum number of domains (\(maxDomains)) reached")
+      showError(String(localized: "Maximum number of domains (\(maxDomains)) reached"))
       return
     }
 
     guard !domains.contains(trimmedDomain) else {
-      showError("Domain already exists")
+      showError(String(localized: "Domain already exists"))
       return
     }
 
     guard isValidDomain(trimmedDomain) else {
       showError(
-        "Enter a valid domain without https:// or www. (e.g., google.com, reddit.com, facebook.com)"
+        String(
+          localized: "Enter a valid domain without https:// or www. (e.g., google.com, reddit.com, facebook.com)")
       )
       return
     }

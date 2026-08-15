@@ -28,8 +28,8 @@ struct BlockedProfileAppSelector: View {
 
   private var buttonText: String {
     return allowMode
-      ? "Select Apps to Allow"
-      : "Select Apps to Restrict"
+      ? String(localized: "Select Apps to Allow")
+      : String(localized: "Select Apps to Restrict")
   }
 
   var body: some View {

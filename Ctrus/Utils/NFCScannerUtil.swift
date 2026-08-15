@@ -17,7 +17,7 @@ class NFCScannerUtil: NSObject {
 
   func scan(profileName: String) {
     guard NFCReaderSession.readingAvailable else {
-      self.onError?("NFC scanning not available on this device")
+      self.onError?(String(localized: "NFC scanning not available on this device"))
       return
     }
 
@@ -26,18 +26,19 @@ class NFCScannerUtil: NSObject {
       delegate: self,
       queue: nil
     )
-    nfcSession?.alertMessage = "Hold your iPhone near your Ctrus to trigger " + profileName
+    nfcSession?.alertMessage = String(
+      localized: "Hold your iPhone near your Ctrus to trigger \(profileName)")
     nfcSession?.begin()
   }
 
   func writeURL(_ url: String) {
     guard NFCReaderSession.readingAvailable else {
-      self.onError?("NFC writing not available on this device")
+      self.onError?(String(localized: "NFC writing not available on this device"))
       return
     }
 
     guard URL(string: url) != nil else {
-      self.onError?("Invalid URL format")
+      self.onError?(String(localized: "Invalid URL format"))
       return
     }
 
@@ -47,7 +48,7 @@ class NFCScannerUtil: NSObject {
     let ndefSession = NFCNDEFReaderSession(
       delegate: self, queue: nil, invalidateAfterFirstRead: false)
     ndefSession.alertMessage =
-      "Hold your iPhone near an NFC tag to write the profile."
+      String(localized: "Hold your iPhone near an NFC tag to write the profile.")
     ndefSession.begin()
   }
 }
@@ -69,7 +70,8 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
 
     session.connect(to: tag) { error in
       if let error = error {
-        session.invalidate(errorMessage: "Connection error: \(error.localizedDescription)")
+        session.invalidate(
+          errorMessage: String(localized: "Connection error: \(error.localizedDescription)"))
         return
       }
 
@@ -81,7 +83,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
       case .miFare(let tag):
         self.readMiFareTag(tag, session: session)
       default:
-        session.invalidate(errorMessage: "Unsupported tag type")
+        session.invalidate(errorMessage: String(localized: "Unsupported tag type"))
       }
     }
   }
@@ -194,7 +196,7 @@ extension NFCScannerUtil: NFCNDEFReaderSessionDelegate {
     _ session: NFCNDEFReaderSession, didDetect tags: [NFCNDEFTag]
   ) {
     guard let tag = tags.first else {
-      session.invalidate(errorMessage: "No tag found")
+      session.invalidate(errorMessage: String(localized: "No tag found"))
       return
     }
 
@@ -202,26 +204,26 @@ extension NFCScannerUtil: NFCNDEFReaderSessionDelegate {
       if let error = error {
         session.invalidate(
           errorMessage:
-            "Connection error: \(error.localizedDescription)")
+            String(localized: "Connection error: \(error.localizedDescription)"))
         return
       }
 
       tag.queryNDEFStatus { status, capacity, error in
         guard error == nil else {
-          session.invalidate(errorMessage: "Failed to query tag")
+          session.invalidate(errorMessage: String(localized: "Failed to query tag"))
           return
         }
 
         switch status {
         case .notSupported:
           session.invalidate(
-            errorMessage: "Tag is not NDEF compliant")
+            errorMessage: String(localized: "Tag is not NDEF compliant"))
         case .readOnly:
-          session.invalidate(errorMessage: "Tag is read-only")
+          session.invalidate(errorMessage: String(localized: "Tag is read-only"))
         case .readWrite:
           self.handleReadWrite(session, tag: tag)
         @unknown default:
-          session.invalidate(errorMessage: "Unknown tag status")
+          session.invalidate(errorMessage: String(localized: "Unknown tag status"))
         }
       }
     }
@@ -255,7 +257,7 @@ extension NFCScannerUtil: NFCNDEFReaderSessionDelegate {
       let url = URL(string: urlString),
       let urlPayload = NFCNDEFPayload.wellKnownTypeURIPayload(url: url)
     else {
-      session.invalidate(errorMessage: "Invalid URL")
+      session.invalidate(errorMessage: String(localized: "Invalid URL"))
       return
     }
 
@@ -263,9 +265,9 @@ extension NFCScannerUtil: NFCNDEFReaderSessionDelegate {
     tag.writeNDEF(message) { error in
       if let error = error {
         session.invalidate(
-          errorMessage: "Write failed: \(error.localizedDescription)")
+          errorMessage: String(localized: "Write failed: \(error.localizedDescription)"))
       } else {
-        session.alertMessage = "Successfully wrote URL to tag"
+        session.alertMessage = String(localized: "Successfully wrote URL to tag")
         session.invalidate()
       }
     }

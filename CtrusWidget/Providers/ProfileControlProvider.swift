@@ -114,7 +114,7 @@ struct ProfileControlProvider: AppIntentTimelineProvider {
     return ProfileWidgetEntry(
       date: Date(),
       selectedProfileId: targetProfileId,
-      profileName: profileName ?? "No Profile",
+      profileName: profileName ?? String(localized: "No Profile"),
       activeSession: activeSession,
       profileSnapshot: profileSnapshot,
       deepLinkURL: deepLinkURL,

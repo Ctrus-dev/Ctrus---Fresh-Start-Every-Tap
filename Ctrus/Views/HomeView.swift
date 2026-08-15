@@ -351,7 +351,8 @@ struct HomeView: View {
 
   private func startProfile(_ profile: BlockedProfiles) {
     guard !isBlocking else {
-      showErrorAlert(message: "Stop the active profile before starting another one.")
+      showErrorAlert(
+        message: String(localized: "Stop the active profile before starting another one."))
       return
     }
 
@@ -406,7 +407,7 @@ struct HomeView: View {
   }
 
   private func showErrorAlert(message: String) {
-    alertTitle = "Whoops"
+    alertTitle = String(localized: "Whoops")
     alertMessage = message
     showingAlert = true
   }

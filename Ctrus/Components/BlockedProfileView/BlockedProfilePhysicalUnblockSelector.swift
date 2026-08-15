@@ -23,8 +23,8 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     VStack(alignment: .leading, spacing: 12) {
       physicalUnblockColumn(
         items: nfcItems,
-        emptyButtonTitle: "Set",
-        addButtonTitle: "Add Tag",
+        emptyButtonTitle: String(localized: "Set"),
+        addButtonTitle: String(localized: "Add Tag"),
         onAdd: addNFCTag
       )
 
@@ -37,12 +37,12 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     .background(
       TextFieldAlert(
         isPresented: $showingRenamePrompt,
-        title: "Rename Item",
+        title: String(localized: "Rename Item"),
         message: nil,
         text: $renameItemName,
-        placeholder: "Item Name",
-        confirmTitle: "Save",
-        cancelTitle: "Cancel",
+        placeholder: String(localized: "Item Name"),
+        confirmTitle: String(localized: "Save"),
+        cancelTitle: String(localized: "Cancel"),
         onConfirm: { _ in
           applyRename()
         }
@@ -166,7 +166,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     let normalizedCodeValue = PhysicalUnblockItem.normalizedCodeValue(codeValue, type: type)
 
     guard !normalizedCodeValue.isEmpty else {
-      showError("The scanned code was empty.")
+      showError(String(localized: "The scanned code was empty."))
       return
     }
 
@@ -175,7 +175,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
         $0.type == type && $0.codeValue == normalizedCodeValue
       })
     else {
-      showError("That \(type.displayName.lowercased()) is already in this list.")
+      showError(String(localized: "That \(type.displayName.lowercased()) is already in this list."))
       return
     }
 

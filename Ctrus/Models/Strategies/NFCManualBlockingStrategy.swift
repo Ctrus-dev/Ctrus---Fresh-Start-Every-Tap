@@ -4,8 +4,8 @@ import SwiftUI
 class NFCManualBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCManualBlockingStrategy"
 
-  var name: String = "Manual + Ctrus NFC"
-  var description: String = "Start in the app. Stop by tapping your Ctrus."
+  var name: String = String(localized: "Manual + Ctrus NFC")
+  var description: String = String(localized: "Start in the app. Stop by tapping your Ctrus.")
   var color: Color = .yellow
   var pickerCategory: BlockingStrategyPickerCategory = .easyToStart
 
@@ -59,7 +59,7 @@ class NFCManualBlockingStrategy: BlockingStrategy {
         && !session.blockedProfile.canUnblock(withCode: tag, type: .nfc)
       {
         self.onErrorMessage?(
-          "This is not allowed to unblock this profile."
+          String(localized: "This is not allowed to unblock this profile.")
         )
         return
       }

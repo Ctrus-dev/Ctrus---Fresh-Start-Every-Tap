@@ -70,10 +70,10 @@ struct PermissionsIntroScreen: View {
         }
 
         ShimmerLauncherButton(
-          title: "Allow Screen Time Access",
+          title: String(localized: "Allow Screen Time Access"),
           iconName: nil,
           height: 56,
-          accessibilityLabel: "Allow Screen Time Access",
+          accessibilityLabel: String(localized: "Allow Screen Time Access"),
           action: onRequestAuthorization
         )
         .padding(.top, 6)

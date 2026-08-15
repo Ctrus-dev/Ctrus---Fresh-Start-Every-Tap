@@ -12,11 +12,95 @@ struct SettingsView: View {
   @State private var showResetBlockingStateAlert = false
   @State private var showDebugView = false
   @State private var unlockCode = ""
+  @State private var isVerifyingUnlockCode = false
   @State private var showInvalidUnlockCodeAlert = false
+  @State private var showUnlockNetworkErrorAlert = false
+  @State private var showDeviceIDCopiedConfirmation = false
 
   private var appVersion: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
       ?? "1.0"
+  }
+
+  private var hasRecoveryUnlockRemaining: Bool {
+    strategyManager.getRemainingRecoveryUnlocks() > 0
+  }
+
+  private var recoveryUnlockStatusText: Text {
+    guard let nextResetDate = strategyManager.getNextRecoveryResetDate() else {
+      return Text("You only have access to 1 unlock every 4 weeks.")
+    }
+
+    let timeUntilReset = nextResetDate.timeIntervalSinceNow
+    if timeUntilReset <= 24 * 60 * 60 {
+      let hoursRemaining = max(1, Int(ceil(timeUntilReset / 3600)))
+      return Text("You only have access to 1 unlock every 4 weeks. Resets in \(hoursRemaining)h.")
+    } else {
+      return Text(
+        "You only have access to 1 unlock every 4 weeks. Resets \(nextResetDate, format: .dateTime.month().day())."
+      )
+    }
+  }
+
+  @ViewBuilder
+  private var recoverySectionContent: some View {
+    Link(destination: URL(string: "https://recover.ctrus.net")!) {
+      HStack {
+        Text("Get an Unlock Code")
+          .foregroundColor(.primary)
+        Spacer()
+        Image(systemName: "arrow.up.right.square")
+          .foregroundColor(.secondary)
+      }
+    }
+
+    HStack {
+      VStack(alignment: .leading, spacing: 2) {
+        Text("Device ID")
+          .foregroundColor(.primary)
+        Text(RecoveryCodeUtil.deviceID)
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .textSelection(.enabled)
+      }
+
+      Spacer()
+
+      Button {
+        UIPasteboard.general.string = RecoveryCodeUtil.deviceID
+        showDeviceIDCopiedConfirmation = true
+      } label: {
+        Image(systemName: "doc.on.doc")
+      }
+      .foregroundColor(themeManager.themeColor)
+    }
+
+    HStack {
+      TextField("Enter code", text: $unlockCode)
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
+        .disabled(isVerifyingUnlockCode || !hasRecoveryUnlockRemaining)
+
+      if isVerifyingUnlockCode {
+        ProgressView()
+      } else {
+        Button("Unlock") {
+          submitUnlockCode()
+        }
+        .disabled(unlockCode.isEmpty || !hasRecoveryUnlockRemaining)
+        .foregroundColor(themeManager.themeColor)
+      }
+    }
+
+    HStack(spacing: 6) {
+      Image(systemName: "clock.arrow.circlepath")
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+
+      recoveryUnlockStatusText
+        .font(.caption)
+        .foregroundStyle(hasRecoveryUnlockRemaining ? Color.secondary : Color.red)
+    }
   }
 
   var body: some View {
@@ -45,7 +129,7 @@ struct SettingsView: View {
                 Circle()
                   .fill(colorOption.color)
                   .frame(width: 20, height: 20)
-                Text(colorOption.name)
+                Text(LocalizedStringKey(colorOption.name))
               }
               .tag(colorOption.name)
             }
@@ -91,31 +175,7 @@ struct SettingsView: View {
         }
 
         Section("Locked Out and Lost Your Ctrus?") {
-          Link(destination: URL(string: "https://ctrus.net")!) {
-            HStack {
-              Text("Get an Unlock Code")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
-            }
-          }
-
-          HStack {
-            TextField("Enter code", text: $unlockCode)
-              .textInputAutocapitalization(.never)
-              .autocorrectionDisabled()
-
-            Button("Unlock") {
-              if strategyManager.unlockWithMasterCode(unlockCode, context: context) {
-                unlockCode = ""
-              } else {
-                showInvalidUnlockCodeAlert = true
-              }
-            }
-            .disabled(unlockCode.isEmpty)
-            .foregroundColor(themeManager.themeColor)
-          }
+          recoverySectionContent
         }
 
         Section("About") {
@@ -165,6 +225,9 @@ struct SettingsView: View {
 
       }
       .navigationTitle("Settings")
+      .onAppear {
+        strategyManager.checkAndResetRecoveryUnlocks()
+      }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {
@@ -189,7 +252,35 @@ struct SettingsView: View {
       .alert("Invalid Code", isPresented: $showInvalidUnlockCodeAlert) {
         Button("OK", role: .cancel) {}
       } message: {
-        Text("That unlock code isn't valid. Visit ctrus.net to get one.")
+        Text("That unlock code isn't valid or has expired. Visit recover.ctrus.net to get a new one.")
+      }
+      .alert("Connection Problem", isPresented: $showUnlockNetworkErrorAlert) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text("Couldn't reach the server to check your code. Check your connection and try again.")
+      }
+      .alert("Copied to Clipboard", isPresented: $showDeviceIDCopiedConfirmation) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text("Your Device ID has been copied.")
+      }
+    }
+  }
+
+  private func submitUnlockCode() {
+    isVerifyingUnlockCode = true
+
+    Task {
+      let result = await strategyManager.unlockWithRecoveryCode(unlockCode, context: context)
+      isVerifyingUnlockCode = false
+
+      switch result {
+      case .valid:
+        unlockCode = ""
+      case .invalid:
+        showInvalidUnlockCodeAlert = true
+      case .networkError:
+        showUnlockNetworkErrorAlert = true
       }
     }
   }

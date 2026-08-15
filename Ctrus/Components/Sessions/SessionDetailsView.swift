@@ -40,9 +40,11 @@ private struct SessionInfoSection: View {
 
   var body: some View {
     Section("Session Info") {
-      InfoRow(label: "Tag", value: session.tag)
-      InfoRow(label: "Profile", value: session.blockedProfile.name)
-      InfoRow(label: "Force Started", value: session.forceStarted ? "Yes" : "No")
+      InfoRow(label: String(localized: "Tag"), value: session.tag)
+      InfoRow(label: String(localized: "Profile"), value: session.blockedProfile.name)
+      InfoRow(
+        label: String(localized: "Force Started"),
+        value: session.forceStarted ? String(localized: "Yes") : String(localized: "No"))
     }
   }
 }
@@ -55,22 +57,22 @@ private struct TimingSection: View {
   var body: some View {
     Section("Timing") {
       InfoRow(
-        label: "Started",
+        label: String(localized: "Started"),
         value: DateFormatters.formatDate(session.startTime)
       )
 
       if let endTime = session.endTime {
         InfoRow(
-          label: "Ended",
+          label: String(localized: "Ended"),
           value: DateFormatters.formatDate(endTime)
         )
       } else {
-        InfoRow(label: "Ended", value: "In Progress")
+        InfoRow(label: String(localized: "Ended"), value: String(localized: "In Progress"))
           .foregroundStyle(.secondary)
       }
 
       InfoRow(
-        label: "Duration",
+        label: String(localized: "Duration"),
         value: DateFormatters.formatDurationHoursMinutes(session.duration)
       )
     }
@@ -95,22 +97,22 @@ private struct BreakSection: View {
     Section("Break") {
       if let breakStartTime = session.breakStartTime {
         InfoRow(
-          label: "Started",
+          label: String(localized: "Started"),
           value: DateFormatters.formatDate(breakStartTime)
         )
       }
 
       if let breakEndTime = session.breakEndTime {
         InfoRow(
-          label: "Ended",
+          label: String(localized: "Ended"),
           value: DateFormatters.formatDate(breakEndTime)
         )
       }
 
       if let breakDuration = breakDuration {
         InfoRow(
-          label: "Duration",
-          value: "\(Int(breakDuration / 60))m"
+          label: String(localized: "Duration"),
+          value: String(localized: "\(Int(breakDuration / 60))m")
         )
       }
     }
@@ -135,21 +137,21 @@ private struct PauseSection: View {
     Section("Pause") {
       if let pauseStartTime = session.pauseStartTime {
         InfoRow(
-          label: "Started",
+          label: String(localized: "Started"),
           value: DateFormatters.formatDate(pauseStartTime)
         )
       }
 
       if let pauseEndTime = session.pauseEndTime {
         InfoRow(
-          label: "Ended",
+          label: String(localized: "Ended"),
           value: DateFormatters.formatDate(pauseEndTime)
         )
       }
 
       if let pauseDuration = pauseDuration {
         InfoRow(
-          label: "Duration",
+          label: String(localized: "Duration"),
           value: DateFormatters.formatDurationShort(pauseDuration)
         )
       }

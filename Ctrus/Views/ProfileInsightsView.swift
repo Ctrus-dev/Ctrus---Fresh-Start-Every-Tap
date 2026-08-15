@@ -191,21 +191,26 @@ struct ProfileInsightsView: View {
       ?? monthSummary.monthEndDate
   }
 
-  private var sessionsSectionTitle: String {
-    switch viewMode {
-    case .week:
-      if let selectedWeekDay {
-        return "Sessions for \(DateFormatters.formatSelectedDayHeader(selectedWeekDay.date))"
+  private struct SessionDayGroup: Identifiable {
+    let day: Date
+    let sessions: [BlockedProfileSession]
+    var id: Date { day }
+  }
+
+  private var groupedSessions: [SessionDayGroup] {
+    let calendar = Calendar.current
+    var sessionsByDay: [Date: [BlockedProfileSession]] = [:]
+    var dayOrder: [Date] = []
+
+    for session in filteredSessions {
+      let day = calendar.startOfDay(for: session.startTime)
+      if sessionsByDay[day] == nil {
+        dayOrder.append(day)
       }
-      return "Sessions"
-    case .month:
-      if let selectedMonthDay {
-        return "Sessions for \(DateFormatters.formatSelectedDayHeader(selectedMonthDay.date))"
-      }
-      return "Sessions"
-    case .allSessions:
-      return "All Sessions"
+      sessionsByDay[day, default: []].append(session)
     }
+
+    return dayOrder.map { SessionDayGroup(day: $0, sessions: sessionsByDay[$0] ?? []) }
   }
 
   var body: some View {
@@ -233,9 +238,33 @@ struct ProfileInsightsView: View {
           }
         }
 
-        if !filteredSessions.isEmpty {
-          Section(sessionsSectionTitle) {
-            ForEach(filteredSessions) { session in
+        if selectedDay == nil {
+          Section("Summary") {
+            InsightsSummaryRow(
+              icon: "clock.fill",
+              label: String(localized: "Total Focus Time"),
+              value: DateFormatters.formatDurationHoursMinutes(
+                profileInsightsViewModel.metrics.totalFocusTime)
+            )
+
+            InsightsSummaryRow(
+              icon: "cup.and.saucer.fill",
+              label: String(localized: "Total Break Time"),
+              value: DateFormatters.formatDurationHoursMinutes(
+                profileInsightsViewModel.metrics.totalBreakTime)
+            )
+
+            InsightsSummaryRow(
+              icon: "tag.fill",
+              label: String(localized: "Profile ID"),
+              value: String(profileId.uuidString.prefix(8)) + "..."
+            )
+          }
+        }
+
+        ForEach(groupedSessions) { group in
+          Section(DateFormatters.formatSessionDate(group.day)) {
+            ForEach(group.sessions) { session in
               Button {
                 selectedSession = session
               } label: {
@@ -250,30 +279,6 @@ struct ProfileInsightsView: View {
                 }
               }
             }
-          }
-        }
-
-        if selectedDay == nil {
-          Section("Summary") {
-            InsightsSummaryRow(
-              icon: "clock.fill",
-              label: "Total Focus Time",
-              value: DateFormatters.formatDurationHoursMinutes(
-                profileInsightsViewModel.metrics.totalFocusTime)
-            )
-
-            InsightsSummaryRow(
-              icon: "cup.and.saucer.fill",
-              label: "Total Break Time",
-              value: DateFormatters.formatDurationHoursMinutes(
-                profileInsightsViewModel.metrics.totalBreakTime)
-            )
-
-            InsightsSummaryRow(
-              icon: "tag.fill",
-              label: "Profile ID",
-              value: String(profileId.uuidString.prefix(8)) + "..."
-            )
           }
         }
       }
@@ -498,13 +503,13 @@ struct ProfileInsightsView: View {
   private var filterMenuTitle: String {
     switch selectedFilter {
     case .thisWeek:
-      return "This Week"
+      return String(localized: "This Week")
     case .lastWeek:
-      return "Last Week"
+      return String(localized: "Last Week")
     case .thisMonth:
-      return "This Month"
+      return String(localized: "This Month")
     case .lastMonth:
-      return "Last Month"
+      return String(localized: "Last Month")
     case .specificWeek:
       return DateFormatters.formatWeekRange(
         start: weekSummary.weekStartDate, end: weekSummary.weekEndDate)
@@ -512,7 +517,7 @@ struct ProfileInsightsView: View {
       return DateFormatters.formatMonthRange(
         start: monthSummary.monthStartDate, end: monthSummary.monthEndDate)
     case .allSessions:
-      return "All Sessions"
+      return String(localized: "All Sessions")
     }
   }
 

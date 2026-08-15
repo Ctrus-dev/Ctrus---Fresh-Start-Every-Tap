@@ -27,12 +27,12 @@ class NFCWriter: NSObject, ObservableObject {
 
   func writeURL(_ url: String) {
     guard NFCReaderSession.readingAvailable else {
-      self.errorMessage = "NFC writing not available on this device"
+      self.errorMessage = String(localized: "NFC writing not available on this device")
       return
     }
 
     guard URL(string: url) != nil else {
-      self.errorMessage = "Invalid URL format"
+      self.errorMessage = String(localized: "Invalid URL format")
       return
     }
 
@@ -45,7 +45,8 @@ class NFCWriter: NSObject, ObservableObject {
       delegate: self,
       queue: nil
     )
-    tagSession?.alertMessage = "Hold your iPhone near an NFC tag to write the profile."
+    tagSession?.alertMessage = String(
+      localized: "Hold your iPhone near an NFC tag to write the profile.")
     tagSession?.begin()
 
     isScanning = true
@@ -68,9 +69,9 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
           // User canceled - not an error
           break
         case .readerSessionInvalidationErrorSessionTimeout:
-          self.errorMessage = "Session timed out. Please try again."
+          self.errorMessage = String(localized: "Session timed out. Please try again.")
         case .readerTransceiveErrorTagConnectionLost:
-          self.errorMessage = "Tag moved away. Please hold it steady."
+          self.errorMessage = String(localized: "Tag moved away. Please hold it steady.")
         default:
           // Log the actual error for debugging
           print("⚠️ NFC Writer error: \(readerError.code.rawValue) - \(error.localizedDescription)")
@@ -82,14 +83,14 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
 
   func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
     guard let tag = tags.first else {
-      session.invalidate(errorMessage: "No tag found")
+      session.invalidate(errorMessage: String(localized: "No tag found"))
       return
     }
 
     session.connect(to: tag) { error in
       if error != nil {
         session.invalidate(
-          errorMessage: "Connection error. Please hold tag steady and try again.")
+          errorMessage: String(localized: "Connection error. Please hold tag steady and try again."))
         return
       }
 
@@ -102,13 +103,13 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
       case .iso7816:
         // ISO7816 tags (smart cards, payment cards) cannot be written to
         session.invalidate(
-          errorMessage: "This type of card cannot be written to.")
+          errorMessage: String(localized: "This type of card cannot be written to."))
       case .feliCa:
         // FeliCa tags (Sony) cannot be written to with NDEF
         session.invalidate(
-          errorMessage: "This type of card cannot be written to.")
+          errorMessage: String(localized: "This type of card cannot be written to."))
       @unknown default:
-        session.invalidate(errorMessage: "Unsupported tag type")
+        session.invalidate(errorMessage: String(localized: "Unsupported tag type"))
       }
     }
   }
@@ -120,7 +121,7 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
       if error != nil {
         // Tag doesn't support NDEF queries (Amiibos, hotel cards, etc.)
         session.invalidate(
-          errorMessage: "This tag cannot be written to. Use a blank NFC tag instead.")
+          errorMessage: String(localized: "This tag cannot be written to. Use a blank NFC tag instead."))
         return
       }
 
@@ -128,14 +129,15 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
       case .notSupported:
         // Tag detected but doesn't support NDEF (proprietary format)
         session.invalidate(
-          errorMessage: "This tag uses a proprietary format. Use a blank NFC tag instead.")
+          errorMessage: String(
+            localized: "This tag uses a proprietary format. Use a blank NFC tag instead."))
       case .readOnly:
         session.invalidate(
-          errorMessage: "This tag is locked and cannot be modified.")
+          errorMessage: String(localized: "This tag is locked and cannot be modified."))
       case .readWrite:
         self.writeNDEFToTag(tag, session: session, capacity: capacity)
       @unknown default:
-        session.invalidate(errorMessage: "Unknown tag status")
+        session.invalidate(errorMessage: String(localized: "Unknown tag status"))
       }
     }
   }
@@ -146,21 +148,22 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
     tag.queryNDEFStatus { status, capacity, error in
       if error != nil {
         session.invalidate(
-          errorMessage: "This tag cannot be written to. Use a blank NFC tag instead.")
+          errorMessage: String(localized: "This tag cannot be written to. Use a blank NFC tag instead."))
         return
       }
 
       switch status {
       case .notSupported:
         session.invalidate(
-          errorMessage: "This tag uses a proprietary format. Use a blank NFC tag instead.")
+          errorMessage: String(
+            localized: "This tag uses a proprietary format. Use a blank NFC tag instead."))
       case .readOnly:
         session.invalidate(
-          errorMessage: "This tag is locked and cannot be modified.")
+          errorMessage: String(localized: "This tag is locked and cannot be modified."))
       case .readWrite:
         self.writeNDEFToTag(tag, session: session, capacity: capacity)
       @unknown default:
-        session.invalidate(errorMessage: "Unknown tag status")
+        session.invalidate(errorMessage: String(localized: "Unknown tag status"))
       }
     }
   }
@@ -171,7 +174,7 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
       let url = URL(string: urlString),
       let urlPayload = NFCNDEFPayload.wellKnownTypeURIPayload(url: url)
     else {
-      session.invalidate(errorMessage: "Invalid URL format")
+      session.invalidate(errorMessage: String(localized: "Invalid URL format"))
       return
     }
 
@@ -181,7 +184,8 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
     let messageSize = message.length
     if messageSize > capacity {
       session.invalidate(
-        errorMessage: "URL too long for this tag (\(messageSize) > \(capacity) bytes)")
+        errorMessage: String(
+          localized: "URL too long for this tag (\(messageSize) > \(capacity) bytes)"))
       return
     }
 
@@ -189,9 +193,9 @@ extension NFCWriter: NFCTagReaderSessionDelegate {
     tag.writeNDEF(message) { error in
       if error != nil {
         session.invalidate(
-          errorMessage: "Write failed. Please try again.")
+          errorMessage: String(localized: "Write failed. Please try again."))
       } else {
-        session.alertMessage = "✓ Successfully wrote profile to tag"
+        session.alertMessage = String(localized: "✓ Successfully wrote profile to tag")
         DispatchQueue.main.async {
           self.isScanning = false
         }

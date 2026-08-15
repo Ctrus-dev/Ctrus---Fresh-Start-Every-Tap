@@ -4,8 +4,8 @@ import SwiftUI
 class NFCBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCBlockingStrategy"
 
-  var name: String = "Ctrus NFC"
-  var description: String = "Start and stop by tapping your Ctrus."
+  var name: String = String(localized: "Ctrus NFC")
+  var description: String = String(localized: "Start and stop by tapping your Ctrus.")
   var color: Color = .yellow
   var pickerCategory: BlockingStrategyPickerCategory = .mostPopular
 
@@ -57,14 +57,14 @@ class NFCBlockingStrategy: BlockingStrategy {
       if session.blockedProfile.hasPhysicalUnblockItem(ofType: .nfc) {
         if !session.blockedProfile.canUnblock(withCode: tag, type: .nfc) {
           self.onErrorMessage?(
-            "This is not allowed to unblock this profile."
+            String(localized: "This is not allowed to unblock this profile.")
           )
           return
         }
       } else if !session.forceStarted && session.tag != tag {
         // No physical unblock tag - must use original session tag (unless force started)
         self.onErrorMessage?(
-          "You must scan the original tag to stop focus"
+          String(localized: "You must scan the original tag to stop focus")
         )
         return
       }

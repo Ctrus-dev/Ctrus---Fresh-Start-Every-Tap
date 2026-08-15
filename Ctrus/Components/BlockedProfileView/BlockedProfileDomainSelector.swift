@@ -19,8 +19,8 @@ struct BlockedProfileDomainSelector: View {
 
   private var buttonText: String {
     return allowMode
-      ? "Select Domains to Allow"
-      : "Select Domains to Restrict"
+      ? String(localized: "Select Domains to Allow")
+      : String(localized: "Select Domains to Restrict")
   }
 
   var body: some View {
@@ -44,7 +44,11 @@ struct BlockedProfileDomainSelector: View {
       Text("No domains selected")
         .foregroundStyle(.gray)
     } else {
-      Text("\(domainCount) \(domainCount == 1 ? "domain" : "domains") selected")
+      Text(
+        domainCount == 1
+          ? "\(domainCount) domain selected"
+          : "\(domainCount) domains selected"
+      )
         .font(.footnote)
         .foregroundStyle(.gray)
         .padding(.top, 4)

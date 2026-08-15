@@ -13,7 +13,7 @@ struct PhysicalUnblockItem: Codable, Hashable, Identifiable, Sendable {
 
     var displayName: String {
       switch self {
-      case .nfc: return "NFC Tag"
+      case .nfc: return String(localized: "NFC Tag")
       }
     }
   }
@@ -43,7 +43,7 @@ struct PhysicalUnblockItem: Codable, Hashable, Identifiable, Sendable {
     if let legacyNFCTagId, !legacyNFCTagId.isEmpty {
       items.append(
         PhysicalUnblockItem(
-          name: "NFC Tag",
+          name: String(localized: "NFC Tag"),
           type: .nfc,
           codeValue: legacyNFCTagId
         )

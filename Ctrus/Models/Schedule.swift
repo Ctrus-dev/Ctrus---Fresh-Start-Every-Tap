@@ -11,25 +11,25 @@ enum Weekday: Int, CaseIterable, Codable, Equatable {
 
   var name: String {
     switch self {
-    case .sunday: return "Sunday"
-    case .monday: return "Monday"
-    case .tuesday: return "Tuesday"
-    case .wednesday: return "Wednesday"
-    case .thursday: return "Thursday"
-    case .friday: return "Friday"
-    case .saturday: return "Saturday"
+    case .sunday: return String(localized: "Sunday")
+    case .monday: return String(localized: "Monday")
+    case .tuesday: return String(localized: "Tuesday")
+    case .wednesday: return String(localized: "Wednesday")
+    case .thursday: return String(localized: "Thursday")
+    case .friday: return String(localized: "Friday")
+    case .saturday: return String(localized: "Saturday")
     }
   }
 
   var shortLabel: String {
     switch self {
-    case .sunday: return "Su"
-    case .monday: return "Mo"
-    case .tuesday: return "Tu"
-    case .wednesday: return "We"
-    case .thursday: return "Th"
-    case .friday: return "Fr"
-    case .saturday: return "Sa"
+    case .sunday: return String(localized: "Su")
+    case .monday: return String(localized: "Mo")
+    case .tuesday: return String(localized: "Tu")
+    case .wednesday: return String(localized: "We")
+    case .thursday: return String(localized: "Th")
+    case .friday: return String(localized: "Fr")
+    case .saturday: return String(localized: "Sa")
     }
   }
 }
@@ -53,7 +53,7 @@ struct BlockedProfileSchedule: Codable, Equatable {
   }
 
   var summaryText: String {
-    guard isActive else { return "No Schedule Set" }
+    guard isActive else { return String(localized: "No Schedule Set") }
 
     let daysSummary =
       days
@@ -126,18 +126,24 @@ struct BlockedProfileSchedule: Codable, Equatable {
   ) -> String? {
     guard let nextStart = nextStartDate(now: now, calendar: calendar) else { return nil }
 
-    let formatter = DateFormatter()
+    let timeFormatter = DateFormatter()
+    timeFormatter.locale = Locale.autoupdatingCurrent
+    timeFormatter.setLocalizedDateFormatFromTemplate("jm")
+    let time = timeFormatter.string(from: nextStart)
 
+    let message: String
     if calendar.isDateInToday(nextStart) {
-      formatter.dateFormat = "'Today at' h:mm a"
+      message = String(localized: "Today at \(time)")
     } else if calendar.isDateInTomorrow(nextStart) {
-      formatter.dateFormat = "'Tomorrow at' h:mm a"
+      message = String(localized: "Tomorrow at \(time)")
     } else {
-      formatter.dateFormat = "EEEE, MMM d 'at' h:mm a"
+      let fullFormatter = DateFormatter()
+      fullFormatter.locale = Locale.autoupdatingCurrent
+      fullFormatter.setLocalizedDateFormatFromTemplate("EEEEMMMdjm")
+      message = fullFormatter.string(from: nextStart)
     }
 
-    let message = formatter.string(from: nextStart)
-    return includePrefix ? "Next start: \(message)" : message
+    return includePrefix ? String(localized: "Next start: \(message)") : message
   }
 
   private func formattedTimeString(hour24: Int, minute: Int) -> String {

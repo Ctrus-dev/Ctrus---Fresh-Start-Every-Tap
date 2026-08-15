@@ -252,12 +252,11 @@ private struct ProfileSummaryMetadataLine: View {
     case .none:
       return ""
     case .appsAndDomains:
-      return
-        "\(countLabel(selectedItemsCount, singular: "App", plural: "Apps")) | \(countLabel(domainsCount, singular: "Domain", plural: "Domains"))"
+      return "\(appsLabel(selectedItemsCount)) | \(domainsLabel(domainsCount))"
     case .updatedAt(let date):
       let formatter = RelativeDateTimeFormatter()
       formatter.unitsStyle = .short
-      return "Updated \(formatter.localizedString(for: date, relativeTo: Date()))"
+      return String(localized: "Updated \(formatter.localizedString(for: date, relativeTo: Date()))")
     }
   }
 
@@ -269,8 +268,12 @@ private struct ProfileSummaryMetadataLine: View {
       .lineLimit(1)
   }
 
-  private func countLabel(_ count: Int, singular: String, plural: String) -> String {
-    "\(count) \(count == 1 ? singular : plural)"
+  private func appsLabel(_ count: Int) -> String {
+    count == 1 ? String(localized: "1 App") : String(localized: "\(count) Apps")
+  }
+
+  private func domainsLabel(_ count: Int) -> String {
+    count == 1 ? String(localized: "1 Domain") : String(localized: "\(count) Domains")
   }
 }
 
@@ -320,16 +323,16 @@ private struct ProfileSummaryCompactIndicators: View {
     var values: [String] = []
 
     if enableBreaks {
-      values.append("Breaks")
+      values.append(String(localized: "Breaks"))
     }
     if enableStrictMode {
-      values.append("Deletion Blocked")
+      values.append(String(localized: "Deletion Blocked"))
     }
     if enableLiveActivity {
-      values.append("Live Activity")
+      values.append(String(localized: "Live Activity"))
     }
     if hasReminders {
-      values.append("Reminders")
+      values.append(String(localized: "Reminders"))
     }
 
     return values

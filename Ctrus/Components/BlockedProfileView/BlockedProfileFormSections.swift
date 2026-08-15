@@ -95,9 +95,12 @@ struct BlockedProfileAppsFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(
-      title: "Allow Only Selected Apps",
+      title: String(localized: "Allow Only Selected Apps"),
       description:
-        "Only selected apps stay available during sessions. Turning this on clears your blocked-app selection.",
+        String(
+          localized:
+            "Only selected apps stay available during sessions. Turning this on clears your blocked-app selection."
+        ),
       isOn: $draft.enableAllowMode,
       isDisabled: disabled
     )
@@ -105,9 +108,11 @@ struct BlockedProfileAppsFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(
-      title: "Block Websites in Safari",
+      title: String(localized: "Block Websites in Safari"),
       description:
-        "Also block selected websites in Safari. When off, Safari stays unrestricted.",
+        String(
+          localized: "Also block selected websites in Safari. When off, Safari stays unrestricted."
+        ),
       isOn: $draft.enableSafariBlocking,
       isDisabled: disabled
     )
@@ -123,7 +128,7 @@ struct BlockedProfileAppsSection: View {
   var disabled: Bool
 
   var body: some View {
-    Section((draft.enableAllowMode ? "Allowed" : "Blocked") + " Apps") {
+    Section(draft.enableAllowMode ? String(localized: "Allowed Apps") : String(localized: "Blocked Apps")) {
       BlockedProfileAppsFields(
         draft: draft,
         showingActivityPicker: $showingActivityPicker,
@@ -150,9 +155,12 @@ struct BlockedProfileDomainsFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(
-      title: "Allow Only Selected Domains",
+      title: String(localized: "Allow Only Selected Domains"),
       description:
-        "Only selected domains stay available during sessions. Turning this on clears your blocked-domain selection.",
+        String(
+          localized:
+            "Only selected domains stay available during sessions. Turning this on clears your blocked-domain selection."
+        ),
       isOn: $draft.enableAllowModeDomain,
       isDisabled: disabled
     )
@@ -160,9 +168,12 @@ struct BlockedProfileDomainsFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(
-      title: "Block Adult Websites",
+      title: String(localized: "Block Adult Websites"),
       description:
-        "Use Apple's adult-content filter during sessions. You can still add extra domains to block.",
+        String(
+          localized:
+            "Use Apple's adult-content filter during sessions. You can still add extra domains to block."
+        ),
       isOn: $draft.enableAdultContentBlocking,
       isDisabled: disabled
     )
@@ -185,7 +196,7 @@ struct BlockedProfileDomainsSection: View {
   var disabled: Bool
 
   var body: some View {
-    Section((draft.enableAllowModeDomain ? "Allowed" : "Blocked") + " Domains") {
+    Section(draft.enableAllowModeDomain ? String(localized: "Allowed Domains") : String(localized: "Blocked Domains")) {
       BlockedProfileDomainsFields(
         draft: draft,
         showingDomainPicker: $showingDomainPicker,
@@ -227,9 +238,12 @@ struct BlockedProfileBreaksFields: View {
   var body: some View {
     if draft.selectedStrategyAllowsTimedBreaks {
       CustomToggle(
-        title: "Allow Timed Breaks",
+        title: String(localized: "Allow Timed Breaks"),
         description:
-          "Take a break during your session. The break will automatically end after the selected duration.",
+          String(
+            localized:
+              "Take a break during your session. The break will automatically end after the selected duration."
+          ),
         isOn: $draft.enableBreaks,
         isDisabled: disabled
       )
@@ -242,17 +256,21 @@ struct BlockedProfileBreaksFields: View {
         ProfileFieldDivider(isVisible: showsSeparators)
 
         CustomToggle(
-          title: "Allow Multiple Breaks",
-          description: "Take multiple breaks until your total break duration is used.",
+          title: String(localized: "Allow Multiple Breaks"),
+          description: String(
+            localized: "Take multiple breaks until your total break duration is used."),
           isOn: $draft.allowMultipleBreaks,
           isDisabled: disabled
         )
       }
     } else {
       ProfileFieldNotice(
-        title: "Breaks are off for Temporary Access",
+        title: String(localized: "Breaks are off for Temporary Access"),
         message:
-          "This strategy already gives short opens for blocked apps and categories, so timed breaks are not needed for this profile."
+          String(
+            localized:
+              "This strategy already gives short opens for blocked apps and categories, so timed breaks are not needed for this profile."
+          )
       )
     }
   }
@@ -306,9 +324,9 @@ struct BlockedProfileStrictSafeguardsFields: View {
 
   var body: some View {
     CustomToggle(
-      title: "Prevent App Deletion",
+      title: String(localized: "Prevent App Deletion"),
       description:
-        "Stop apps from being deleted during sessions, including Ctrus.",
+        String(localized: "Stop apps from being deleted during sessions, including Ctrus."),
       isOn: $draft.enableStrictMode,
       isDisabled: disabled
     )
@@ -316,9 +334,9 @@ struct BlockedProfileStrictSafeguardsFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(
-      title: "Prevent New App Installs",
+      title: String(localized: "Prevent New App Installs"),
       description:
-        "Stop new apps from being installed during sessions.",
+        String(localized: "Stop new apps from being installed during sessions."),
       isOn: $draft.enableBlockAppInstallation,
       isDisabled: disabled
     )

@@ -6,11 +6,6 @@ struct SessionRow: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Text(DateFormatters.formatSessionDate(session.startTime))
-        .font(.body)
-        .fontWeight(.semibold)
-        .foregroundStyle(.secondary)
-
       HStack(alignment: .firstTextBaseline, spacing: 8) {
         Text(DateFormatters.formatDurationHoursMinutes(session.duration))
           .font(.system(size: 24, weight: .bold, design: .rounded))

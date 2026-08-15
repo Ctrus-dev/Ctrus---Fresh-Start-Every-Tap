@@ -22,7 +22,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     return createCustomShieldConfiguration(
-      for: .app, title: application.localizedDisplayName ?? "App")
+      for: .app, title: application.localizedDisplayName ?? String(localized: "App"))
   }
 
   override func configuration(shielding application: Application, in category: ActivityCategory)
@@ -33,17 +33,19 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     return createCustomShieldConfiguration(
-      for: .app, title: application.localizedDisplayName ?? "App")
+      for: .app, title: application.localizedDisplayName ?? String(localized: "App"))
   }
 
   override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
-    return createCustomShieldConfiguration(for: .website, title: webDomain.domain ?? "Website")
+    return createCustomShieldConfiguration(
+      for: .website, title: webDomain.domain ?? String(localized: "Website"))
   }
 
   override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory)
     -> ShieldConfiguration
   {
-    return createCustomShieldConfiguration(for: .website, title: webDomain.domain ?? "Website")
+    return createCustomShieldConfiguration(
+      for: .website, title: webDomain.domain ?? String(localized: "Website"))
   }
 
   private func createCustomShieldConfiguration(for type: BlockedContentType, title: String)
@@ -104,13 +106,16 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     let accessMinutes = configuration.accessDurationInMinutes
-    let buttonText = "Open for \(accessMinutes)m"
+    let buttonText = String(localized: "Open for \(accessMinutes)m")
     let randomMessage = getFunBlockMessage(
       for: .app,
       title: application.localizedDisplayName ?? presentation.resourceName
     )
     var allowanceLines = [
-      "\(presentation.resourceName) (\(session.remainingUnblockCount)/\(session.maximumUnblockCount))",
+      String(
+        localized:
+          "\(presentation.resourceName) (\(session.remainingUnblockCount)/\(session.maximumUnblockCount))"
+      ),
       breakAllowanceIndicator(for: session),
     ]
     if let resetDescription = allowanceResetDescription(for: session) {
@@ -137,7 +142,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       ),
       primaryButtonBackgroundColor: .white,
       secondaryButtonLabel: ShieldConfiguration.Label(
-        text: "Back",
+        text: String(localized: "Back"),
         color: .white
       )
     )
@@ -148,8 +153,8 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   ) -> ShieldConfiguration {
     let usageText =
       session.maximumUnblockCount == 1
-      ? "You already used your open for this session."
-      : "You used all \(session.maximumUnblockCount) opens for this session."
+      ? String(localized: "You already used your open for this session.")
+      : String(localized: "You used all \(session.maximumUnblockCount) opens for this session.")
     let subtitle = [usageText, allowanceResetDescription(for: session)]
       .compactMap { $0 }
       .joined(separator: " ")
@@ -159,7 +164,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       backgroundColor: UIColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
-        text: "No opens left",
+        text: String(localized: "No opens left"),
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
@@ -167,7 +172,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
-        text: "Back",
+        text: String(localized: "Back"),
         color: .black
       ),
       primaryButtonBackgroundColor: .white,
@@ -187,9 +192,9 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       1
     )
     if remainingMinutes >= 60 {
-      return "Resets in \(remainingMinutes / 60)h"
+      return String(localized: "Resets in \(remainingMinutes / 60)h")
     }
-    return "Resets in \(remainingMinutes)m"
+    return String(localized: "Resets in \(remainingMinutes)m")
   }
 
   private func breakAllowanceIndicator(for session: SoftUnblockSessionState) -> String {
@@ -212,7 +217,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     if let categoryToken = category?.token {
       guard !profile.enableAllowMode else { return nil }
 
-      let categoryName = category?.localizedDisplayName ?? "this category"
+      let categoryName = category?.localizedDisplayName ?? String(localized: "this category")
       return (
         resource: .category(categoryToken),
         resourceName: categoryName
@@ -220,7 +225,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     guard let applicationToken = application.token else { return nil }
-    let applicationName = application.localizedDisplayName ?? "this app"
+    let applicationName = application.localizedDisplayName ?? String(localized: "this app")
     return (
       resource: .application(applicationToken),
       resourceName: applicationName
@@ -234,29 +239,73 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
     // Curated motivational messages shown on the block screen.
     let messages: [FunMessage] = [
-      ("Not right now", "\(title) can wait. You’re choosing your time on purpose.", "Back"),
-      ("Brain check", "Do you actually want \(title)… or was it autopilot?", "Return"),
       (
-        "Stay on target", "One small step toward your goal first. Then decide on \(title).",
-        "Continue"
-      ),
-      ("Boundary set", "You made a plan. This is you sticking to it.", "Back"),
-      ("Glow mode", "You’re building attention — that’s the real flex.", "Nice"),
-      ("Not this detour", "\(title) isn’t part of the mission right now.", "Return"),
-      ("Avoid the trap", "One click turns into twenty. Let’s not.", "Back"),
-      ("Protected zone", "We’re keeping your attention where you wanted it.", "Got it"),
-      (
-        "Back to the task", "Close the detour. Finish the task. Then come back on purpose.",
-        "Back to work"
+        String(localized: "Not right now"),
+        String(localized: "\(title) can wait. You’re choosing your time on purpose."),
+        String(localized: "Back")
       ),
       (
-        "Protect the time", "A few minutes can become an hour. Keep your momentum.",
-        "Stay focused"
+        String(localized: "Brain check"),
+        String(localized: "Do you actually want \(title)… or was it autopilot?"),
+        String(localized: "Return")
       ),
-      ("Not missing anything", "You’re not missing anything important right now.", "Back"),
-      ("Momentum mode", "Tiny choices like this add up fast.", "Continue"),
+      (
+        String(localized: "Stay on target"),
+        String(localized: "One small step toward your goal first. Then decide on \(title)."),
+        String(localized: "Continue")
+      ),
+      (
+        String(localized: "Boundary set"),
+        String(localized: "You made a plan. This is you sticking to it."),
+        String(localized: "Back")
+      ),
+      (
+        String(localized: "Glow mode"),
+        String(localized: "You’re building attention — that’s the real flex."),
+        String(localized: "Nice")
+      ),
+      (
+        String(localized: "Not this detour"),
+        String(localized: "\(title) isn’t part of the mission right now."),
+        String(localized: "Return")
+      ),
+      (
+        String(localized: "Avoid the trap"),
+        String(localized: "One click turns into twenty. Let’s not."),
+        String(localized: "Back")
+      ),
+      (
+        String(localized: "Protected zone"),
+        String(localized: "We’re keeping your attention where you wanted it."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Back to the task"),
+        String(localized: "Close the detour. Finish the task. Then come back on purpose."),
+        String(localized: "Back to work")
+      ),
+      (
+        String(localized: "Protect the time"),
+        String(localized: "A few minutes can become an hour. Keep your momentum."),
+        String(localized: "Stay focused")
+      ),
+      (
+        String(localized: "Not missing anything"),
+        String(localized: "You’re not missing anything important right now."),
+        String(localized: "Back")
+      ),
+      (
+        String(localized: "Momentum mode"),
+        String(localized: "Tiny choices like this add up fast."),
+        String(localized: "Continue")
+      ),
     ]
-    guard !messages.isEmpty else { return ("Quick pause", "Not right now.", "Back") }
+    guard !messages.isEmpty else {
+      return (
+        String(localized: "Quick pause"), String(localized: "Not right now"),
+        String(localized: "Back")
+      )
+    }
 
     let comps = Calendar.current.dateComponents([.year, .month, .day], from: Date())
     let dayKey =

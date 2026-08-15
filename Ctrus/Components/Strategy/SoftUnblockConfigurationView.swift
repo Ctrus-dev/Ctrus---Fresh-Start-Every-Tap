@@ -134,7 +134,7 @@ struct SoftUnblockConfigurationView: View {
 
   private var startButton: some View {
     ActionButton(
-      title: "Start Blocking",
+      title: String(localized: "Start Blocking"),
       backgroundColor: themeManager.themeColor,
       iconName: "checkmark.circle.fill"
     ) {
@@ -157,15 +157,17 @@ struct SoftUnblockConfigurationView: View {
   }
 
   private var formattedDuration: String {
-    accessDurationInMinutes == 60 ? "1 hour" : "\(accessDurationInMinutes) minutes"
+    accessDurationInMinutes == 60
+      ? String(localized: "1 hour")
+      : String(localized: "\(accessDurationInMinutes) minutes")
   }
 
   private var resetDescription: String {
     guard let allowanceResetIntervalInHours else {
-      return "Your opens do not reset during this session."
+      return String(localized: "Your opens do not reset during this session.")
     }
 
-    return "You get all your opens back every \(allowanceResetIntervalInHours) hours."
+    return String(localized: "You get all your opens back every \(allowanceResetIntervalInHours) hours.")
   }
 }
 

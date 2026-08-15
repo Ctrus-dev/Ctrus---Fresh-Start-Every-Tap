@@ -67,14 +67,14 @@ struct ProfileWidgetEntryView: View {
                     icon: { Image(systemName: "clock.fill") }
                 )
             } else {
-                Label(entry.profileName ?? "No Profile", systemImage: "hourglass")
+                Label(entry.profileName ?? String(localized: "No Profile"), systemImage: "hourglass")
             }
 
         //Lockscreen: Regular rectangular widget
         case .accessoryRectangular:
             // Top section with profile name
             VStack(alignment: .leading, spacing: 2) {
-                Text(entry.profileName ?? "No Profile")
+                Text(entry.profileName ?? String(localized: "No Profile"))
                     .font(.caption)
                     .fontWeight(.bold)
                     .lineLimit(1)
@@ -121,7 +121,7 @@ struct ProfileWidgetEntryView: View {
                     VStack(spacing: 8) {
                         // Top section: Profile name (left) and logo (right)
                         HStack {
-                            Text(entry.profileName ?? "No Profile")
+                            Text(entry.profileName ?? String(localized: "No Profile"))
                                 .font(.system(size: 14))
                                 .fontWeight(.bold)
                                 .foregroundColor(shouldUseWhiteText ? .white : .primary)

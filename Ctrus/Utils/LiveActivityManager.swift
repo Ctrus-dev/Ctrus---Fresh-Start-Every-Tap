@@ -79,7 +79,7 @@ class LiveActivityManager: ObservableObject {
 
     // Create and start the activity
     let profileName = session.blockedProfile.name
-    let message = FocusMessages.getRandomMessage()
+    let message = NSLocalizedString(FocusMessages.getRandomMessage(), comment: "")
     let attributes = CtrusWidgetAttributes(name: profileName, message: message)
     let contentState = makeContentState(for: session)
     let activityContent = ActivityContent(

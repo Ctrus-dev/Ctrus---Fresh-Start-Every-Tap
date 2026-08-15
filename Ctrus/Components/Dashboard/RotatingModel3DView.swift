@@ -1,4 +1,5 @@
 import SceneKit
+import simd
 import SwiftUI
 import UIKit
 
@@ -92,6 +93,8 @@ private struct RotatingModel3DRepresentable: UIViewRepresentable {
 
     private var accentMaterials: [SCNMaterial] = []
     private var lastPanTranslation: CGPoint = .zero
+    private var yaw: Float = 0
+    private var pitch: Float = 0
 
     private static let dragRotationSpeed: Float = 0.01
     private static let maxTiltRadians: Float = .pi / 2.4
@@ -137,10 +140,18 @@ private struct RotatingModel3DRepresentable: UIViewRepresentable {
         let deltaY = Float(translation.y - lastPanTranslation.y)
         lastPanTranslation = translation
 
-        pivotNode.eulerAngles.y += deltaX * Self.dragRotationSpeed
-        pivotNode.eulerAngles.x += deltaY * Self.dragRotationSpeed
-        pivotNode.eulerAngles.x = max(
-          -Self.maxTiltRadians, min(Self.maxTiltRadians, pivotNode.eulerAngles.x))
+        yaw += deltaX * Self.dragRotationSpeed
+        pitch += deltaY * Self.dragRotationSpeed
+        pitch = max(-Self.maxTiltRadians, min(Self.maxTiltRadians, pitch))
+
+        // Compose pitch/yaw as separate rotations about fixed world axes
+        // (not SCNNode's default Euler order, which nests X inside the
+        // already-yawed local space) so a vertical drag always tilts the
+        // same way on screen, even after the model has been turned to
+        // face away from the camera.
+        let yawRotation = simd_quatf(angle: yaw, axis: SIMD3<Float>(0, 1, 0))
+        let pitchRotation = simd_quatf(angle: pitch, axis: SIMD3<Float>(1, 0, 0))
+        pivotNode.simdOrientation = pitchRotation * yawRotation
       default:
         break
       }

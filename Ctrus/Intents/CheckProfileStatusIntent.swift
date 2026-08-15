@@ -28,8 +28,8 @@ struct CheckProfileStatusIntent: AppIntent {
 
     let dialogMessage =
       isActive
-      ? "\(profile.name) is currently active."
-      : "\(profile.name) is not active."
+      ? String(localized: "\(profile.name) is currently active.")
+      : String(localized: "\(profile.name) is not active.")
 
     return .result(
       value: isActive,

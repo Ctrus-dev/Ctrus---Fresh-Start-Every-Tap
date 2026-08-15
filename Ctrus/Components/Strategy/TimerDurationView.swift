@@ -49,7 +49,7 @@ struct TimerDurationView: View {
 
       // Confirm button
       ActionButton(
-        title: "Set Duration",
+        title: String(localized: "Set Duration"),
         backgroundColor: themeManager.themeColor,
         iconName: "checkmark.circle.fill"
       ) {
@@ -137,11 +137,11 @@ struct TimerDurationView: View {
     let minutes = totalMinutes % 60
 
     if hours == 0 {
-      return "\(minutes)m"
+      return String(localized: "\(minutes)m")
     } else if minutes == 0 {
-      return "\(hours)h"
+      return String(localized: "\(hours)h")
     } else {
-      return "\(hours)h \(minutes)m"
+      return String(localized: "\(hours)h \(minutes)m")
     }
   }
 

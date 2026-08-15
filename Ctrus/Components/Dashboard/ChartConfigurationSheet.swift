@@ -43,7 +43,7 @@ struct ChartConfigurationSheet: View {
                       .foregroundStyle(themeManager.themeColor)
                       .font(.system(size: 16))
 
-                    Text(type.rawValue)
+                    Text(LocalizedStringKey(type.rawValue))
                       .font(.system(size: 16, weight: .medium))
                       .foregroundStyle(.primary)
                   }

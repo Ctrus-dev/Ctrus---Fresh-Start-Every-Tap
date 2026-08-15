@@ -1,9 +1,13 @@
+import Combine
 import FamilyControls
 import Foundation
 import SwiftData
 import SwiftUI
 
 final class BlockedProfileDraft: ObservableObject {
+  private(set) var isDirty = false
+  private var dirtyTrackingCancellable: AnyCancellable?
+
   @Published var name: String
   @Published var enableLiveActivity: Bool
   @Published var enableReminder: Bool
@@ -68,6 +72,11 @@ final class BlockedProfileDraft: ObservableObject {
     }
 
     enforceStrategyBreaksPolicy()
+
+    // Track edits made after initial setup so we can warn before discarding them.
+    dirtyTrackingCancellable = objectWillChange.sink { [weak self] _ in
+      self?.isDirty = true
+    }
   }
 
   var isValid: Bool {

@@ -35,9 +35,9 @@ struct HomeProfileLauncher: View {
 
   private var inactiveLauncherButtons: some View {
     ShimmerLauncherButton(
-      title: "Start",
+      title: String(localized: "Start"),
       height: inactiveButtonHeight,
-      accessibilityLabel: "Start Profile",
+      accessibilityLabel: String(localized: "Start Profile"),
       action: startTapped
     )
   }
@@ -91,10 +91,10 @@ struct HomeProfileLauncher: View {
 
   private var activeStateTitle: String? {
     if isPauseActive {
-      return "Paused"
+      return String(localized: "Paused")
     }
     if isBreakActive {
-      return "On Break"
+      return String(localized: "On Break")
     }
     return nil
   }
@@ -150,9 +150,9 @@ struct HomeProfileLauncher: View {
 
   private func activeAccessibilityLabel(for profile: BlockedProfiles) -> String {
     if let activeStateTitle {
-      return "\(activeStateTitle) Profile \(profile.name)"
+      return String(localized: "\(activeStateTitle) Profile \(profile.name)")
     }
-    return "Active Profile \(profile.name)"
+    return String(localized: "Active Profile \(profile.name)")
   }
 }
 

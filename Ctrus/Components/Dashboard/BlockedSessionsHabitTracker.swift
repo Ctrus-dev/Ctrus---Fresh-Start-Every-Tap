@@ -21,11 +21,11 @@ enum HabitChartType: String, CaseIterable {
   var description: String {
     switch self {
     case .fourWeek:
-      return "View your last 28 days of focus time in a heatmap calendar"
+      return String(localized: "View your last 28 days of focus time in a heatmap calendar")
     case .weekly:
-      return "See your week-by-week focus patterns with bar charts"
+      return String(localized: "See your week-by-week focus patterns with bar charts")
     case .monthly:
-      return "Track your monthly progress with a calendar grid"
+      return String(localized: "Track your monthly progress with a calendar grid")
     }
   }
 }
@@ -146,8 +146,8 @@ struct BlockedSessionsHabitTracker: View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(alignment: .center) {
         SectionTitle(
-          "Activity",
-          buttonText: "Manage",
+          String(localized: "Activity"),
+          buttonText: String(localized: "Manage"),
           buttonAction: { showingConfiguration = true },
           buttonIcon: "chart.line.uptrend.xyaxis"
         )

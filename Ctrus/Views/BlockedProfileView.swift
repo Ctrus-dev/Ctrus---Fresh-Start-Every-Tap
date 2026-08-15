@@ -8,6 +8,8 @@ struct AlertIdentifier: Identifiable {
   enum AlertType {
     case error
     case deleteProfile
+    case missingPhysicalUnlock
+    case discardChanges
   }
 
   let id: AlertType
@@ -102,7 +104,7 @@ struct BlockedProfileView: View {
       .navigationTitle(isEditing ? "Edit Profile" : "New Profile")
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
-          Button(action: { dismiss() }) {
+          Button(action: { attemptDismiss() }) {
             Image(systemName: "xmark")
           }
           .accessibilityLabel("Cancel")
@@ -113,7 +115,7 @@ struct BlockedProfileView: View {
             if !isBlocking {
               Menu {
                 Button {
-                  cloneName = validProfile.name + " Copy"
+                  cloneName = String(localized: "\(validProfile.name) Copy")
                   showingClonePrompt = true
                 } label: {
                   Label("Duplicate Profile", systemImage: "square.on.square")
@@ -175,12 +177,12 @@ struct BlockedProfileView: View {
       .background(
         TextFieldAlert(
           isPresented: $showingClonePrompt,
-          title: "Duplicate Profile",
+          title: String(localized: "Duplicate Profile"),
           message: nil,
           text: $cloneName,
-          placeholder: "Profile Name",
-          confirmTitle: "Create",
-          cancelTitle: "Cancel",
+          placeholder: String(localized: "Profile Name"),
+          confirmTitle: String(localized: "Create"),
+          cancelTitle: String(localized: "Cancel"),
           onConfirm: { enteredName in
             let trimmed = enteredName.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return }
@@ -221,8 +223,22 @@ struct BlockedProfileView: View {
               }
             }
           )
+        case .missingPhysicalUnlock:
+          return Alert(
+            title: Text("Warning!"),
+            message: Text("Set a Physical Unlock to continue."),
+            dismissButton: .default(Text("OK"))
+          )
+        case .discardChanges:
+          return Alert(
+            title: Text("Discard Changes?"),
+            message: Text("You have unsaved changes. Are you sure you want to discard them?"),
+            primaryButton: .destructive(Text("Discard")) { dismiss() },
+            secondaryButton: .cancel()
+          )
         }
       }
+      .interactiveDismissDisabled(draft.isDirty)
     }
   }
 
@@ -230,7 +246,20 @@ struct BlockedProfileView: View {
     alertIdentifier = AlertIdentifier(id: .error, errorMessage: message)
   }
 
+  private func attemptDismiss() {
+    if draft.isDirty {
+      alertIdentifier = AlertIdentifier(id: .discardChanges)
+    } else {
+      dismiss()
+    }
+  }
+
   private func saveProfile() {
+    guard !draft.physicalUnblockItems.isEmpty else {
+      alertIdentifier = AlertIdentifier(id: .missingPhysicalUnlock)
+      return
+    }
+
     do {
       _ = try draft.save(existingProfile: profile, in: modelContext)
       dismiss()

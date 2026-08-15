@@ -44,7 +44,7 @@ struct StartProfilePickerView: View {
         if profiles.isEmpty {
           EmptyView(
             iconName: "person.crop.circle.badge.plus",
-            headingText: "Create a profile before starting a focus session"
+            headingText: String(localized: "Create a profile before starting a focus session")
           )
           .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
@@ -116,10 +116,10 @@ struct StartProfilePickerView: View {
   private var goButton: some View {
     VStack(spacing: 8) {
       ShimmerLauncherButton(
-        title: "Fresh Start, Every Tap",
+        title: String(localized: "Fresh Start, Every Tap"),
         height: 64,
         isEnabled: canGo,
-        accessibilityLabel: "Start selected profile",
+        accessibilityLabel: String(localized: "Start selected profile"),
         action: goTapped
       )
     }

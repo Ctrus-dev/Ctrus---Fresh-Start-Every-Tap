@@ -34,7 +34,9 @@ struct ActiveProfileSessionView: View {
   }
 
   private var breakButtonTitle: String {
-    "Hold to " + (isBreakActive ? "Stop Break" : "Start Break")
+    isBreakActive
+      ? String(localized: "Hold to Stop Break")
+      : String(localized: "Hold to Start Break")
   }
 
   private var focusMessage: String {
@@ -185,10 +187,10 @@ struct ActiveProfileSessionView: View {
 
   private var statusMessage: String? {
     if isPauseActive {
-      return "Paused"
+      return String(localized: "Paused")
     }
     if isBreakActive {
-      return "On a Break"
+      return String(localized: "On a Break")
     }
     return nil
   }
@@ -209,7 +211,7 @@ struct ActiveProfileSessionView: View {
         .contentTransition(.numericText())
         .animation(.default, value: displayTime)
 
-      Text(focusMessage)
+      Text(LocalizedStringKey(focusMessage))
         .font(.headline)
         .fontWeight(.bold)
         .foregroundStyle(supportingTextColor)
@@ -241,7 +243,7 @@ struct ActiveProfileSessionView: View {
       HStack(spacing: 12) {
         if profile.enableEmergencyUnblock {
           ActiveSessionActionButton(
-            title: "Emergency",
+            title: String(localized: "Emergency"),
             iconName: "exclamationmark.triangle.fill",
             role: .destructive,
             action: {
@@ -362,9 +364,7 @@ private struct SoftUnblockActiveGrantRow: View {
   private var accessibilityCountdownText: String {
     let minutes = remainingSeconds / 60
     let seconds = remainingSeconds % 60
-    let minuteLabel = minutes == 1 ? "minute" : "minutes"
-    let secondLabel = seconds == 1 ? "second" : "seconds"
-    return "\(minutes) \(minuteLabel), \(seconds) \(secondLabel) remaining"
+    return String(localized: "\(minutes) minutes, \(seconds) seconds remaining")
   }
 
   var body: some View {

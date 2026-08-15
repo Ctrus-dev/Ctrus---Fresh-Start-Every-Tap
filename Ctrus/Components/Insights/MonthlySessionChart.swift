@@ -29,7 +29,10 @@ struct MonthlySessionChart: View {
   }
 
   private var legendData: [(String, Double)] {
-    [("<1h", 0.3), ("1-3h", 0.5), ("3-5h", 0.7), (">5h", 0.9)]
+    [
+      (String(localized: "Under 1h"), 0.3), (String(localized: "1-3h"), 0.5),
+      (String(localized: "3-5h"), 0.7), (String(localized: ">5h"), 0.9),
+    ]
   }
 
   private var weeksInMonth: [[MonthlyDayAggregate]] {

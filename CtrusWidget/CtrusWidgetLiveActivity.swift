@@ -90,7 +90,7 @@ struct CtrusWidgetLiveActivity: Widget {
         VStack(alignment: .trailing, spacing: 4) {
           if context.state.isPauseActive {
             statusView(
-              label: "Paused",
+              label: String(localized: "Paused"),
               showsPauseIcon: true,
               countdownRange: context.state.countdownRange,
               timerFont: .title,
@@ -98,7 +98,7 @@ struct CtrusWidgetLiveActivity: Widget {
             )
           } else if context.state.isBreakActive {
             statusView(
-              label: "On a Break",
+              label: String(localized: "On a Break"),
               showsPauseIcon: false,
               countdownRange: context.state.countdownRange,
               timerFont: .title,

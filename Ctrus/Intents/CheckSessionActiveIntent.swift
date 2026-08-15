@@ -29,8 +29,8 @@ struct CheckSessionActiveIntent: AppIntent {
 
     let dialogMessage =
       isActive
-      ? "A Ctrus session is currently active."
-      : "No Ctrus session is active."
+      ? String(localized: "A Ctrus session is currently active.")
+      : String(localized: "No Ctrus session is active.")
 
     return .result(
       value: isActive,

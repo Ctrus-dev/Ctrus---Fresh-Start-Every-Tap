@@ -4,9 +4,11 @@ import SwiftUI
 class NFCPauseTimerBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCPauseTimerBlockingStrategy"
 
-  var name: String = "NFC + Pause Timer"
-  var description: String =
-    "Choose how long a pause should last. Scan an NFC tag once to pause. Scan it again during the pause to fully stop."
+  var name: String = String(localized: "NFC + Pause Timer")
+  var description: String = String(
+    localized:
+      "Choose how long a pause should last. Scan an NFC tag once to pause. Scan it again during the pause to fully stop."
+  )
   var color: Color = .orange
   var pickerCategory: BlockingStrategyPickerCategory = .forever
 
@@ -70,7 +72,7 @@ class NFCPauseTimerBlockingStrategy: BlockingStrategy {
         && !session.blockedProfile.canUnblock(withCode: tagId, type: .nfc)
       {
         self.onErrorMessage?(
-          "This is not allowed to unblock this profile."
+          String(localized: "This is not allowed to unblock this profile.")
         )
         return
       }
@@ -93,7 +95,8 @@ class NFCPauseTimerBlockingStrategy: BlockingStrategy {
     if isPauseActive {
       nfcScanner.scan(profileName: session.blockedProfile.name)
     } else {
-      nfcScanner.scan(profileName: "\(session.blockedProfile.name) - Pause")
+      nfcScanner.scan(
+        profileName: String(localized: "\(session.blockedProfile.name) - Pause"))
     }
 
     return nil

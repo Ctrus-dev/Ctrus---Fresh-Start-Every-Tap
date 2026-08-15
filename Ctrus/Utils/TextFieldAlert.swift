@@ -7,8 +7,8 @@ struct TextFieldAlert: UIViewControllerRepresentable {
   var message: String?
   @Binding var text: String
   var placeholder: String
-  var confirmTitle: String = "Create"
-  var cancelTitle: String = "Cancel"
+  var confirmTitle: String = String(localized: "Create")
+  var cancelTitle: String = String(localized: "Cancel")
   var onConfirm: (String) -> Void
 
   func makeUIViewController(context: Context) -> UIViewController {

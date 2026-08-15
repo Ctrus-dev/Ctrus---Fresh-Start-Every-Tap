@@ -5,7 +5,7 @@ struct PauseDurationView: View {
   @Environment(\.dismiss) private var dismiss
 
   let profileName: String
-  var title: String = "Pause Duration"
+  var title: String = String(localized: "Pause Duration")
   var description: String? = nil
   let onDurationSelected: (Int) -> Void
 
@@ -30,7 +30,9 @@ struct PauseDurationView: View {
           .font(.title2).bold()
 
         Text(
-          description ?? "Select how long you want to allow access when pausing \(profileName)."
+          description
+            ?? String(
+              localized: "Select how long you want to allow access when pausing \(profileName).")
         )
         .font(.callout)
         .foregroundColor(.secondary)
@@ -46,7 +48,7 @@ struct PauseDurationView: View {
 
       // Confirm button
       ActionButton(
-        title: "Start Blocking",
+        title: String(localized: "Start Blocking"),
         backgroundColor: themeManager.themeColor,
         iconName: "checkmark.circle.fill"
       ) {
@@ -138,11 +140,11 @@ struct PauseDurationView: View {
     let minutes = totalMinutes % 60
 
     if hours == 0 {
-      return "\(minutes)m"
+      return String(localized: "\(minutes)m")
     } else if minutes == 0 {
-      return "\(hours)h"
+      return String(localized: "\(hours)h")
     } else {
-      return "\(hours)h \(minutes)m"
+      return String(localized: "\(hours)h \(minutes)m")
     }
   }
 

@@ -4,9 +4,11 @@ import SwiftUI
 class NFCTimerBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCTimerBlockingStrategy"
 
-  var name: String = "NFC + Timer"
-  var description: String =
-    "Choose how long blocking should last. To stop early, scan any NFC tag. Use Strict Unlocks if you want only selected tags to work."
+  var name: String = String(localized: "NFC + Timer")
+  var description: String = String(
+    localized:
+      "Choose how long blocking should last. To stop early, scan any NFC tag. Use Strict Unlocks if you want only selected tags to work."
+  )
   var color: Color = .mint
   var pickerCategory: BlockingStrategyPickerCategory = .timers
 
@@ -65,7 +67,7 @@ class NFCTimerBlockingStrategy: BlockingStrategy {
         && !session.blockedProfile.canUnblock(withCode: tag, type: .nfc)
       {
         self.onErrorMessage?(
-          "This is not allowed to unblock this profile."
+          String(localized: "This is not allowed to unblock this profile.")
         )
         return
       }

@@ -14,11 +14,11 @@ enum DateFormatters {
     let seconds = Int(duration) % 60
 
     if hours > 0 {
-      return String(format: "%dh %dm %ds", hours, minutes, seconds)
+      return String(localized: "\(hours)h \(minutes)m \(seconds)s")
     } else if minutes > 0 {
-      return String(format: "%dm %ds", minutes, seconds)
+      return String(localized: "\(minutes)m \(seconds)s")
     } else {
-      return String(format: "%ds", seconds)
+      return String(localized: "\(seconds)s")
     }
   }
 
@@ -32,40 +32,40 @@ enum DateFormatters {
 
   static func formatMinutes(_ durationInMinutes: Int) -> String {
     if durationInMinutes <= 60 {
-      return "\(durationInMinutes) min"
+      return String(localized: "\(durationInMinutes) min")
     } else {
       let hours = durationInMinutes / 60
       let minutes = durationInMinutes % 60
       if minutes == 0 {
-        return "\(hours)h"
+        return String(localized: "\(hours)h")
       } else {
-        return "\(hours)h \(minutes)m"
+        return String(localized: "\(hours)h \(minutes)m")
       }
     }
   }
 
   static func formatDurationHoursMinutes(_ interval: TimeInterval) -> String {
-    guard interval > 0 else { return "0m" }
+    guard interval > 0 else { return String(localized: "0m") }
     let totalSeconds = Int(interval)
     let hours = totalSeconds / 3600
     let minutes = (totalSeconds % 3600) / 60
 
     if hours > 0 {
-      return "\(hours)h \(minutes)m"
+      return String(localized: "\(hours)h \(minutes)m")
     }
-    return "\(minutes)m"
+    return String(localized: "\(minutes)m")
   }
 
   static func formatDurationShort(_ interval: TimeInterval) -> String {
-    guard interval > 0 else { return "0m" }
+    guard interval > 0 else { return String(localized: "0m") }
     let totalSeconds = Int(interval)
     let hours = totalSeconds / 3600
     let minutes = (totalSeconds % 3600) / 60
 
     if hours > 0 {
-      return "\(hours)h"
+      return String(localized: "\(hours)h")
     }
-    return "\(minutes)m"
+    return String(localized: "\(minutes)m")
   }
 
   static func formatSelectedDayHeader(_ date: Date) -> String {
@@ -75,9 +75,9 @@ enum DateFormatters {
   static func formatSessionDate(_ date: Date) -> String {
     let calendar = Calendar.current
     if calendar.isDateInToday(date) {
-      return "Today"
+      return String(localized: "Today")
     } else if calendar.isDateInYesterday(date) {
-      return "Yesterday"
+      return String(localized: "Yesterday")
     }
 
     let formatter = DateFormatter()
@@ -121,9 +121,7 @@ enum DateFormatters {
   }
 
   static func formatDashboardDate(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMM d, yyyy"
-    return formatter.string(from: date)
+    return date.formatted(.dateTime.month(.abbreviated).day().year())
   }
 
   static func formatDayNumber(_ date: Date) -> String {

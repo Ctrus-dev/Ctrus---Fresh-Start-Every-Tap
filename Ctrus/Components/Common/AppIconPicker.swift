@@ -81,7 +81,7 @@ struct AppIconPicker: View {
 
   private func select(_ icon: AppIconOption) {
     guard UIApplication.shared.supportsAlternateIcons else {
-      errorMessage = "Alternate app icons are not available on this device."
+      errorMessage = String(localized: "Alternate app icons are not available on this device.")
       showError = true
       return
     }
@@ -115,10 +115,10 @@ private enum AppIconOption: String, CaseIterable, Identifiable {
 
   var displayName: String {
     switch self {
-    case .orange: "Orange"
-    case .lime: "Lime"
-    case .lemon: "Lemon"
-    case .dark: "Dark"
+    case .orange: String(localized: "Orange")
+    case .lime: String(localized: "Lime")
+    case .lemon: String(localized: "Lemon")
+    case .dark: String(localized: "Dark")
     }
   }
 

@@ -38,44 +38,46 @@ private enum GuidedProfileStep: Int, CaseIterable, Identifiable {
   var introTitle: String {
     switch self {
     case .name:
-      return "Name this profile"
+      return String(localized: "Name this profile")
     case .strategy:
-      return "Choose how it starts"
+      return String(localized: "Choose how it starts")
     case .apps:
-      return "Choose apps and how to block them"
+      return String(localized: "Choose apps and how to block them")
     case .domains:
-      return "Choose domains and how to block them"
+      return String(localized: "Choose domains and how to block them")
     case .strictUnlocks:
-      return "Set your Ctrus"
+      return String(localized: "Set your Ctrus")
     case .breaks:
-      return "Allow breaks"
+      return String(localized: "Allow breaks")
     case .strictSafeguards:
-      return "Choose session protection"
+      return String(localized: "Choose session protection")
     case .review:
-      return "Review your profile"
+      return String(localized: "Review your profile")
     }
   }
 
   var introDescription: String {
     switch self {
     case .name:
-      return "Profiles group the apps, websites, and rules you want to use together."
+      return String(localized: "Profiles group the apps, websites, and rules you want to use together.")
     case .strategy:
-      return "Pick the blocking method that fits this profile."
+      return String(localized: "Pick the blocking method that fits this profile.")
     case .apps:
-      return "Select the apps or categories this profile should restrict or allow."
+      return String(localized: "Select the apps or categories this profile should restrict or allow.")
     case .domains:
-      return "Add specific domains and decide whether Safari website blocking applies."
+      return String(localized: "Add specific domains and decide whether Safari website blocking applies.")
     case .strictUnlocks:
-      return "You'll need to bring your iPhone close to your Ctrus to scan it before you can continue."
+      return String(
+        localized: "You'll need to bring your iPhone close to your Ctrus to scan it before you can continue."
+      )
     case .breaks:
-      return "Timed breaks let you pause once during a session without ending the profile."
+      return String(localized: "Timed breaks let you pause once during a session without ending the profile.")
     case .strictSafeguards:
-      return
-        "These settings make it harder to work around restrictions "
-        + "by deleting or installing apps."
+      return String(
+        localized: "These settings make it harder to work around restrictions by deleting or installing apps."
+      )
     case .review:
-      return "Create the profile now, or go back to adjust any section."
+      return String(localized: "Create the profile now, or go back to adjust any section.")
     }
   }
 }
@@ -232,7 +234,7 @@ struct GuidedBlockedProfileCreationView: View {
 
   private var currentStepIntroTitle: String {
     if currentStep == .breaks && !draft.selectedStrategyAllowsTimedBreaks {
-      return "Breaks are off"
+      return String(localized: "Breaks are off")
     }
 
     return currentStep.introTitle
@@ -240,8 +242,10 @@ struct GuidedBlockedProfileCreationView: View {
 
   private var currentStepIntroDescription: String {
     if currentStep == .breaks && !draft.selectedStrategyAllowsTimedBreaks {
-      return
-        "Temporary Access already gives short opens for blocked apps and categories, so timed breaks are not needed."
+      return String(
+        localized:
+          "Temporary Access already gives short opens for blocked apps and categories, so timed breaks are not needed."
+      )
     }
 
     return currentStep.introDescription
@@ -338,7 +342,7 @@ struct GuidedBlockedProfileCreationView: View {
 
   private var stepControls: some View {
     ActionButton(
-      title: isLastStep ? "Create Profile" : "Next",
+      title: isLastStep ? String(localized: "Create Profile") : String(localized: "Next"),
       backgroundColor: themeManager.themeColor,
       isDisabled: !canContinue
     ) {
@@ -396,18 +400,20 @@ private struct GuidedProfileReviewContent: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      reviewRow(title: "Name", value: draft.name)
-      reviewDivider
-      reviewRow(title: "Strategy", value: draft.selectedStrategy?.name ?? "NFC")
+      reviewRow(title: String(localized: "Name"), value: draft.name)
       reviewDivider
       reviewRow(
-        title: "Apps", value: FamilyActivityUtil.getCountDisplayText(draft.selectedActivity))
+        title: String(localized: "Strategy"), value: draft.selectedStrategy?.name ?? "NFC")
       reviewDivider
-      reviewRow(title: "Domains", value: domainSummary)
+      reviewRow(
+        title: String(localized: "Apps"),
+        value: FamilyActivityUtil.getCountDisplayText(draft.selectedActivity))
       reviewDivider
-      reviewRow(title: "Breaks", value: breaksSummary)
+      reviewRow(title: String(localized: "Domains"), value: domainSummary)
       reviewDivider
-      reviewRow(title: "Safeguards", value: safeguardsSummary)
+      reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
+      reviewDivider
+      reviewRow(title: String(localized: "Safeguards"), value: safeguardsSummary)
     }
   }
 
@@ -437,48 +443,50 @@ private struct GuidedProfileReviewContent: View {
 
   private var domainSummary: String {
     if draft.domains.isEmpty {
-      return "No domains selected"
+      return String(localized: "No domains selected")
     }
 
-    return "\(draft.domains.count) \(draft.domains.count == 1 ? "domain" : "domains")"
+    return draft.domains.count == 1
+      ? String(localized: "\(draft.domains.count) domain added")
+      : String(localized: "\(draft.domains.count) domains added")
   }
 
   private var breaksSummary: String {
     if !draft.selectedStrategyAllowsTimedBreaks {
-      return "Not needed"
+      return String(localized: "Not needed")
     }
 
     guard draft.enableBreaks else {
-      return "Disabled"
+      return String(localized: "Disabled")
     }
 
     if draft.allowMultipleBreaks {
-      return "\(draft.breakTimeInMinutes) minutes, reusable"
+      return String(localized: "\(draft.breakTimeInMinutes) minutes, reusable")
     }
 
-    return "\(draft.breakTimeInMinutes) minutes"
+    return String(localized: "\(draft.breakTimeInMinutes) minutes")
   }
 
   private var safeguardsSummary: String {
     var enabled: [String] = []
 
     if draft.enableStrictMode {
-      enabled.append("App deletion blocked")
+      enabled.append(String(localized: "App deletion blocked"))
     }
 
     if draft.enableBlockAppInstallation {
-      enabled.append("New app installs blocked")
+      enabled.append(String(localized: "New app installs blocked"))
     }
 
     if draft.disableBackgroundStops {
-      enabled.append("Ctrus required to stop")
+      enabled.append(String(localized: "Ctrus required to stop"))
     }
 
     if !draft.enableEmergencyUnblock {
-      enabled.append("Emergency unblock disabled")
+      enabled.append(String(localized: "Emergency unblock disabled"))
     }
 
-    return enabled.isEmpty ? "Default" : enabled.joined(separator: ", ")
+    return enabled.isEmpty ? String(localized: "Default") : enabled.joined(separator: ", ")
   }
 }
 

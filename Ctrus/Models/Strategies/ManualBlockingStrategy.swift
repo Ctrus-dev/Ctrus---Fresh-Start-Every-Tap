@@ -4,8 +4,9 @@ import SwiftUI
 class ManualBlockingStrategy: BlockingStrategy {
   static var id: String = "ManualBlockingStrategy"
 
-  var name: String = "Manual"
-  var description: String = "Start and stop in the app. You do not need to scan anything."
+  var name: String = String(localized: "Manual")
+  var description: String = String(
+    localized: "Start and stop in the app. You do not need to scan anything.")
   var color: Color = .blue
   var pickerCategory: BlockingStrategyPickerCategory = .easyToStart
 

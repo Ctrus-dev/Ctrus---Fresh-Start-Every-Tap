@@ -43,6 +43,11 @@ class StrategyManager: ObservableObject {
   @AppStorage("lastEmergencyUnblocksResetDate") private var lastEmergencyUnblocksResetDateTimestamp:
     Double = 0
 
+  @AppStorage("recoveryUnlocksRemaining") private var recoveryUnlocksRemaining: Int = 1
+  @AppStorage("recoveryUnlocksResetPeriodInWeeks") private
+    var recoveryUnlocksResetPeriodInWeeks: Int = 4
+  @AppStorage("lastRecoveryUnlockDate") private var lastRecoveryUnlockDateTimestamp: Double = 0
+
   private let liveActivityManager = LiveActivityManager.shared
 
   private let timersUtil = TimersUtil()
@@ -65,11 +70,10 @@ class StrategyManager: ObservableObject {
   }
 
   func defaultReminderMessage(forProfile profile: BlockedProfiles?) -> String {
-    let baseMessage = "Get back to productivity"
     guard let profile else {
-      return baseMessage
+      return String(localized: "Get back to productivity")
     }
-    return baseMessage + " by enabling \(profile.name)"
+    return String(localized: "Get back to productivity by enabling \(profile.name)")
   }
 
   func loadActiveSession(context: ModelContext) {
@@ -153,7 +157,7 @@ class StrategyManager: ObservableObject {
     context: ModelContext
   ) {
     guard let profileUUID = UUID(uuidString: profileId) else {
-      self.errorMessage = "failed to parse profile in tag"
+      self.errorMessage = String(localized: "Failed to parse profile in tag")
       return
     }
 
@@ -165,7 +169,7 @@ class StrategyManager: ObservableObject {
         )
       else {
         self.errorMessage =
-          "Failed to find a profile stored locally that matches the tag"
+          String(localized: "Failed to find a profile stored locally that matches the tag")
         return
       }
 
@@ -177,7 +181,10 @@ class StrategyManager: ObservableObject {
             "profile: \(localActiveSession.blockedProfile.name) has disable background stops enabled, not stopping it"
           )
           self.errorMessage =
-            "profile: \(localActiveSession.blockedProfile.name) has disable background stops enabled, not stopping it"
+            String(
+              localized:
+                "Profile \(localActiveSession.blockedProfile.name) has disable background stops enabled, not stopping it"
+            )
           return
         }
 
@@ -207,7 +214,7 @@ class StrategyManager: ObservableObject {
         )
       }
     } catch {
-      self.errorMessage = "Something went wrong fetching profile"
+      self.errorMessage = String(localized: "Something went wrong fetching profile")
     }
   }
 
@@ -224,7 +231,7 @@ class StrategyManager: ObservableObject {
         )
       else {
         self.errorMessage =
-          "Failed to find a profile stored locally that matches the tag"
+          String(localized: "Failed to find a profile stored locally that matches the tag")
         return
       }
 
@@ -237,7 +244,7 @@ class StrategyManager: ObservableObject {
 
       if let duration = durationInMinutes {
         if duration < 15 || duration > 1440 {
-          self.errorMessage = "Duration must be between 15 and 1440 minutes"
+          self.errorMessage = String(localized: "Duration must be between 15 and 1440 minutes")
           return
         }
 
@@ -266,7 +273,7 @@ class StrategyManager: ObservableObject {
         )
       }
     } catch {
-      self.errorMessage = "Something went wrong fetching profile"
+      self.errorMessage = String(localized: "Something went wrong fetching profile")
     }
   }
 
@@ -321,7 +328,7 @@ class StrategyManager: ObservableObject {
         )
       else {
         self.errorMessage =
-          "Failed to find a profile stored locally that matches the tag"
+          String(localized: "Failed to find a profile stored locally that matches the tag")
         return
       }
 
@@ -339,7 +346,7 @@ class StrategyManager: ObservableObject {
           "session is not active for profile: \(profile.name), not stopping it"
         )
         self.errorMessage =
-          "session is not active for profile: \(profile.name), not stopping it"
+          String(localized: "Session is not active for profile: \(profile.name), not stopping it")
         return
       }
 
@@ -348,7 +355,9 @@ class StrategyManager: ObservableObject {
           "profile: \(profile.name) has disable background stops enabled, not stopping it"
         )
         self.errorMessage =
-          "profile: \(profile.name) has disable background stops enabled, not stopping it"
+          String(
+            localized: "Profile \(profile.name) has disable background stops enabled, not stopping it"
+          )
         return
       }
 
@@ -357,7 +366,7 @@ class StrategyManager: ObservableObject {
         session: localActiveSession
       )
     } catch {
-      self.errorMessage = "Something went wrong fetching profile"
+      self.errorMessage = String(localized: "Something went wrong fetching profile")
     }
   }
 
@@ -442,6 +451,39 @@ class StrategyManager: ObservableObject {
   func setResetPeriodInWeeks(_ weeks: Int) {
     emergencyUnblocksResetPeriodInWeeks = weeks
     lastEmergencyUnblocksResetDateTimestamp = Date().timeIntervalSinceReferenceDate
+  }
+
+  func getRemainingRecoveryUnlocks() -> Int {
+    return recoveryUnlocksRemaining
+  }
+
+  func checkAndResetRecoveryUnlocks() {
+    // No cooldown until the recovery unlock has actually been used once
+    guard lastRecoveryUnlockDateTimestamp > 0 else {
+      return
+    }
+
+    let lastUnlockDate = Date(timeIntervalSinceReferenceDate: lastRecoveryUnlockDateTimestamp)
+    let weeksInSeconds: TimeInterval = TimeInterval(
+      recoveryUnlocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
+
+    if Date().timeIntervalSince(lastUnlockDate) >= weeksInSeconds {
+      recoveryUnlocksRemaining = 1
+      lastRecoveryUnlockDateTimestamp = 0
+    }
+  }
+
+  func getNextRecoveryResetDate() -> Date? {
+    guard lastRecoveryUnlockDateTimestamp > 0, recoveryUnlocksRemaining == 0 else {
+      return nil
+    }
+
+    let lastUnlockDate = Date(timeIntervalSinceReferenceDate: lastRecoveryUnlockDateTimestamp)
+    return Calendar.current.date(
+      byAdding: .weekOfYear,
+      value: recoveryUnlocksResetPeriodInWeeks,
+      to: lastUnlockDate
+    )
   }
 
   static func getStrategyFromId(id: String) -> BlockingStrategy {
@@ -730,7 +772,7 @@ class StrategyManager: ObservableObject {
     let message = profile.customReminderMessage ?? defaultReminderMessage(forProfile: profile)
     timersUtil
       .scheduleNotification(
-        title: profileName + " time!",
+        title: String(localized: "\(profileName) time!"),
         message: message,
         seconds: TimeInterval(reminderTimeInSeconds)
       )
@@ -747,8 +789,9 @@ class StrategyManager: ObservableObject {
     let breakNotificationTimeInSeconds = breakDurationInSeconds - 60
     if breakNotificationTimeInSeconds > 0 {
       timersUtil.scheduleNotification(
-        title: "Break almost over!",
-        message: "Hope you enjoyed your break, starting " + profileName + " in 1 minute.",
+        title: String(localized: "Break almost over!"),
+        message: String(
+          localized: "Hope you enjoyed your break, starting \(profileName) in 1 minute."),
         seconds: breakNotificationTimeInSeconds
       )
     }
@@ -796,14 +839,24 @@ class StrategyManager: ObservableObject {
     }
   }
 
-  private static let masterUnlockCode = "3530-CtrusUnblock!"
-
   // Recovery path for someone who lost their Ctrus tag and has no emergency
-  // breaks left. The code is given out on ctrus.net, outside the app.
-  func unlockWithMasterCode(_ code: String, context: ModelContext) -> Bool {
-    guard code == Self.masterUnlockCode else {
-      return false
+  // breaks left. The code is fetched from recover.ctrus.net, outside the app,
+  // and is single-use.
+  func unlockWithRecoveryCode(_ code: String, context: ModelContext) async -> RecoveryCodeVerification {
+    // Do not allow verification if the recovery unlock is still on cooldown
+    guard recoveryUnlocksRemaining > 0 else {
+      return .invalid
     }
+
+    let result = await RecoveryCodeUtil.verifyRecoveryCode(code)
+
+    guard case .valid = result else {
+      return result
+    }
+
+    // Consume the limited recovery unlock and start its cooldown
+    recoveryUnlocksRemaining = max(0, recoveryUnlocksRemaining - 1)
+    lastRecoveryUnlockDateTimestamp = Date().timeIntervalSinceReferenceDate
 
     if let activeSession = getActiveSession(context: context) {
       let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
@@ -822,7 +875,7 @@ class StrategyManager: ObservableObject {
 
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
 
-    return true
+    return result
   }
 
   func resetBlockingState(context: ModelContext) {

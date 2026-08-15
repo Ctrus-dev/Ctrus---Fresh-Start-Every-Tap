@@ -120,7 +120,7 @@ struct EmergencyView: View {
 
       BreakGlassButton(tapsToShatter: 3) {
         ActionButton(
-          title: "Emergency Unblock",
+          title: String(localized: "Emergency Unblock"),
           backgroundColor: .red,
           iconName: "exclamationmark.triangle.fill",
           iconColor: .white,

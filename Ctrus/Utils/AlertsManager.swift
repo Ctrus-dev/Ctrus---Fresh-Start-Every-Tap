@@ -18,11 +18,14 @@ class AlertsManager: ObservableObject {
       updatedAlerts.append(
         HomeAlert(
           type: .screenTimeAccess,
-          title: "Screen Time access needed",
-          message: "Blocking is paused until access is restored.",
+          title: String(localized: "Screen Time access needed"),
+          message: String(localized: "Blocking is paused until access is restored."),
           detailMessage:
-            "Ctrus needs Screen Time access to block apps and websites. Grant access again to restore blocking.",
-          primaryActionTitle: "Allow Screen Time Access",
+            String(
+              localized:
+                "Ctrus needs Screen Time access to block apps and websites. Grant access again to restore blocking."
+            ),
+          primaryActionTitle: String(localized: "Allow Screen Time Access"),
           iconName: "exclamationmark.shield.fill"
         ))
     }
@@ -34,11 +37,14 @@ class AlertsManager: ObservableObject {
         .map { profile in
           HomeAlert(
             type: .scheduleOutOfSync(profileId: profile.id),
-            title: "Schedule needs repair",
-            message: "\(profile.name)'s schedule is not running.",
+            title: String(localized: "Schedule needs repair"),
+            message: String(localized: "\(profile.name)'s schedule is not running."),
             detailMessage:
-              "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This usually can happen when you combine Ctrus with other blocking apps, recommended to turn those apps off.",
-            primaryActionTitle: "Fix Schedule",
+              String(
+                localized:
+                  "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This usually can happen when you combine Ctrus with other blocking apps, recommended to turn those apps off."
+              ),
+            primaryActionTitle: String(localized: "Fix Schedule"),
             iconName: "calendar.badge.exclamationmark"
           )
         }
@@ -62,11 +68,11 @@ class AlertsManager: ObservableObject {
       return nil
     case .scheduleOutOfSync(let profileId):
       if profile(with: profileId, in: profiles) == nil {
-        return "The affected profile could not be found."
+        return String(localized: "The affected profile could not be found.")
       }
 
       if isBlocking {
-        return "Stop the active profile before repairing this schedule."
+        return String(localized: "Stop the active profile before repairing this schedule.")
       }
 
       return nil
