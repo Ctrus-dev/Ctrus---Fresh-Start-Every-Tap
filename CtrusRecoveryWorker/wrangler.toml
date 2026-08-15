@@ -1,0 +1,12 @@
+name = "ctrus-recovery"
+main = "src/index.ts"
+compatibility_date = "2025-06-01"
+
+# Created with: wrangler kv namespace create RECOVERY_CODES
+# Paste the returned id below before deploying.
+[[kv_namespaces]]
+binding = "RECOVERY_CODES"
+id = "c95272d588ce43eda5d292b59d28a227"
+
+# After `wrangler deploy`, attach the custom domain from the dashboard:
+# Workers & Pages -> ctrus-recovery -> Settings -> Domains & Routes -> Add Custom Domain -> recover.ctrus.net
