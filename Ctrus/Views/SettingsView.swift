@@ -91,6 +91,8 @@ struct SettingsView: View {
         .foregroundColor(themeManager.themeColor)
       }
     }
+    .listRowSeparator(.visible)
+    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
 
     HStack(spacing: 6) {
       Image(systemName: "clock.arrow.circlepath")
