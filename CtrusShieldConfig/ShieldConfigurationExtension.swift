@@ -245,29 +245,9 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         String(localized: "Back")
       ),
       (
-        String(localized: "Brain check"),
-        String(localized: "Do you actually want \(title)… or was it autopilot?"),
-        String(localized: "Return")
-      ),
-      (
-        String(localized: "Stay on target"),
-        String(localized: "One small step toward your goal first. Then decide on \(title)."),
-        String(localized: "Continue")
-      ),
-      (
         String(localized: "Boundary set"),
         String(localized: "You made a plan. This is you sticking to it."),
         String(localized: "Back")
-      ),
-      (
-        String(localized: "Glow mode"),
-        String(localized: "You’re building attention — that’s the real flex."),
-        String(localized: "Nice")
-      ),
-      (
-        String(localized: "Not this detour"),
-        String(localized: "\(title) isn’t part of the mission right now."),
-        String(localized: "Return")
       ),
       (
         String(localized: "Avoid the trap"),
@@ -278,11 +258,6 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         String(localized: "Protected zone"),
         String(localized: "We’re keeping your attention where you wanted it."),
         String(localized: "Got it")
-      ),
-      (
-        String(localized: "Back to the task"),
-        String(localized: "Close the detour. Finish the task. Then come back on purpose."),
-        String(localized: "Back to work")
       ),
       (
         String(localized: "Protect the time"),
