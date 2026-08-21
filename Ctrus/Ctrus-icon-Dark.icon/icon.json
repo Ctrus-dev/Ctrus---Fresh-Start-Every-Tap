@@ -18,9 +18,23 @@
       "blur-material" : null,
       "layers" : [
         {
+          "glass" : false,
+          "hidden" : false,
+          "image-name" : "Ctrus_Inv_VF.png",
+          "name" : "Ctrus_Inv_VF",
+          "position" : {
+            "scale" : 0.9,
+            "translation-in-points" : [
+              -7.649999999999977,
+              1.8899999999998727
+            ]
+          }
+        },
+        {
           "blend-mode" : "normal",
           "fill" : "automatic",
           "glass" : false,
+          "hidden" : true,
           "image-name" : "Ctrus_inv.png",
           "name" : "Ctrus_inv",
           "position" : {
