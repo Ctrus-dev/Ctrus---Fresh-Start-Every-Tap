@@ -1,7 +1,7 @@
 import Foundation
 
 struct HomeAlert: Identifiable {
-  enum AlertType {
+  enum AlertType: Equatable {
     case screenTimeAccess
     case scheduleOutOfSync(profileId: UUID)
   }

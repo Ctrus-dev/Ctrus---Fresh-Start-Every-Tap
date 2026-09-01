@@ -5,6 +5,7 @@ struct HomeProfilesListView: View {
 
   let profiles: [BlockedProfiles]
   let isBlocking: Bool
+  let isAuthorized: Bool
   let activeSessionProfileId: UUID?
   let elapsedTime: TimeInterval
   let isPauseActive: Bool
@@ -30,6 +31,7 @@ struct HomeProfilesListView: View {
           HomeProfileRow(
             profile: profile,
             isBlocking: isBlocking,
+            isAuthorized: isAuthorized,
             isActive: profile.id == activeSessionProfileId,
             elapsedTime: elapsedTime,
             isPauseActive: isPauseActive,
@@ -63,6 +65,7 @@ struct HomeProfilesListView: View {
 private struct HomeProfileRow: View {
   let profile: BlockedProfiles
   let isBlocking: Bool
+  let isAuthorized: Bool
   let isActive: Bool
   let elapsedTime: TimeInterval
   let isPauseActive: Bool
@@ -144,7 +147,7 @@ private struct HomeProfileRow: View {
           Label(activeAction.title, systemImage: activeAction.systemImageName)
         }
         .disabled(!canStop)
-      } else {
+      } else if isAuthorized {
         Button(action: onStartTapped) {
           Label("Start", systemImage: "play.fill")
         }

@@ -58,6 +58,18 @@ class AlertsManager: ObservableObject {
     selectedAlert = alert
   }
 
+  // Presents the "Screen Time access needed" alert if it's currently active.
+  // Returns whether it was presented, so callers can bail out of whatever
+  // action (e.g. starting a profile) required that access.
+  @discardableResult
+  func presentScreenTimeAccessAlertIfNeeded() -> Bool {
+    guard let alert = alerts.first(where: { $0.type == .screenTimeAccess }) else {
+      return false
+    }
+    present(alert)
+    return true
+  }
+
   func disabledReason(
     for alert: HomeAlert,
     profiles: [BlockedProfiles],

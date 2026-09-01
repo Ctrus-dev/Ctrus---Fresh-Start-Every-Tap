@@ -275,6 +275,7 @@ struct HomeView: View {
           HomeProfilesListView(
             profiles: profiles,
             isBlocking: isBlocking,
+            isAuthorized: requestAuthorizer.isAuthorized,
             activeSessionProfileId: activeSessionProfileId,
             elapsedTime: strategyManager.elapsedTime,
             isPauseActive: isPauseActive,
@@ -313,6 +314,7 @@ struct HomeView: View {
           isBreakActive: isBreakActive,
           isPauseActive: isPauseActive,
           onStartTapped: {
+            guard !alertsManager.presentScreenTimeAccessAlertIfNeeded() else { return }
             showStartProfilePicker = true
           },
           onActiveTapped: {
@@ -350,6 +352,8 @@ struct HomeView: View {
   }
 
   private func startProfile(_ profile: BlockedProfiles) {
+    guard !alertsManager.presentScreenTimeAccessAlertIfNeeded() else { return }
+
     guard !isBlocking else {
       showErrorAlert(
         message: String(localized: "Stop the active profile before starting another one."))
