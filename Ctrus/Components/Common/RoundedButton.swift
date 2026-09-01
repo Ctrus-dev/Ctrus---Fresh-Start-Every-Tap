@@ -10,6 +10,10 @@ struct RoundedButton: View {
   let fontWeight: Font.Weight
   let iconName: String?
   let imageName: String?
+  // Forces this button's material to render as it does in light mode, even under
+  // system dark mode — for use on the Home screen, which always keeps its pastel
+  // light background regardless of the system's appearance setting.
+  let forcedLight: Bool
 
   init(
     _ text: String,
@@ -19,7 +23,8 @@ struct RoundedButton: View {
     font: Font = .subheadline,
     fontWeight: Font.Weight = .medium,
     iconName: String? = nil,
-    imageName: String? = nil
+    imageName: String? = nil,
+    forcedLight: Bool = false
   ) {
     self.text = text
     self.action = action
@@ -29,9 +34,20 @@ struct RoundedButton: View {
     self.fontWeight = fontWeight
     self.iconName = iconName
     self.imageName = imageName
+    self.forcedLight = forcedLight
   }
 
   var body: some View {
+    Group {
+      if forcedLight {
+        buttonContent.environment(\.colorScheme, .light)
+      } else {
+        buttonContent
+      }
+    }
+  }
+
+  private var buttonContent: some View {
     Button(action: {
       let impactFeedback = UIImpactFeedbackGenerator(style: .light)
       impactFeedback.impactOccurred()

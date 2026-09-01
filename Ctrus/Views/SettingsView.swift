@@ -168,16 +168,6 @@ struct SettingsView: View {
             showDebugView = true
           }
 
-          Link(destination: URL(string: "https://ctrus.net")!) {
-            HStack {
-              Text("Blocking Native Apps")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
-            }
-          }
-
           if !strategyManager.isBlocking {
             Button {
               showResetBlockingStateAlert = true

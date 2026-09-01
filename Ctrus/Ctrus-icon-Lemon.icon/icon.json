@@ -18,30 +18,14 @@
       "blur-material" : null,
       "layers" : [
         {
-          "blend-mode" : "normal",
-          "fill" : "automatic",
           "glass" : false,
-          "hidden" : true,
-          "image-name" : "Ctrus_inv.png",
-          "name" : "Ctrus_inv",
+          "image-name" : "Ctrus_Inv.png",
+          "name" : "Ctrus_Inv",
           "position" : {
-            "scale" : 1.12,
+            "scale" : 1.2,
             "translation-in-points" : [
-              -1.9499999999999318,
-              42.89999999999992
-            ]
-          }
-        },
-        {
-          "glass" : false,
-          "hidden" : false,
-          "image-name" : "Ctrus_Inv_VF.png",
-          "name" : "Ctrus_Inv_VF",
-          "position" : {
-            "scale" : 0.9,
-            "translation-in-points" : [
-              0,
-              0
+              11.399999999999977,
+              -16.200000000000045
             ]
           }
         }

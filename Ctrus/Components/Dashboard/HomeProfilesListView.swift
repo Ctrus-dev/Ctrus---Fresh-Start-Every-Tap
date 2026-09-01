@@ -20,8 +20,8 @@ struct HomeProfilesListView: View {
       HStack(spacing: 8) {
         Spacer()
 
-        RoundedButton("", action: onManageTapped, iconName: "person.crop.circle")
-        RoundedButton("", action: onSettingsTapped, iconName: "gear")
+        RoundedButton("", action: onManageTapped, iconName: "person.crop.circle", forcedLight: true)
+        RoundedButton("", action: onSettingsTapped, iconName: "gear", forcedLight: true)
       }
       .padding(.bottom, 10)
 

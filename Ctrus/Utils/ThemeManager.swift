@@ -7,8 +7,8 @@ class ThemeManager: ObservableObject {
   // Single source of truth for all theme colors — matches the app icon fills
   static let availableColors: [(name: String, color: Color)] = [
     ("Orange", Color(.displayP3, red: 0.95426, green: 0.65038, blue: 0.25361)),
-    ("Lime", Color(.displayP3, red: 0.30199, green: 0.71042, blue: 0.37186)),
     ("Lemon", Color(.displayP3, red: 0.97021, green: 0.81706, blue: 0.27075)),
+    ("Lime", Color(.displayP3, red: 0.30199, green: 0.71042, blue: 0.37186)),
   ]
 
   private static let defaultColorName = "Orange"

@@ -2,7 +2,6 @@ import SwiftUI
 import UIKit
 
 struct HomeProfileLauncher: View {
-  @Environment(\.colorScheme) private var colorScheme
   @EnvironmentObject private var themeManager: ThemeManager
 
   let activeProfile: BlockedProfiles?
@@ -49,7 +48,8 @@ struct HomeProfileLauncher: View {
         isActive: true,
         metadata: .appsAndDomains,
         showsStatusLine: true,
-        layout: .compact
+        layout: .compact,
+        forcedLight: true
       ) {
         activeAccessory
       }
@@ -60,7 +60,7 @@ struct HomeProfileLauncher: View {
       .contentShape(RoundedRectangle(cornerRadius: activeButtonCornerRadius, style: .continuous))
     }
     .buttonStyle(LauncherButtonStyle())
-    .foregroundStyle(.primary)
+    .foregroundStyle(Color.fixedLightPrimaryText)
     .accessibilityLabel(activeAccessibilityLabel(for: profile))
   }
 
@@ -79,11 +79,15 @@ struct HomeProfileLauncher: View {
           .lineLimit(1)
           .minimumScaleFactor(0.72)
       }
+      .fixedSize()
     } else {
+      // `.fixedSize()` keeps this from being squeezed to nothing by the profile
+      // name/metadata on the left, which claims all available width first.
       Text(DateFormatters.formatDurationClock(displayTime))
         .font(.system(size: 20, weight: .bold, design: .monospaced))
+        .foregroundStyle(Color.fixedLightPrimaryText)
         .lineLimit(1)
-        .minimumScaleFactor(0.72)
+        .fixedSize()
         .contentTransition(.numericText())
         .animation(.default, value: displayTime)
     }
@@ -134,8 +138,10 @@ struct HomeProfileLauncher: View {
     )
   }
 
+  // Always the light-mode blob color: this card sits on the Home screen's pastel
+  // background, which stays light regardless of the system's appearance setting.
   private var activeBlobColor: Color {
-    colorScheme == .dark ? Color.black.opacity(0.56) : Color.white.opacity(0.72)
+    Color.white.opacity(0.72)
   }
 
   private func startTapped() {

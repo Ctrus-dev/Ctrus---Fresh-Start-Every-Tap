@@ -107,8 +107,8 @@ struct AppIconPicker: View {
 
 private enum AppIconOption: String, CaseIterable, Identifiable {
   case orange
-  case lime
   case lemon
+  case lime
   case dark
 
   var id: String { rawValue }
@@ -116,8 +116,8 @@ private enum AppIconOption: String, CaseIterable, Identifiable {
   var displayName: String {
     switch self {
     case .orange: String(localized: "Orange")
-    case .lime: String(localized: "Lime")
     case .lemon: String(localized: "Lemon")
+    case .lime: String(localized: "Lime")
     case .dark: String(localized: "Dark")
     }
   }
@@ -125,8 +125,8 @@ private enum AppIconOption: String, CaseIterable, Identifiable {
   var alternateIconName: String? {
     switch self {
     case .orange: nil
-    case .lime: "Ctrus-icon-Lime"
     case .lemon: "Ctrus-icon-Lemon"
+    case .lime: "Ctrus-icon-Lime"
     case .dark: "Ctrus-icon-Dark"
     }
   }
@@ -134,8 +134,8 @@ private enum AppIconOption: String, CaseIterable, Identifiable {
   var previewAssetName: String {
     switch self {
     case .orange: "AppIconOrangePreview"
-    case .lime: "AppIconLimePreview"
     case .lemon: "AppIconLemonPreview"
+    case .lime: "AppIconLimePreview"
     case .dark: "AppIconDarkPreview"
     }
   }

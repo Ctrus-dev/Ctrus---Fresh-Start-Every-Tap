@@ -16,6 +16,38 @@ import UIKit
 class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   private static let lockEmoji = "🔒"
 
+  // Apple documents `ShieldConfiguration.backgroundColor` as "a color for a shield to
+  // use in the background BLUR effect" — it's always mixed into a frosted-glass
+  // material, never painted as a flat fill. The "*Light" materials turned out to be
+  // dominated by their own near-white base regardless of how saturated/dark a color
+  // we fed them (tried both systemThickMaterialLight and systemThinMaterialLight —
+  // both read as pale/washed). "*Dark" materials let the actual hue through much more,
+  // at the cost of darkening it, so `.systemThinMaterialDark` (below) + boosting
+  // saturation/brightness here to compensate for that darkening should land closer to
+  // the true theme color. Re-tune these two factors against a real device if it's
+  // still off.
+  private static let shieldColorSaturationBoost: CGFloat = 1.2
+  private static let shieldColorBrightnessBoost: CGFloat = 1.5
+
+  private static func fixedBrandColor(_ color: Color) -> UIColor {
+    var hue: CGFloat = 0
+    var saturation: CGFloat = 0
+    var brightness: CGFloat = 0
+    var alpha: CGFloat = 0
+    UIColor(color).getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+
+    let boosted = UIColor(
+      hue: hue,
+      saturation: min(saturation * shieldColorSaturationBoost, 1),
+      brightness: min(brightness * shieldColorBrightnessBoost, 1),
+      alpha: alpha
+    )
+    // Resolve to a plain, non-dynamic UIColor so the value can't get re-resolved
+    // against a different trait collection when it crosses into the system's
+    // shield-rendering process.
+    return UIColor { _ in boosted }
+  }
+
   override func configuration(shielding application: Application) -> ShieldConfiguration {
     if let softUnblockConfiguration = softUnblockConfiguration(for: application, in: nil) {
       return softUnblockConfiguration
@@ -52,7 +84,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     -> ShieldConfiguration
   {
     // Get user's selected theme color
-    let brandColor = UIColor(ThemeManager.shared.themeColor)
+    let brandColor = Self.fixedBrandColor(ThemeManager.shared.themeColor)
 
     // Get random fun message
     let randomMessage = getFunBlockMessage(for: type, title: title)
@@ -61,7 +93,13 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     let emojiIcon = makeEmojiIcon(Self.lockEmoji, size: 96)
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
+      // `nil` here doesn't mean "no blur" — the system falls back to its own adaptive
+      // material, which is what made this look dark brown in Dark Mode and pale cream
+      // in Light Mode regardless of backgroundColor. `.systemThinMaterialDark` is a
+      // *non-adaptive* material (always renders as its dark variant, regardless of the
+      // system's own Light/Dark Mode setting), so the shield looks the same in both —
+      // see the comment on `fixedBrandColor` above for why it's specifically "Dark".
+      backgroundBlurStyle: .systemThinMaterialDark,
       backgroundColor: brandColor,
       icon: emojiIcon,
       title: ShieldConfiguration.Label(
@@ -69,7 +107,9 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        text: randomMessage.subtitle,
+        // ShieldConfiguration.Label has no spacing/margin API, so a leading blank
+        // line is the only way to push the subtitle further from the title.
+        text: "\n" + randomMessage.subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
@@ -125,15 +165,15 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: "\n\n")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
-      backgroundColor: UIColor(ThemeManager.shared.themeColor),
+      backgroundBlurStyle: .systemThinMaterialDark,
+      backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
         text: randomMessage.title,
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        text: subtitle,
+        text: "\n" + subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
@@ -160,15 +200,15 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: " ")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
-      backgroundColor: UIColor(ThemeManager.shared.themeColor),
+      backgroundBlurStyle: .systemThinMaterialDark,
+      backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
         text: String(localized: "No opens left"),
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        text: subtitle,
+        text: "\n" + subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
@@ -237,42 +277,37 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   ) {
     typealias FunMessage = (title: String, subtitle: String, buttonText: String)
 
-    // Curated motivational messages shown on the block screen.
+    // Curated citrus-themed messages shown on the block screen.
     let messages: [FunMessage] = [
       (
-        String(localized: "Not right now"),
-        String(localized: "\(title) can wait. You’re choosing your time on purpose."),
-        String(localized: "Back")
-      ),
-      (
-        String(localized: "Boundary set"),
-        String(localized: "You made a plan. This is you sticking to it."),
-        String(localized: "Back")
-      ),
-      (
-        String(localized: "Avoid the trap"),
-        String(localized: "One click turns into twenty. Let’s not."),
-        String(localized: "Back")
-      ),
-      (
-        String(localized: "Protected zone"),
-        String(localized: "We’re keeping your attention where you wanted it."),
+        String(localized: "Not ripe yet"),
+        String(localized: "\(title) can wait until you're ready to pick it."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Protect the time"),
-        String(localized: "A few minutes can become an hour. Keep your momentum."),
-        String(localized: "Stay focused")
+        String(localized: "Juicy trap"),
+        String(localized: "One click turns into twenty. Let's not squeeze this dry."),
+        String(localized: "Got it")
       ),
       (
-        String(localized: "Not missing anything"),
-        String(localized: "You’re not missing anything important right now."),
-        String(localized: "Back")
+        String(localized: "Juice preserved"),
+        String(localized: "We're keeping your attention as fresh as morning juice."),
+        String(localized: "Got it")
       ),
       (
-        String(localized: "Momentum mode"),
-        String(localized: "Tiny choices like this add up fast."),
-        String(localized: "Continue")
+        String(localized: "Guard the grove"),
+        String(localized: "A few minutes ripen into an hour before you know it."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Nothing left to peel"),
+        String(localized: "You're not missing anything important, it's all already peeled and ready."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Juiced up"),
+        String(localized: "Small squeezes of effort like this fill the glass fast."),
+        String(localized: "Got it")
       ),
     ]
     guard !messages.isEmpty else {
