@@ -107,9 +107,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        // ShieldConfiguration.Label has no spacing/margin API, so a leading blank
-        // line is the only way to push the subtitle further from the title.
-        text: "\n" + randomMessage.subtitle,
+        text: randomMessage.subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
@@ -173,7 +171,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        text: "\n" + subtitle,
+        text: subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
@@ -208,7 +206,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         color: .white
       ),
       subtitle: ShieldConfiguration.Label(
-        text: "\n" + subtitle,
+        text: subtitle,
         color: UIColor.white.withAlphaComponent(0.88)
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
