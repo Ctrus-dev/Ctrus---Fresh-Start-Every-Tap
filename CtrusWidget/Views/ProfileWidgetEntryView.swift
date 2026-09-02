@@ -83,8 +83,10 @@ struct ProfileWidgetEntryView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "cup.and.heat.waves.fill")
                             .font(.caption2)
-                        Text("On a Break")
-                            .font(.caption2)
+                        if let breakEndDate = entry.breakEndDate {
+                            Text(breakEndDate, style: .timer)
+                                .font(.caption2)
+                        }
                     }
                 } else if entry.isPauseActive {
                     HStack(spacing: 4) {
@@ -166,10 +168,12 @@ struct ProfileWidgetEntryView: View {
                                     Image(systemName: "cup.and.heat.waves.fill")
                                         .font(.body)
                                         .foregroundColor(.white)
-                                    Text("On a Break")
-                                        .font(.body)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.white)
+                                    if let breakEndDate = entry.breakEndDate {
+                                        Text(breakEndDate, style: .timer)
+                                            .font(.body)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                    }
                                 }
                             } else if entry.isPauseActive {
                                 HStack(spacing: 4) {

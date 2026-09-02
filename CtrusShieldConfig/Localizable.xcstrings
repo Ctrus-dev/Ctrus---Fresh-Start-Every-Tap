@@ -4232,6 +4232,29 @@
         }
       }
     },
+    "Drop by drop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop by drop"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gota a gota"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gota a gota"
+          }
+        }
+      }
+    },
     "Duplicate Profile": {
       "extractionState": "manual",
       "localizations": {
@@ -5198,25 +5221,25 @@
         }
       }
     },
-    "Guard the grove": {
+    "Grow somewhere better": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Guard the grove"
+            "value": "Grow somewhere better"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Guarda el huerto"
+            "value": "Crece en otro lado"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Guarda o pomar"
+            "value": "Cresce noutro lado"
           }
         }
       }
@@ -5566,52 +5589,6 @@
         }
       }
     },
-    "Juice preserved": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Juice preserved"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jugo preservado"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sumo preservado"
-          }
-        }
-      }
-    },
-    "Juiced up": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Juiced up"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lleno de jugo"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cheio de sumo"
-          }
-        }
-      }
-    },
     "Juicy trap": {
       "extractionState": "manual",
       "localizations": {
@@ -5861,6 +5838,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Faz cada minuto valer a pena"
+          }
+        }
+      }
+    },
+    "Make lemonade": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make lemonade"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz limonada"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faz limonada"
           }
         }
       }
@@ -6878,25 +6878,25 @@
         }
       }
     },
-    "Nothing left to peel": {
+    "Nothing to peel": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nothing left to peel"
+            "value": "Nothing to peel"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No hay nada más que pelar"
+            "value": "Nada que pelar"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Não há mais nada para descascar"
+            "value": "Nada para descascar"
           }
         }
       }
@@ -7568,6 +7568,29 @@
         }
       }
     },
+    "Protect the grove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protect the grove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protege el huerto"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protege o pomar"
+          }
+        }
+      }
+    },
     "Protect your attention": {
       "extractionState": "manual",
       "localizations": {
@@ -7771,6 +7794,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Atualizar"
+          }
+        }
+      }
+    },
+    "Relax, you're not missing anything.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relax, you're not missing anything."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relájate, no te estás perdiendo nada."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descansa, não estás a perder nada."
           }
         }
       }
@@ -8852,6 +8898,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algo correu mal ao obter o perfil"
+          }
+        }
+      }
+    },
+    "Sour now, sweet later": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sour now, sweet later"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrio ahora, dulce después"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azedo agora, doce depois"
           }
         }
       }
@@ -10121,6 +10190,29 @@
         }
       }
     },
+    "This feeling fades faster than you think.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This feeling fades faster than you think."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta sensación pasa más rápido de lo que piensas."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta sensação passa mais depressa do que pensas."
+          }
+        }
+      }
+    },
     "This is not allowed to unblock this profile.": {
       "extractionState": "manual",
       "localizations": {
@@ -11156,29 +11248,6 @@
         }
       }
     },
-    "We're keeping your attention as fresh as morning juice.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "We're keeping your attention as fresh as morning juice."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estamos manteniendo tu atención tan fresca como el jugo de la mañana."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estamos a manter a tua atenção tão fresca como o sumo da manhã."
-          }
-        }
-      }
-    },
     "Web Domains:": {
       "extractionState": "manual",
       "localizations": {
@@ -11267,6 +11336,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bem-vindo ao Ctrus"
+          }
+        }
+      }
+    },
+    "When life gives you lemons, close %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When life gives you lemons, close %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando la vida te da limones, cierra %@."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando a vida te dá limões, fecha o %@."
           }
         }
       }
@@ -11593,25 +11685,25 @@
         }
       }
     },
-    "You're not missing anything important, it's all already peeled and ready.": {
+    "Your attention can bear more fruit elsewhere.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You're not missing anything important, it's all already peeled and ready."
+            "value": "Your attention can bear more fruit elsewhere."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No te estás perdiendo nada importante, ya está todo pelado y listo."
+            "value": "Tu atención puede dar más frutos en otro lado."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Não estás a perder nada de importante, está tudo já descascado e pronto."
+            "value": "A tua atenção pode dar mais frutos noutro lado."
           }
         }
       }

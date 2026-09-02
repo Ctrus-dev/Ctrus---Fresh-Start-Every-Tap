@@ -32,6 +32,28 @@ struct ProfileWidgetEntry: TimelineEntry {
     return session.breakStartTime != nil && session.breakEndTime == nil
   }
 
+  // Mirrors SessionTimeCalculator.expectedEndTime's break branch, using the
+  // lightweight session/profile snapshots available to the widget.
+  var breakEndDate: Date? {
+    guard isBreakActive,
+      let session = activeSession,
+      let breakStartTime = session.breakStartTime,
+      let profile = profileSnapshot
+    else {
+      return nil
+    }
+
+    let totalAllowance = TimeInterval(profile.breakTimeInMinutes * 60)
+
+    if profile.allowMultipleBreaks == true {
+      let usedBefore = session.usedBreakDurationInSeconds ?? 0
+      let remainingAtStart = max(0, totalAllowance - usedBefore)
+      return breakStartTime.addingTimeInterval(remainingAtStart)
+    }
+
+    return breakStartTime.addingTimeInterval(totalAllowance)
+  }
+
   var isPauseActive: Bool {
     guard let session = activeSession else { return false }
     return session.pauseStartTime != nil && session.pauseEndTime == nil

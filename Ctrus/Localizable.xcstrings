@@ -3884,29 +3884,6 @@
         }
       }
     },
-    "Discipline is the zest that flavors freedom": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Discipline is the zest that flavors freedom"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La disciplina es la ralladura que da sabor a la libertad"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A disciplina é a raspa que dá sabor à liberdade"
-          }
-        }
-      }
-    },
     "Domain already exists": {
       "extractionState": "manual",
       "localizations": {
@@ -4890,25 +4867,25 @@
         }
       }
     },
-    "Great work needs a full glass of lemonade": {
+    "Great work needs a glass of lemonade": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Great work needs a full glass of lemonade"
+            "value": "Great work needs a glass of lemonade"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El buen trabajo necesita un vaso lleno de limonada"
+            "value": "El buen trabajo necesita un vaso de limonada"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um bom trabalho precisa de um copo cheio de limonada"
+            "value": "Um bom trabalho precisa de um copo de limonada"
           }
         }
       }
@@ -5369,29 +5346,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lima"
-          }
-        }
-      }
-    },
-    "Limit distractions, let your potential ripen like an orange": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limit distractions, let your potential ripen like an orange"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limita las distracciones, deja que tu potencial madure como una naranja"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limita as distrações, deixa o teu potencial amadurecer como uma laranja"
           }
         }
       }
@@ -6856,29 +6810,6 @@
         }
       }
     },
-    "Peel back the moment like an orange and taste it fully": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Peel back the moment like an orange and taste it fully"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pela el momento como una naranja y saboréalo por completo"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Descasca o momento como uma laranja e saboreia-o por completo"
-          }
-        }
-      }
-    },
     "Physical Unlocks": {
       "extractionState": "manual",
       "localizations": {
@@ -7243,29 +7174,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Protege o teu pomar, protege o teu tempo"
-          }
-        }
-      }
-    },
-    "Protect your mental zest": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protect your mental zest"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protege tu jugo mental"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protege o teu sumo mental"
           }
         }
       }

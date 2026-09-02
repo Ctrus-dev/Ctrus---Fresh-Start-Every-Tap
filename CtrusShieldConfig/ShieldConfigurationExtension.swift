@@ -288,23 +288,33 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         String(localized: "Got it")
       ),
       (
-        String(localized: "Juice preserved"),
-        String(localized: "We're keeping your attention as fresh as morning juice."),
-        String(localized: "Got it")
-      ),
-      (
-        String(localized: "Guard the grove"),
+        String(localized: "Protect the grove"),
         String(localized: "A few minutes ripen into an hour before you know it."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Nothing left to peel"),
-        String(localized: "You're not missing anything important, it's all already peeled and ready."),
+        String(localized: "Nothing to peel"),
+        String(localized: "Relax, you're not missing anything."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Juiced up"),
+        String(localized: "Drop by drop"),
         String(localized: "Small squeezes of effort like this fill the glass fast."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Sour now, sweet later"),
+        String(localized: "This feeling fades faster than you think."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Make lemonade"),
+        String(localized: "When life gives you lemons, close \(title)."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Grow somewhere better"),
+        String(localized: "Your attention can bear more fruit elsewhere."),
         String(localized: "Got it")
       ),
     ]

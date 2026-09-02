@@ -86,9 +86,12 @@ struct ActiveProfileSessionView: View {
       .padding(.top, 18)
       .padding(.bottom, 20)
     }
+    // Always dark, regardless of the system's Light/Dark Mode setting.
+    .preferredColorScheme(.dark)
     .sheet(isPresented: $showEmergencyView) {
       EmergencyView()
         .presentationDetents([.height(350), .large])
+        .preferredColorScheme(.dark)
     }
     .sheet(isPresented: $showProfileInsights) {
       ProfileInsightsView(profile: profile)
@@ -98,6 +101,7 @@ struct ActiveProfileSessionView: View {
         customView: strategyManager.customStrategyView,
         presentationDetents: strategyManager.customStrategyViewPresentationDetents
       )
+      .preferredColorScheme(.dark)
     }
     .onReceive(focusMessageTimer) { _ in
       rotateFocusMessage()
@@ -188,9 +192,6 @@ struct ActiveProfileSessionView: View {
   private var statusMessage: String? {
     if isPauseActive {
       return String(localized: "Paused")
-    }
-    if isBreakActive {
-      return String(localized: "On a Break")
     }
     return nil
   }

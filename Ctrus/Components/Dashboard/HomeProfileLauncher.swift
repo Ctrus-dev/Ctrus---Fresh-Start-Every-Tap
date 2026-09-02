@@ -80,6 +80,19 @@ struct HomeProfileLauncher: View {
           .minimumScaleFactor(0.72)
       }
       .fixedSize()
+    } else if isBreakActive {
+      HStack(spacing: 6) {
+        Image(systemName: "cup.and.heat.waves.fill")
+          .font(.system(size: 18, weight: .semibold))
+
+        Text(DateFormatters.formatDurationClock(displayTime))
+          .font(.system(size: 20, weight: .bold, design: .monospaced))
+          .lineLimit(1)
+          .contentTransition(.numericText())
+          .animation(.default, value: displayTime)
+      }
+      .fixedSize()
+      .accessibilityLabel(String(localized: "On a Break"))
     } else {
       // `.fixedSize()` keeps this from being squeezed to nothing by the profile
       // name/metadata on the left, which claims all available width first.
@@ -96,9 +109,6 @@ struct HomeProfileLauncher: View {
   private var activeStateTitle: String? {
     if isPauseActive {
       return String(localized: "Paused")
-    }
-    if isBreakActive {
-      return String(localized: "On Break")
     }
     return nil
   }
