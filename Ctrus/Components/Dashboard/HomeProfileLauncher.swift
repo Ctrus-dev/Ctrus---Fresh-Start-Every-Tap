@@ -34,8 +34,9 @@ struct HomeProfileLauncher: View {
 
   private var inactiveLauncherButtons: some View {
     ShimmerLauncherButton(
-      title: String(localized: "Start"),
+      title: String(localized: "Hold to Start"),
       height: inactiveButtonHeight,
+      requiresLongPress: true,
       accessibilityLabel: String(localized: "Start Profile"),
       action: startTapped
     )

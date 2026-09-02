@@ -4936,25 +4936,48 @@
         }
       }
     },
+    "Hold to Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presiona para empezar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pressiona para começares"
+          }
+        }
+      }
+    },
     "Hold to Start Break": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hold to Start Break"
+            "value": "Hold to start a break"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantén para Iniciar Descanso"
+            "value": "Presiona para iniciar la pausa"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pressiona para Iniciar Pausa"
+            "value": "Pressiona para começares a pausa"
           }
         }
       }

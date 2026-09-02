@@ -9,13 +9,16 @@ struct ShimmerLauncherButton: View {
   let imageName: String?
   let height: CGFloat
   let isEnabled: Bool
+  let requiresLongPress: Bool
   let accessibilityLabel: String
   let action: () -> Void
 
   @State private var isShimmering = false
+  @State private var isPressed = false
 
   private let shimmerAnimationDuration = 1.15
   private let shimmerRepeatDelay = 2.5
+  private let longPressMinimumDuration: TimeInterval = 0.8
 
   init(
     title: String,
@@ -23,6 +26,7 @@ struct ShimmerLauncherButton: View {
     imageName: String? = nil,
     height: CGFloat = 64,
     isEnabled: Bool = true,
+    requiresLongPress: Bool = false,
     accessibilityLabel: String,
     action: @escaping () -> Void
   ) {
@@ -31,42 +35,37 @@ struct ShimmerLauncherButton: View {
     self.imageName = imageName
     self.height = height
     self.isEnabled = isEnabled
+    self.requiresLongPress = requiresLongPress
     self.accessibilityLabel = accessibilityLabel
     self.action = action
   }
 
   var body: some View {
-    Button(action: action) {
-      HStack(spacing: 10) {
-        if let imageName {
-          Image(imageName)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24, height: 24)
-        } else if let iconName {
-          Image(systemName: iconName)
-            .font(.system(size: 18, weight: .bold))
+    Group {
+      if requiresLongPress {
+        content
+          .scaleEffect(isPressed ? 0.94 : 1)
+          .animation(
+            .spring(response: 0.22, dampingFraction: 0.72),
+            value: isPressed
+          )
+          .onLongPressGesture(
+            minimumDuration: longPressMinimumDuration,
+            pressing: { pressing in
+              isPressed = isEnabled && pressing
+            },
+            perform: {
+              guard isEnabled else { return }
+              action()
+            }
+          )
+      } else {
+        Button(action: action) {
+          content
         }
-
-        Text(title)
-          .font(.title3)
-          .fontWeight(.semibold)
-          .lineLimit(1)
-          .minimumScaleFactor(0.7)
+        .buttonStyle(LauncherButtonStyle())
       }
-      .frame(maxWidth: .infinity)
-      .padding(.horizontal, 12)
-      .frame(height: height)
-      .background(buttonBackground)
-      .shadow(
-        color: themeManager.themeColor.opacity(isEnabled ? 0.24 : 0),
-        radius: 12,
-        x: 0,
-        y: 6
-      )
-      .contentShape(Capsule())
     }
-    .buttonStyle(LauncherButtonStyle())
     .foregroundStyle(.white)
     .disabled(!isEnabled)
     .accessibilityLabel(Text(accessibilityLabel))
@@ -76,13 +75,40 @@ struct ShimmerLauncherButton: View {
     }
   }
 
+  private var content: some View {
+    HStack(spacing: 10) {
+      if let imageName {
+        Image(imageName)
+          .resizable()
+          .scaledToFit()
+          .frame(width: 24, height: 24)
+      } else if let iconName {
+        Image(systemName: iconName)
+          .font(.system(size: 18, weight: .bold))
+      }
+
+      Text(title)
+        .font(.title3)
+        .fontWeight(.semibold)
+        .lineLimit(1)
+        .minimumScaleFactor(0.7)
+    }
+    .frame(maxWidth: .infinity)
+    .padding(.horizontal, 12)
+    .frame(height: height)
+    .background(buttonBackground)
+    .shadow(
+      color: themeManager.themeColor.opacity(isEnabled ? 0.24 : 0),
+      radius: 12,
+      x: 0,
+      y: 6
+    )
+    .contentShape(Capsule())
+  }
+
   private var buttonBackground: some View {
     Capsule()
-      .fill(themeManager.themeColor.opacity(isEnabled ? 0.72 : 0.34))
-      .background(
-        Capsule()
-          .fill(Color.white.opacity(0.35))
-      )
+      .fill(themeManager.themeColor.opacity(isEnabled ? 1 : 0.34))
       .overlay(
         Capsule()
           .strokeBorder(.white.opacity(isEnabled ? 0.24 : 0.14), lineWidth: 1)

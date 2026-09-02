@@ -315,7 +315,11 @@ struct HomeView: View {
           isPauseActive: isPauseActive,
           onStartTapped: {
             guard !alertsManager.presentScreenTimeAccessAlertIfNeeded() else { return }
-            showStartProfilePicker = true
+            if profiles.count > 1 {
+              showStartProfilePicker = true
+            } else if let onlyProfile = profiles.first {
+              startProfile(onlyProfile)
+            }
           },
           onActiveTapped: {
             showActiveProfileSessionView = true
