@@ -30,6 +30,9 @@ struct HomeProfileLauncher: View {
     }
     .padding(.horizontal, 16)
     .padding(.top, 8)
+    // Devices with a physical Home button (no bottom safe-area inset, e.g.
+    // iPhone SE) would otherwise sit flush against the screen edge here.
+    .padding(.bottom, RotatingModel3DView.isCompactScreen ? 16 : 0)
   }
 
   private var inactiveLauncherButtons: some View {

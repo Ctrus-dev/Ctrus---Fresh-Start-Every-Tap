@@ -49,25 +49,28 @@ struct PermissionsIntroScreen: View {
           }
 
         // Passcode warning message
-        if showPasscodeMessage {
-          HStack(spacing: 8) {
-            Image(systemName: "exclamationmark.triangle.fill")
-              .foregroundColor(.orange)
-            Text(
-              "Still here? You need to set a passcode on your phone for Screen Time to work properly."
-            )
-            .font(.system(size: 14, weight: .medium))
-            .foregroundColor(.orange)
-            .multilineTextAlignment(.center)
-          }
-          .padding(.horizontal, 16)
-          .padding(.vertical, 12)
-          .background(
-            RoundedRectangle(cornerRadius: 12)
-              .fill(Color.orange.opacity(0.15))
-          )
-          .transition(.opacity.combined(with: .move(edge: .bottom)))
-        }
+        // Disabled: was cutting into the "Allow Screen Time Access" button on
+        // small screens. Keeping the logic in AnimatedIntroContainer in case
+        // this comes back in a less cramped layout.
+        // if showPasscodeMessage {
+        //   HStack(spacing: 8) {
+        //     Image(systemName: "exclamationmark.triangle.fill")
+        //       .foregroundColor(.orange)
+        //     Text(
+        //       "Still here? You need to set a passcode on your phone for Screen Time to work properly."
+        //     )
+        //     .font(.system(size: 14, weight: .medium))
+        //     .foregroundColor(.orange)
+        //     .multilineTextAlignment(.center)
+        //   }
+        //   .padding(.horizontal, 16)
+        //   .padding(.vertical, 12)
+        //   .background(
+        //     RoundedRectangle(cornerRadius: 12)
+        //       .fill(Color.orange.opacity(0.15))
+        //   )
+        //   .transition(.opacity.combined(with: .move(edge: .bottom)))
+        // }
 
         ShimmerLauncherButton(
           title: String(localized: "Allow Screen Time Access"),
@@ -83,6 +86,9 @@ struct PermissionsIntroScreen: View {
       .offset(y: showContent ? 0 : 20)
     }
     .padding(.top, 10)
+    // Devices with a physical Home button (no bottom safe-area inset, e.g.
+    // iPhone SE) would otherwise sit flush against the screen edge here.
+    .padding(.bottom, RotatingModel3DView.isCompactScreen ? 20 : 0)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(themeManager.pastelBackground.ignoresSafeArea())
     .onAppear {

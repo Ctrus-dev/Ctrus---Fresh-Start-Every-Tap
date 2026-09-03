@@ -7,7 +7,22 @@ import UIKit
 /// and recolors its accent material to match the app's active theme color.
 struct RotatingModel3DView: View {
   var themeColor: Color
-  var size: CGFloat = 380
+  var size: CGFloat = RotatingModel3DView.defaultSize
+
+  // Iphone SE-class screens are short enough that the default size pushes
+  // the content below it (a button, usually) off the bottom of the screen.
+  // Shrink the model there; taller screens are unaffected.
+  private static let compactScreenHeightThreshold: CGFloat = 700
+  private static let compactSize: CGFloat = 280
+  private static let regularSize: CGFloat = 380
+
+  static var isCompactScreen: Bool {
+    UIScreen.main.bounds.height < compactScreenHeightThreshold
+  }
+
+  static var defaultSize: CGFloat {
+    isCompactScreen ? compactSize : regularSize
+  }
 
   var body: some View {
     RotatingModel3DRepresentable(themeColor: themeColor)

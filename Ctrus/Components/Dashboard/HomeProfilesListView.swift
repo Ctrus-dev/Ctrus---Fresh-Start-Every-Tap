@@ -74,10 +74,6 @@ private struct HomeProfileRow: View {
   let onEditTapped: () -> Void
   let onStatsTapped: () -> Void
 
-  private var showsMiniChart: Bool {
-    !DeviceLayoutUtil.hasCompactEffectiveWidth
-  }
-
   private var canStart: Bool {
     !isBlocking
   }
@@ -116,15 +112,13 @@ private struct HomeProfileRow: View {
       .buttonStyle(.plain)
       .accessibilityLabel("Edit \(profile.name)")
 
-      if showsMiniChart {
-        Button(action: onStatsTapped) {
-          ProfileUsageMiniBarChart(profile: profile, forcedLight: true)
-            .frame(width: 118, height: 62)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Show \(profile.name) insights")
+      Button(action: onStatsTapped) {
+        ProfileUsageMiniBarChart(profile: profile, forcedLight: true)
+          .frame(width: 118, height: 62)
+          .contentShape(Rectangle())
       }
+      .buttonStyle(.plain)
+      .accessibilityLabel("Show \(profile.name) insights")
 
       actionMenu
     }

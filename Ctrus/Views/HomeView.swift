@@ -160,7 +160,8 @@ struct HomeView: View {
           runAlertPrimaryAction(for: alert)
         }
       )
-      .presentationDetents([.medium, .large])
+      // .medium clipped the primary button on short screens (e.g. iPhone SE).
+      .presentationDetents([.large])
     }
     .fullScreenCover(isPresented: $showIntroScreen) {
       IntroView {
