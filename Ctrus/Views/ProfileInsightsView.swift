@@ -1,17 +1,6 @@
 import SwiftData
 import SwiftUI
 
-private struct InsightsAlertIdentifier: Identifiable {
-  enum AlertType {
-    case deleteSession
-    case error
-  }
-
-  let id: AlertType
-  var session: BlockedProfileSession?
-  var errorMessage: String?
-}
-
 private enum InsightsFilter: Equatable {
   case thisWeek
   case lastWeek
@@ -24,7 +13,6 @@ private enum InsightsFilter: Equatable {
 
 struct ProfileInsightsView: View {
   @Environment(\.dismiss) private var dismiss
-  @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var themeManager: ThemeManager
 
   @StateObject private var weeklyViewModel: WeeklyInsightsUtil
@@ -33,10 +21,8 @@ struct ProfileInsightsView: View {
   @State private var selectedWeekDay: WeeklyDayAggregate?
   @State private var selectedMonthDay: MonthlyDayAggregate?
   @State private var selectedSession: BlockedProfileSession?
-  @State private var alertIdentifier: InsightsAlertIdentifier?
   @State private var showingWeekPicker = false
   @State private var showingMonthPicker = false
-  @State private var showDeleteAllConfirmation = false
   @State private var selectedFilter: InsightsFilter = .thisWeek
 
   @Query(sort: \BlockedProfileSession.startTime, order: .reverse)
@@ -99,15 +85,16 @@ struct ProfileInsightsView: View {
     monthlyViewModel.monthlySummary
   }
 
-  private var profileId: UUID {
-    weeklyViewModel.profiles.first?.id ?? UUID()
-  }
+  // Sessions under a minute round to "0m" wherever duration is displayed —
+  // not worth showing as a row.
+  private static let minimumDisplayableDuration: TimeInterval = 60
 
   private var weekSessions: [BlockedProfileSession] {
     allSessions.filter { session in
       guard let profileId = weeklyViewModel.profiles.first?.id,
         session.blockedProfile.id == profileId,
-        let endTime = session.endTime
+        let endTime = session.endTime,
+        session.duration >= Self.minimumDisplayableDuration
       else {
         return false
       }
@@ -119,7 +106,8 @@ struct ProfileInsightsView: View {
     allSessions.filter { session in
       guard let profileId = monthlyViewModel.profiles.first?.id,
         session.blockedProfile.id == profileId,
-        let endTime = session.endTime
+        let endTime = session.endTime,
+        session.duration >= Self.minimumDisplayableDuration
       else {
         return false
       }
@@ -131,6 +119,7 @@ struct ProfileInsightsView: View {
     allSessions.filter { session in
       guard let profileId = weeklyViewModel.profiles.first?.id else { return false }
       return session.blockedProfile.id == profileId && session.endTime != nil
+        && session.duration >= Self.minimumDisplayableDuration
     }
   }
 
@@ -253,12 +242,6 @@ struct ProfileInsightsView: View {
               value: DateFormatters.formatDurationHoursMinutes(
                 profileInsightsViewModel.metrics.totalBreakTime)
             )
-
-            InsightsSummaryRow(
-              icon: "tag.fill",
-              label: String(localized: "Profile ID"),
-              value: String(profileId.uuidString.prefix(8)) + "..."
-            )
           }
         }
 
@@ -271,13 +254,6 @@ struct ProfileInsightsView: View {
                 SessionRow(session: session)
               }
               .buttonStyle(.plain)
-              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                Button(role: .destructive) {
-                  alertIdentifier = InsightsAlertIdentifier(id: .deleteSession, session: session)
-                } label: {
-                  Label("Delete", systemImage: "trash")
-                }
-              }
             }
           }
         }
@@ -372,13 +348,6 @@ struct ProfileInsightsView: View {
                 "All Sessions",
                 systemImage: selectedFilter == .allSessions ? "checkmark" : "list.bullet")
             }
-
-            // Delete all sessions
-            Button(role: .destructive) {
-              showDeleteAllConfirmation = true
-            } label: {
-              Label("Delete All Sessions", systemImage: "trash")
-            }
           } label: {
             HStack(spacing: 4) {
               Image(systemName: filterMenuIcon)
@@ -408,42 +377,32 @@ struct ProfileInsightsView: View {
         }
         .presentationDetents([.medium, .large])
       }
-      .alert(item: $alertIdentifier) { alert in
-        switch alert.id {
-        case .deleteSession:
-          guard let session = alert.session else {
-            return Alert(title: Text("Error"))
-          }
-
-          return Alert(
-            title: Text("Delete Session"),
-            message: Text(
-              "Are you sure you want to delete this session? This action cannot be undone."),
-            primaryButton: .cancel(),
-            secondaryButton: .destructive(Text("Delete")) {
-              deleteSession(session)
-            }
-          )
-        case .error:
-          return Alert(
-            title: Text("Error"),
-            message: Text(alert.errorMessage ?? "An unknown error occurred"),
-            dismissButton: .default(Text("OK"))
-          )
-        }
-      }
-      .alert("Delete All Sessions", isPresented: $showDeleteAllConfirmation) {
-        Button("Cancel", role: .cancel) {}
-        Button("Delete All", role: .destructive) {
-          deleteAllSessions()
-        }
-      } message: {
-        Text(
-          "Are you sure you want to delete all completed sessions? This action cannot be undone.")
-      }
     }
     .task {
       await applyInitialState()
+      updateInsightsDateRange()
+    }
+    .onChange(of: selectedFilter) { _, _ in
+      updateInsightsDateRange()
+    }
+    .onChange(of: weeklyViewModel.selectedDate) { _, _ in
+      updateInsightsDateRange()
+    }
+    .onChange(of: monthlyViewModel.selectedDate) { _, _ in
+      updateInsightsDateRange()
+    }
+  }
+
+  /// Scopes the Summary section's totals to whatever period is currently
+  /// selected — the whole point of choosing "This Week" vs "All Sessions".
+  private func updateInsightsDateRange() {
+    switch selectedFilter {
+    case .allSessions:
+      profileInsightsViewModel.setDateRange(start: nil, end: nil)
+    case .thisWeek, .lastWeek, .specificWeek:
+      profileInsightsViewModel.setDateRange(start: weekStart, end: weekEndExclusive)
+    case .thisMonth, .lastMonth, .specificMonth:
+      profileInsightsViewModel.setDateRange(start: monthStart, end: monthEndExclusive)
     }
   }
 
@@ -524,33 +483,6 @@ struct ProfileInsightsView: View {
   private func clearDaySelection() {
     selectedWeekDay = nil
     selectedMonthDay = nil
-  }
-
-  private func deleteSession(_ session: BlockedProfileSession) {
-    modelContext.delete(session)
-
-    do {
-      try modelContext.save()
-      if selectedSession?.id == session.id {
-        selectedSession = nil
-      }
-    } catch {
-      alertIdentifier = InsightsAlertIdentifier(
-        id: .error, errorMessage: error.localizedDescription)
-    }
-  }
-
-  private func deleteAllSessions() {
-    for session in allProfileSessions {
-      modelContext.delete(session)
-    }
-    do {
-      try modelContext.save()
-      selectedSession = nil
-    } catch {
-      alertIdentifier = InsightsAlertIdentifier(
-        id: .error, errorMessage: error.localizedDescription)
-    }
   }
 }
 
