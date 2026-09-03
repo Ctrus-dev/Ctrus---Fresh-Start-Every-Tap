@@ -20,7 +20,6 @@ struct ProfileInsightsView: View {
   @StateObject private var profileInsightsViewModel: ProfileInsightsUtil
   @State private var selectedWeekDay: WeeklyDayAggregate?
   @State private var selectedMonthDay: MonthlyDayAggregate?
-  @State private var selectedSession: BlockedProfileSession?
   @State private var showingWeekPicker = false
   @State private var showingMonthPicker = false
   @State private var selectedFilter: InsightsFilter = .thisWeek
@@ -248,12 +247,7 @@ struct ProfileInsightsView: View {
         ForEach(groupedSessions) { group in
           Section(DateFormatters.formatSessionDate(group.day)) {
             ForEach(group.sessions) { session in
-              Button {
-                selectedSession = session
-              } label: {
-                SessionRow(session: session)
-              }
-              .buttonStyle(.plain)
+              SessionRow(session: session)
             }
           }
         }
@@ -357,9 +351,6 @@ struct ProfileInsightsView: View {
             .foregroundStyle(.primary)
           }
         }
-      }
-      .sheet(item: $selectedSession) { session in
-        SessionDetailsView(session: session)
       }
       .sheet(isPresented: $showingWeekPicker) {
         InsightsWeekPickerView(selectedDate: weeklyViewModel.selectedDate) { date in

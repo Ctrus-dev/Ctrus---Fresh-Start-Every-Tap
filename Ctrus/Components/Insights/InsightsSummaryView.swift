@@ -24,6 +24,8 @@ struct InsightsSummaryRow: View {
         .foregroundStyle(.primary)
     }
     .padding(.vertical, 4)
+    .listRowSeparator(.visible)
+    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
   }
 }
 
