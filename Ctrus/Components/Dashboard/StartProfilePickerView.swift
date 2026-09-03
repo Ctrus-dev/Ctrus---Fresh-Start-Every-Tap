@@ -182,8 +182,8 @@ private struct StartProfilePickerRow: View {
           .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
               .strokeBorder(
-                isSelected ? themeManager.themeColor.opacity(0.45) : Color.black.opacity(0.06),
-                lineWidth: isSelected ? 2 : 1
+                themeManager.themeColor.opacity(isSelected ? 0.7 : 0.35),
+                lineWidth: isSelected ? 2.5 : 2
               )
           )
       )

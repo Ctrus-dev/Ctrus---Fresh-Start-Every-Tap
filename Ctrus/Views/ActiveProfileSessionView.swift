@@ -90,7 +90,9 @@ struct ActiveProfileSessionView: View {
     .preferredColorScheme(.dark)
     .sheet(isPresented: $showEmergencyView) {
       EmergencyView()
-        .presentationDetents([.height(350), .large])
+        // A short .height(350) detent clipped the unblock button under
+        // longer localized text (e.g. Portuguese) on small screens.
+        .presentationDetents([.large])
         .preferredColorScheme(.dark)
     }
     .sheet(isPresented: $showProfileInsights) {
