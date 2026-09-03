@@ -4954,7 +4954,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pressiona para começares"
+            "value": "Pressiona para começar"
           }
         }
       }
@@ -4977,7 +4977,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pressiona para começares a pausa"
+            "value": "Pressiona para começar a pausa"
           }
         }
       }
@@ -4988,19 +4988,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hold to Stop Break"
+            "value": "Hold to stop a break"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantén para Terminar Descanso"
+            "value": "Presiona para terminar la pausa"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pressiona para Terminar Pausa"
+            "value": "Pressiona para terminar a pausa"
           }
         }
       }
