@@ -37,11 +37,20 @@ private struct RotatingModel3DRepresentable: UIViewRepresentable {
     let scnView = SCNView()
     scnView.backgroundColor = .clear
     scnView.antialiasingMode = .multisampling4X
-    scnView.autoenablesDefaultLighting = true
     scnView.isUserInteractionEnabled = true
 
     let scene = SCNScene()
     scnView.scene = scene
+
+    // Flat ambient fill instead of SceneKit's default lighting, which places
+    // an omni light near the camera and produces a specular hotspot that
+    // moves with the model as it's dragged.
+    let ambientLight = SCNLight()
+    ambientLight.type = .ambient
+    ambientLight.color = UIColor.white
+    let ambientNode = SCNNode()
+    ambientNode.light = ambientLight
+    scene.rootNode.addChildNode(ambientNode)
 
     let cameraNode = SCNNode()
     cameraNode.camera = SCNCamera()
