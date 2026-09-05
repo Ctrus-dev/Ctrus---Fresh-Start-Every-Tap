@@ -160,8 +160,11 @@ struct HomeView: View {
           runAlertPrimaryAction(for: alert)
         }
       )
-      // .medium clipped the primary button on short screens (e.g. iPhone SE).
-      .presentationDetents([.large])
+      // .medium clipped the primary button on short screens (e.g. iPhone SE),
+      // so those fall back to .large; taller screens keep the partial sheet.
+      .presentationDetents(
+        RotatingModel3DView.isCompactScreen ? [.large] : [.medium, .large]
+      )
     }
     .fullScreenCover(isPresented: $showIntroScreen) {
       IntroView {

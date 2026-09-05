@@ -91,8 +91,11 @@ struct ActiveProfileSessionView: View {
     .sheet(isPresented: $showEmergencyView) {
       EmergencyView()
         // A short .height(350) detent clipped the unblock button under
-        // longer localized text (e.g. Portuguese) on small screens.
-        .presentationDetents([.large])
+        // longer localized text (e.g. Portuguese) on small screens, so
+        // those fall back to .large; taller screens keep the partial sheet.
+        .presentationDetents(
+          RotatingModel3DView.isCompactScreen ? [.large] : [.height(350), .large]
+        )
         .preferredColorScheme(.dark)
     }
     .sheet(isPresented: $showProfileInsights) {
