@@ -38,9 +38,6 @@ struct HomeView: View {
   // Settings View
   @State private var showSettingsView = false
 
-  // Active session view
-  @State private var showActiveProfileSessionView = false
-
   // Navigate to profile
   @State private var navigateToProfileId: UUID? = nil
 
@@ -56,8 +53,17 @@ struct HomeView: View {
   @State private var alertTitle = ""
   @State private var alertMessage = ""
 
+  // A deep link (e.g. a universal link tapped outside the app) that would
+  // stop the active session needs confirmation before it's carried out —
+  // see `pendingDeepLinkStopAction`.
+  @State private var pendingDeepLinkStopAction: StrategyManager.DeepLinkSessionAction? = nil
+
   // Intro sheet
   @AppStorage("showIntroScreen") private var showIntroScreen = true
+
+  // Small how-to caption under the profile list, shown until the person
+  // completes their very first session.
+  @AppStorage("hasCompletedFirstSession") private var hasCompletedFirstSession = false
 
   // UI States
   @State private var opacityValue = 1.0
@@ -104,15 +110,19 @@ struct HomeView: View {
       alignment: .topLeading
     )
     .onChange(of: navigationManager.profileId) { _, newValue in
-      if let profileId = newValue, let url = navigationManager.link {
-        toggleSessionFromDeeplink(profileId, link: url)
+      if let profileId = newValue, navigationManager.link != nil {
+        toggleSessionFromDeeplink(profileId)
         navigationManager.clearNavigation()
       }
     }
     .onChange(of: navigationManager.navigateToProfileId) { _, newValue in
       if let profileId = newValue {
-        navigateToProfileId = UUID(uuidString: profileId)
-        showStartProfilePicker = true
+        // With more than one profile, the picker sheet is more friction than
+        // help from a widget tap — just land on the main screen instead.
+        if profiles.count <= 1 {
+          navigateToProfileId = UUID(uuidString: profileId)
+          showStartProfilePicker = true
+        }
         navigationManager.clearNavigation()
       }
     }
@@ -137,13 +147,8 @@ struct HomeView: View {
         unloadApp()
       }
     }
-    .onChange(of: isBlocking) { _, newValue in
-      if !newValue {
-        showActiveProfileSessionView = false
-      }
-    }
     .onReceive(strategyManager.$errorMessage) { errorMessage in
-      guard let message = errorMessage, !showActiveProfileSessionView else { return }
+      guard let message = errorMessage else { return }
       showErrorAlert(message: message)
     }
     .onAppear {
@@ -170,24 +175,6 @@ struct HomeView: View {
       IntroView {
         requestAuthorizer.requestAuthorization()
       }.interactiveDismissDisabled()
-    }
-    .fullScreenCover(isPresented: $showActiveProfileSessionView) {
-      if let activeProfile = strategyManager.activeSession?.blockedProfile {
-        ActiveProfileSessionView(
-          profile: activeProfile,
-          elapsedTime: strategyManager.elapsedTime,
-          displayTime: strategyManager.sessionDisplayTime,
-          isBreakAvailable: isBreakAvailable,
-          isBreakActive: isBreakActive,
-          isPauseActive: isPauseActive,
-          onBreakTapped: {
-            strategyManager.toggleBreak(context: context)
-          },
-          onStopTapped: {
-            strategyButtonPress(activeProfile)
-          }
-        )
-      }
     }
     .sheet(item: $profileToShowStats) { profile in
       ProfileInsightsView(profile: profile)
@@ -230,6 +217,27 @@ struct HomeView: View {
       Button("OK", role: .cancel) { dismissAlert() }
     } message: {
       Text(alertMessage)
+    }
+    .alert(
+      "Stop your session?",
+      isPresented: Binding(
+        get: { pendingDeepLinkStopAction != nil },
+        set: { isPresented in
+          if !isPresented { pendingDeepLinkStopAction = nil }
+        }
+      )
+    ) {
+      Button("Stop", role: .destructive) {
+        if let action = pendingDeepLinkStopAction {
+          strategyManager.performDeepLinkAction(action, context: context)
+        }
+        pendingDeepLinkStopAction = nil
+      }
+      Button("Cancel", role: .cancel) {
+        pendingDeepLinkStopAction = nil
+      }
+    } message: {
+      Text("A link is trying to stop your active session. Only continue if you opened this yourself.")
     }
   }
 
@@ -276,32 +284,45 @@ struct HomeView: View {
             .padding(.horizontal, 16)
           }
 
-          HomeProfilesListView(
-            profiles: profiles,
-            isBlocking: isBlocking,
-            isAuthorized: requestAuthorizer.isAuthorized,
-            activeSessionProfileId: activeSessionProfileId,
-            elapsedTime: strategyManager.elapsedTime,
-            isPauseActive: isPauseActive,
-            onManageTapped: {
-              isProfileListPresent = true
-            },
-            onSettingsTapped: {
-              showSettingsView = true
-            },
-            onStartTapped: { profile in
-              startProfile(profile)
-            },
-            onStopTapped: { profile in
-              strategyButtonPress(profile)
-            },
-            onEditTapped: { profile in
-              profileToEdit = profile
-            },
-            onStatsTapped: { profile in
-              profileToShowStats = profile
+          VStack(alignment: .leading, spacing: 10) {
+            HomeProfilesListView(
+              profiles: profiles,
+              isBlocking: isBlocking,
+              isAuthorized: requestAuthorizer.isAuthorized,
+              activeSessionProfileId: activeSessionProfileId,
+              elapsedTime: strategyManager.elapsedTime,
+              displayTime: strategyManager.sessionDisplayTime,
+              isBreakActive: isBreakActive,
+              isBreakAvailable: isBreakAvailable,
+              isPauseActive: isPauseActive,
+              onManageTapped: {
+                isProfileListPresent = true
+              },
+              onSettingsTapped: {
+                showSettingsView = true
+              },
+              onStartTapped: { profile in
+                startProfile(profile)
+              },
+              onStopTapped: { profile in
+                strategyButtonPress(profile)
+                hasCompletedFirstSession = true
+              },
+              onEditTapped: { profile in
+                profileToEdit = profile
+              },
+              onStatsTapped: { profile in
+                profileToShowStats = profile
+              },
+              onBreakTapped: {
+                strategyManager.toggleBreak(context: context)
+              }
+            )
+
+            if !hasCompletedFirstSession {
+              sessionHintText
             }
-          )
+          }
           .padding(.horizontal, 16)
         }
       }
@@ -310,33 +331,33 @@ struct HomeView: View {
     .refreshable {
       loadApp()
     }
-    .safeAreaInset(edge: .bottom) {
-      if !profiles.isEmpty {
-        HomeProfileLauncher(
-          activeProfile: isBlocking ? strategyManager.activeSession?.blockedProfile : nil,
-          displayTime: strategyManager.sessionDisplayTime,
-          isBreakActive: isBreakActive,
-          isPauseActive: isPauseActive,
-          onStartTapped: {
-            guard !alertsManager.presentScreenTimeAccessAlertIfNeeded() else { return }
-            if profiles.count > 1 {
-              showStartProfilePicker = true
-            } else if let onlyProfile = profiles.first {
-              startProfile(onlyProfile)
-            }
-          },
-          onActiveTapped: {
-            showActiveProfileSessionView = true
-          }
-        )
-      }
-    }
     .padding(.top, 1)
   }
 
-  private func toggleSessionFromDeeplink(_ profileId: String, link: URL) {
-    strategyManager
-      .toggleSessionFromDeeplink(profileId, url: link, context: context)
+  private var sessionHintText: some View {
+    Text(
+      "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
+    )
+      .font(.subheadline)
+      // This screen's background stays a fixed light pastel regardless of
+      // the system's Light/Dark setting, so `.secondary` (which adapts to
+      // it) went near-white-on-light-cream and was unreadable in Dark Mode.
+      // Matches the "First Steps" subtitle in Welcome.swift.
+      .foregroundStyle(Color.fixedLightSecondaryText)
+      .multilineTextAlignment(.center)
+      .frame(maxWidth: .infinity, alignment: .center)
+  }
+
+  private func toggleSessionFromDeeplink(_ profileId: String) {
+    let action = strategyManager.resolveDeepLinkAction(profileId, context: context)
+
+    switch action {
+    case .stop:
+      // Opening a link should never silently end a session — confirm first.
+      pendingDeepLinkStopAction = action
+    default:
+      strategyManager.performDeepLinkAction(action, context: context)
+    }
   }
 
   private func strategyButtonPress(_ profile: BlockedProfiles) {
@@ -349,7 +370,7 @@ struct HomeView: View {
   private var strategyActionSheetBinding: Binding<Bool> {
     Binding(
       get: {
-        strategyManager.showCustomStrategyView && !showActiveProfileSessionView
+        strategyManager.showCustomStrategyView
       },
       set: { isPresented in
         if !isPresented {

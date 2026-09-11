@@ -151,70 +151,73 @@ class StrategyManager: ObservableObject {
     )
   }
 
-  func toggleSessionFromDeeplink(
-    _ profileId: String,
-    url: URL,
-    context: ModelContext
-  ) {
+  // Opening a `ctrus.net/profile/<id>` universal link can reach this app
+  // with zero user confirmation (a link tapped in Messages/Safari/anywhere).
+  // Starting a session from that is harmless, but silently *stopping* one
+  // defeats the whole point of a self-control app, so resolving what a link
+  // would do is split from actually doing it — callers can confirm a stop
+  // before calling `performDeepLinkAction`.
+  enum DeepLinkSessionAction {
+    case start(profile: BlockedProfiles)
+    case stop(activeSession: BlockedProfileSession, thenStart: BlockedProfiles?)
+    case blockedByDisableBackgroundStops(profileName: String)
+    case profileNotFound
+    case invalidLink
+  }
+
+  func resolveDeepLinkAction(_ profileId: String, context: ModelContext) -> DeepLinkSessionAction
+  {
     guard let profileUUID = UUID(uuidString: profileId) else {
-      self.errorMessage = String(localized: "Failed to parse profile in tag")
-      return
+      return .invalidLink
     }
 
-    do {
-      guard
-        let profile: BlockedProfiles = try BlockedProfiles.findProfile(
-          byID: profileUUID,
-          in: context
-        )
-      else {
-        self.errorMessage =
-          String(localized: "Failed to find a profile stored locally that matches the tag")
-        return
+    guard
+      let profile = try? BlockedProfiles.findProfile(byID: profileUUID, in: context)
+    else {
+      return .profileNotFound
+    }
+
+    guard let localActiveSession = getActiveSession(context: context) else {
+      return .start(profile: profile)
+    }
+
+    if localActiveSession.blockedProfile.disableBackgroundStops {
+      return .blockedByDisableBackgroundStops(profileName: localActiveSession.blockedProfile.name)
+    }
+
+    let thenStart = localActiveSession.blockedProfile.id != profile.id ? profile : nil
+    return .stop(activeSession: localActiveSession, thenStart: thenStart)
+  }
+
+  func performDeepLinkAction(_ action: DeepLinkSessionAction, context: ModelContext) {
+    let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
+
+    switch action {
+    case .start(let profile):
+      _ = manualStrategy.startBlocking(context: context, profile: profile, forceStart: true)
+
+    case .stop(let activeSession, let thenStart):
+      _ = manualStrategy.stopBlocking(context: context, session: activeSession)
+
+      if let thenStart {
+        print("User is switching sessions from deep link")
+        _ = manualStrategy.startBlocking(context: context, profile: thenStart, forceStart: true)
       }
 
-      let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
-
-      if let localActiveSession = getActiveSession(context: context) {
-        if localActiveSession.blockedProfile.disableBackgroundStops {
-          print(
-            "profile: \(localActiveSession.blockedProfile.name) has disable background stops enabled, not stopping it"
-          )
-          self.errorMessage =
-            String(
-              localized:
-                "Profile \(localActiveSession.blockedProfile.name) has disable background stops enabled, not stopping it"
-            )
-          return
-        }
-
-        _ =
-          manualStrategy
-          .stopBlocking(
-            context: context,
-            session: localActiveSession
-          )
-
-        if localActiveSession.blockedProfile.id != profile.id {
-          print(
-            "User is switching sessions from deep link"
-          )
-
-          _ = manualStrategy.startBlocking(
-            context: context,
-            profile: profile,
-            forceStart: true
-          )
-        }
-      } else {
-        _ = manualStrategy.startBlocking(
-          context: context,
-          profile: profile,
-          forceStart: true
+    case .blockedByDisableBackgroundStops(let profileName):
+      print("profile: \(profileName) has disable background stops enabled, not stopping it")
+      self.errorMessage =
+        String(
+          localized:
+            "Profile \(profileName) has disable background stops enabled, not stopping it"
         )
-      }
-    } catch {
-      self.errorMessage = String(localized: "Something went wrong fetching profile")
+
+    case .profileNotFound:
+      self.errorMessage =
+        String(localized: "Failed to find a profile stored locally that matches the tag")
+
+    case .invalidLink:
+      self.errorMessage = String(localized: "Failed to parse profile in tag")
     }
   }
 
@@ -479,7 +482,9 @@ class StrategyManager: ObservableObject {
   }
 
   func getNextRecoveryResetDate() -> Date? {
-    guard lastRecoveryUnlockDateTimestamp > 0, recoveryUnlocksRemaining == 0 else {
+    // Available as soon as the first unlock is used, not just once they're
+    // all gone — the "1 left" message shows this too, not only "0 left".
+    guard lastRecoveryUnlockDateTimestamp > 0 else {
       return nil
     }
 
@@ -859,9 +864,13 @@ class StrategyManager: ObservableObject {
       return result
     }
 
-    // Consume the limited recovery unlock and start its cooldown
+    // Consume the limited recovery unlock. The 4-week cooldown starts on
+    // the first unlock of the cycle — using the second one shouldn't push
+    // the reset date back further.
     recoveryUnlocksRemaining = max(0, recoveryUnlocksRemaining - 1)
-    lastRecoveryUnlockDateTimestamp = Date().timeIntervalSinceReferenceDate
+    if lastRecoveryUnlockDateTimestamp == 0 {
+      lastRecoveryUnlockDateTimestamp = Date().timeIntervalSinceReferenceDate
+    }
 
     if let activeSession = getActiveSession(context: context) {
       let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)

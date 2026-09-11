@@ -10,6 +10,7 @@ struct ShimmerLauncherButton: View {
   let height: CGFloat
   let isEnabled: Bool
   let requiresLongPress: Bool
+  let showShimmer: Bool
   let accessibilityLabel: String
   let action: () -> Void
 
@@ -27,6 +28,7 @@ struct ShimmerLauncherButton: View {
     height: CGFloat = 64,
     isEnabled: Bool = true,
     requiresLongPress: Bool = false,
+    showShimmer: Bool = true,
     accessibilityLabel: String,
     action: @escaping () -> Void
   ) {
@@ -36,6 +38,7 @@ struct ShimmerLauncherButton: View {
     self.height = height
     self.isEnabled = isEnabled
     self.requiresLongPress = requiresLongPress
+    self.showShimmer = showShimmer
     self.accessibilityLabel = accessibilityLabel
     self.action = action
   }
@@ -114,7 +117,7 @@ struct ShimmerLauncherButton: View {
           .strokeBorder(.white.opacity(isEnabled ? 0.24 : 0.14), lineWidth: 1)
       )
       .overlay {
-        if isEnabled && !reduceMotion {
+        if showShimmer && isEnabled && !reduceMotion {
           GeometryReader { geometry in
             LinearGradient(
               colors: [

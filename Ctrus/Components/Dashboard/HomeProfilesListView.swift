@@ -3,11 +3,16 @@ import SwiftUI
 struct HomeProfilesListView: View {
   @EnvironmentObject private var themeManager: ThemeManager
 
+  @AppStorage("useLeftHandedLayout") private var useLeftHandedLayout = false
+
   let profiles: [BlockedProfiles]
   let isBlocking: Bool
   let isAuthorized: Bool
   let activeSessionProfileId: UUID?
   let elapsedTime: TimeInterval
+  var displayTime: TimeInterval = 0
+  var isBreakActive = false
+  var isBreakAvailable = false
   let isPauseActive: Bool
   let onManageTapped: () -> Void
   let onSettingsTapped: () -> Void
@@ -15,25 +20,38 @@ struct HomeProfilesListView: View {
   let onStopTapped: (BlockedProfiles) -> Void
   let onEditTapped: (BlockedProfiles) -> Void
   let onStatsTapped: (BlockedProfiles) -> Void
+  var onBreakTapped: () -> Void = {}
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(spacing: 8) {
-        Spacer()
+        if useLeftHandedLayout {
+          RoundedButton("", action: onSettingsTapped, iconName: "gear", forcedLight: true)
+          RoundedButton(
+            "", action: onManageTapped, iconName: "person.crop.circle", forcedLight: true)
 
-        RoundedButton("", action: onManageTapped, iconName: "person.crop.circle", forcedLight: true)
-        RoundedButton("", action: onSettingsTapped, iconName: "gear", forcedLight: true)
+          Spacer()
+        } else {
+          Spacer()
+
+          RoundedButton(
+            "", action: onManageTapped, iconName: "person.crop.circle", forcedLight: true)
+          RoundedButton("", action: onSettingsTapped, iconName: "gear", forcedLight: true)
+        }
       }
       .padding(.bottom, 10)
 
       VStack(spacing: 12) {
         ForEach(profiles, id: \.id) { profile in
-          HomeProfileRow(
+          ProfileBalloonRow(
             profile: profile,
             isBlocking: isBlocking,
-            isAuthorized: isAuthorized,
             isActive: profile.id == activeSessionProfileId,
+            isAuthorized: isAuthorized,
             elapsedTime: elapsedTime,
+            displayTime: displayTime,
+            isBreakActive: isBreakActive,
+            isBreakAvailable: isBreakAvailable,
             isPauseActive: isPauseActive,
             onStartTapped: {
               onStartTapped(profile)
@@ -41,6 +59,7 @@ struct HomeProfilesListView: View {
             onStopTapped: {
               onStopTapped(profile)
             },
+            onBreakTapped: onBreakTapped,
             onEditTapped: {
               onEditTapped(profile)
             },
@@ -48,112 +67,8 @@ struct HomeProfilesListView: View {
               onStatsTapped(profile)
             }
           )
-          .background(
-            Color.white,
-            in: RoundedRectangle(cornerRadius: 20, style: .continuous)
-          )
-          .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-              .strokeBorder(themeManager.themeColor, lineWidth: 3.5)
-          )
         }
       }
     }
-  }
-}
-
-private struct HomeProfileRow: View {
-  let profile: BlockedProfiles
-  let isBlocking: Bool
-  let isAuthorized: Bool
-  let isActive: Bool
-  let elapsedTime: TimeInterval
-  let isPauseActive: Bool
-  let onStartTapped: () -> Void
-  let onStopTapped: () -> Void
-  let onEditTapped: () -> Void
-  let onStatsTapped: () -> Void
-
-  private var canStart: Bool {
-    !isBlocking
-  }
-
-  private var canStop: Bool {
-    profile.showStopButton(elapsedTime: elapsedTime)
-  }
-
-  private var blockingStrategy: BlockingStrategy? {
-    guard let strategyId = profile.blockingStrategyId else { return nil }
-    return StrategyManager.getStrategyFromId(id: strategyId)
-  }
-
-  private var activeAction: BlockingStrategySessionAction {
-    blockingStrategy?.activeSessionAction(
-      isPauseActive: isPauseActive,
-      isEnabled: canStop
-    ) ?? .stop(isEnabled: canStop)
-  }
-
-  var body: some View {
-    HStack(spacing: 12) {
-      Button(action: onEditTapped) {
-        ProfileSummaryContent(
-          profile: profile,
-          isActive: false,
-          metadata: .appsAndDomains,
-          showsStatusLine: true,
-          layout: .dashboard,
-          statusMode: .scheduleOnly,
-          forcedLight: true
-        )
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
-      }
-      .buttonStyle(.plain)
-      .accessibilityLabel("Edit \(profile.name)")
-
-      Button(action: onStatsTapped) {
-        ProfileUsageMiniBarChart(profile: profile, forcedLight: true)
-          .frame(width: 118, height: 62)
-          .contentShape(Rectangle())
-      }
-      .buttonStyle(.plain)
-      .accessibilityLabel("Show \(profile.name) insights")
-
-      actionMenu
-    }
-    .padding(16)
-  }
-
-  private var actionMenu: some View {
-    Menu {
-
-      Button(action: onStatsTapped) {
-        Label("Insights", systemImage: "chart.line.uptrend.xyaxis")
-      }
-
-      Button(action: onEditTapped) {
-        Label("Edit", systemImage: "pencil")
-      }
-
-      if isActive {
-        Button(action: onStopTapped) {
-          Label(activeAction.title, systemImage: activeAction.systemImageName)
-        }
-        .disabled(!canStop)
-      } else if isAuthorized {
-        Button(action: onStartTapped) {
-          Label("Start", systemImage: "play.fill")
-        }
-        .disabled(!canStart)
-      }
-    } label: {
-      Image(systemName: "ellipsis")
-        .font(.system(size: 16, weight: .semibold))
-        .foregroundStyle(.gray)
-        .frame(width: 32, height: 44)
-        .contentShape(Rectangle())
-    }
-    .accessibilityLabel("More actions for \(profile.name)")
   }
 }

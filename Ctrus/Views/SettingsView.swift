@@ -17,6 +17,8 @@ struct SettingsView: View {
   @State private var showUnlockNetworkErrorAlert = false
   @State private var showDeviceIDCopiedConfirmation = false
 
+  @AppStorage("useLeftHandedLayout") private var useLeftHandedLayout = false
+
   private var appVersion: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
       ?? "1.0"
@@ -35,15 +37,23 @@ struct SettingsView: View {
   }
 
   private var recoveryUnlockStatusText: Text {
-    if recoveryUnlocksRemaining == 1 {
-      return Text("You only have 1 unlock left.")
-    }
-
     guard let nextResetDate = strategyManager.getNextRecoveryResetDate() else {
       return Text("You have access to 2 unlocks every 4 weeks.")
     }
 
     let timeUntilReset = nextResetDate.timeIntervalSinceNow
+
+    if recoveryUnlocksRemaining == 1 {
+      if timeUntilReset <= 24 * 60 * 60 {
+        let hoursRemaining = max(1, Int(ceil(timeUntilReset / 3600)))
+        return Text("You only have 1 unlock left. Resets in \(hoursRemaining)h.")
+      } else {
+        return Text(
+          "You only have 1 unlock left. Resets \(nextResetDate, format: .dateTime.month().day())."
+        )
+      }
+    }
+
     if timeUntilReset <= 24 * 60 * 60 {
       let hoursRemaining = max(1, Int(ceil(timeUntilReset / 3600)))
       return Text("No unlocks remaining. Resets in \(hoursRemaining)h.")
@@ -182,6 +192,17 @@ struct SettingsView: View {
           recoverySectionContent
         }
 
+        Section("Accessibility") {
+          Toggle(isOn: $useLeftHandedLayout) {
+            VStack(alignment: .leading, spacing: 2) {
+              Text("Left-Handed Layout")
+              Text("Moves the profile and settings buttons to the left")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+          }
+        }
+
         Section("About") {
           HStack {
             Text("Version")
@@ -215,17 +236,27 @@ struct SettingsView: View {
             Text("🇵🇹")
               .foregroundStyle(.secondary)
           }
+        }
 
-          Link(destination: URL(string: "https://www.foqos.app")!) {
-            HStack {
-              Text("Based on Foqos - Tap to Block")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
+        // Outside every section, so it sits in the normal scroll flow right
+        // after About instead of floating over whatever section is on
+        // screen while scrolling.
+        (Text("Ctrus is 100% open source, ")
+          + Text("read the code yourself")
+          .foregroundColor(themeManager.themeColor))
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+          .multilineTextAlignment(.center)
+          .frame(maxWidth: .infinity)
+          .onTapGesture {
+            if let url = URL(
+              string: "https://github.com/Ctrus-dev/Ctrus---Fresh-Start-Every-Tap")
+            {
+              UIApplication.shared.open(url)
             }
           }
-        }
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
 
       }
       .navigationTitle("Settings")

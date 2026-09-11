@@ -2,6 +2,98 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
+    "Accessibility": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessibility"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accesibilidad"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acessibilidade"
+          }
+        }
+      }
+    },
+    "A link is trying to stop your active session. Only continue if you opened this yourself.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A link is trying to stop your active session. Only continue if you opened this yourself."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un enlace está intentando detener tu sesión activa. Solo continúa si fuiste tú quien lo abrió."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um link está a tentar parar a tua sessão ativa. Só continues se foste tu que abriste isto."
+          }
+        }
+      }
+    },
+    "Paused Profile %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused Profile %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil Pausado %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil Pausado %@"
+          }
+        }
+      }
+    },
+    "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén presionado tu perfil para iniciar una sesión. Tócalo mientras está activo para mostrar Pausa, Emergencia y Detener."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantém pressionado o teu perfil para iniciar uma sessão. Toca nele enquanto está ativo para revelar Pausa, Emergência e Parar."
+          }
+        }
+      }
+    },
     " if you're skeptical": {
       "extractionState": "manual",
       "localizations": {
@@ -4798,13 +4890,13 @@
         }
       }
     },
-    "Getting Started": {
+    "First Steps": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Getting Started"
+            "value": "First Steps"
           }
         },
         "es": {
@@ -4816,7 +4908,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Começar"
+            "value": "Primeiros Passos"
           }
         }
       }
@@ -5327,25 +5419,71 @@
         }
       }
     },
-    "Let's get you started by creating your first profile. You can customize it as much or as little as you'd like.": {
+    "Left-Handed Layout": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Let's get you started by creating your first profile. You can customize it as much or as little as you'd like."
+            "value": "Left-Handed Layout"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Empecemos creando tu primer perfil. Puedes personalizarlo tanto como quieras."
+            "value": "Diseño para Zurdos"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vamos começar por criar o teu primeiro perfil. Podes personalizá-lo tanto quanto quiseres."
+            "value": "Disposição para Canhotos"
+          }
+        }
+      }
+    },
+    "Moves the profile and settings buttons to the left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moves the profile and settings buttons to the left"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mueve los botones de perfil y ajustes hacia la izquierda"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move os botões de perfil e definições para a esquerda"
+          }
+        }
+      }
+    },
+    "Let's get you started by creating your first profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let's get you started by creating your first profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empecemos creando tu primer perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vamos começar por criar o teu primeiro perfil"
           }
         }
       }
@@ -8851,6 +8989,29 @@
         }
       }
     },
+    "Stop your session?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop your session?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Detener tu sesión?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar a tua sessão?"
+          }
+        }
+      }
+    },
     "Stop the active profile before repairing this schedule.": {
       "extractionState": "manual",
       "localizations": {
@@ -11175,6 +11336,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Só tens 1 desbloqueio restante."
+          }
+        }
+      }
+    },
+    "You only have 1 unlock left. Resets %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You only have 1 unlock left. Resets %@."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só tens 1 desbloqueio restante. Reinicia %@."
+          }
+        }
+      }
+    },
+    "You only have 1 unlock left. Resets in %lldh.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You only have 1 unlock left. Resets in %lldh."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só tens 1 desbloqueio restante. Reinicia daqui a %lldh."
           }
         }
       }

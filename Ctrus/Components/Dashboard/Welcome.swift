@@ -6,24 +6,23 @@ struct Welcome: View {
 
   var body: some View {
     VStack(spacing: 14) {
-      Text("Getting Started")
+      Text("First Steps")
         .font(.title)
         .fontWeight(.bold)
         .foregroundColor(.fixedLightPrimaryText)
 
-      Text(
-        "Let's get you started by creating your first profile. You can customize it as much or as little as you'd like."
-      )
-      .font(.subheadline)
-      .foregroundColor(.fixedLightSecondaryText)
-      .multilineTextAlignment(.center)
-      .fixedSize(horizontal: false, vertical: true)
-      .padding(.horizontal, 8)
+      Text("Let's get you started by creating your first profile")
+        .font(.subheadline)
+        .foregroundColor(.fixedLightSecondaryText)
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 8)
 
       ShimmerLauncherButton(
         title: String(localized: "Create Profile"),
         iconName: "person.crop.circle",
         height: 56,
+        showShimmer: false,
         accessibilityLabel: String(localized: "Start guided profile setup"),
         action: onGuidedTap
       )

@@ -9,44 +9,32 @@ struct PermissionsIntroScreen: View {
   @State private var showContent: Bool = false
 
   var body: some View {
-    VStack(spacing: 0) {
-      // Header
-      VStack(spacing: 8) {
-        Text("Welcome to Ctrus")
-          .font(.system(size: 34, weight: .bold))
-          .foregroundColor(.fixedLightPrimaryText)
-          .opacity(showContent ? 1 : 0)
-          .offset(y: showContent ? 0 : -20)
-
-        Text("We need Screen Time Access to get started")
-          .font(.system(size: 16))
-          .foregroundColor(.fixedLightSecondaryText)
-          .opacity(showContent ? 1 : 0)
-          .offset(y: showContent ? 0 : -20)
-      }
-
-      Spacer()
-
+    // Matches HomeView's own outer spacing (30pt between the alerts row,
+    // the model, and the Welcome block) so the model and button land in
+    // exactly the same spot as the empty Home screen.
+    VStack(spacing: 30) {
+      // HomeView's alerts row sits above the model with 16pt of top padding,
+      // then the VStack's own 30pt spacing to the model — it renders as
+      // zero-height when there are no alerts (the common case here), so its
+      // only visible effect is that 16+30 offset. Since the model is the
+      // *first* child here, the VStack's spacing never applies before it,
+      // so both numbers have to be folded into this one padding value.
       RotatingModel3DView(themeColor: themeManager.themeColor)
+        .padding(.top, 46)
         .opacity(showContent ? 1 : 0)
 
-      Spacer()
+      VStack(spacing: 14) {
+        Text("Welcome to Ctrus")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.fixedLightPrimaryText)
 
-      // Message text
-      VStack(spacing: 16) {
-        (Text("Ctrus is 100% open source, ")
-          + Text("read the code yourself")
-          .foregroundColor(themeManager.themeColor)
-          + Text(" if you're skeptical"))
-          .font(.system(size: 16, weight: .medium))
+        Text("We need Screen Time Access to get started")
+          .font(.subheadline)
           .foregroundColor(.fixedLightSecondaryText)
           .multilineTextAlignment(.center)
-          .lineSpacing(4)
-          .onTapGesture {
-            if let url = URL(string: "https://github.com/Ctrus-dev/Ctrus---Fresh-Start-Every-Tap") {
-              UIApplication.shared.open(url)
-            }
-          }
+          .fixedSize(horizontal: false, vertical: true)
+          .padding(.horizontal, 8)
 
         // Passcode warning message
         // Disabled: was cutting into the "Allow Screen Time Access" button on
@@ -74,18 +62,22 @@ struct PermissionsIntroScreen: View {
 
         ShimmerLauncherButton(
           title: String(localized: "Allow Screen Time Access"),
-          iconName: nil,
+          iconName: "hourglass",
           height: 56,
+          showShimmer: false,
           accessibilityLabel: String(localized: "Allow Screen Time Access"),
           action: onRequestAuthorization
         )
         .padding(.top, 6)
       }
-      .padding(.horizontal, 10)
+      .frame(maxWidth: .infinity)
+      .padding(.horizontal, 16)
+      .padding(.vertical, 22)
       .opacity(showContent ? 1 : 0)
       .offset(y: showContent ? 0 : 20)
+
+      Spacer()
     }
-    .padding(.top, 10)
     // Devices with a physical Home button (no bottom safe-area inset, e.g.
     // iPhone SE) would otherwise sit flush against the screen edge here.
     .padding(.bottom, RotatingModel3DView.isCompactScreen ? 20 : 0)
