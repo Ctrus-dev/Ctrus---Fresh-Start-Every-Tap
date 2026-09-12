@@ -306,7 +306,6 @@ struct HomeView: View {
               },
               onStopTapped: { profile in
                 strategyButtonPress(profile)
-                hasCompletedFirstSession = true
               },
               onEditTapped: { profile in
                 profileToEdit = profile

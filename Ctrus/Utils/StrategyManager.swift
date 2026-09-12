@@ -48,6 +48,12 @@ class StrategyManager: ObservableObject {
     var recoveryUnlocksResetPeriodInWeeks: Int = 4
   @AppStorage("lastRecoveryUnlockDate") private var lastRecoveryUnlockDateTimestamp: Double = 0
 
+  // Drives the how-to caption under the profile list on Home — dismissed
+  // for good the first time a session actually ends, however it ends
+  // (Stop, Emergency, or a recovery code), since `handleSessionEnded` below
+  // is the one place all of those paths funnel through.
+  @AppStorage("hasCompletedFirstSession") private var hasCompletedFirstSession = false
+
   private let liveActivityManager = LiveActivityManager.shared
 
   private let timersUtil = TimersUtil()
@@ -644,6 +650,7 @@ class StrategyManager: ObservableObject {
   }
 
   private func handleSessionEnded(profile: BlockedProfiles) {
+    self.hasCompletedFirstSession = true
     self.dismissView()
 
     SoftUnblockGrantScheduler.stopAll()
