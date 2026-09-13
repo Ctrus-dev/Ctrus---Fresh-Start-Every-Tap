@@ -27,48 +27,49 @@ struct BlockedProfileListView: View {
   var body: some View {
     NavigationStack {
       Group {
-        if profiles.isEmpty {
-          ScrollView {
-            VStack {
-              Spacer(minLength: 70)
-
-              Welcome(
-                onGuidedTap: {
-                  if canCreateProfiles {
-                    showingGuidedCreation = true
-                  }
-                }
-              )
-
-              Spacer(minLength: 70)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 24)
-          }
-        } else {
+        if !profiles.isEmpty {
           List {
             ForEach(profiles) { profile in
-              ProfileRow(profile: profile, isActive: profile.id == activeSessionProfileId)
-                .padding(14)
-                .background(
-                  Color(.secondarySystemGroupedBackground),
-                  in: RoundedRectangle(cornerRadius: 18, style: .continuous)
-                )
-                .overlay(
-                  RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .strokeBorder(themeManager.themeColor, lineWidth: 3.5)
-                )
-                .contentShape(Rectangle())
-                .onTapGesture {
-                  if editMode == .inactive {
-                    profileToEdit = profile
+              HStack(spacing: 12) {
+                // Custom leading controls instead of the system's swipe-to-delete
+                // circle, so the edit (pencil) button can sit to its left.
+                if editMode == .active {
+                  Button(action: { profileToEdit = profile }) {
+                    Image(systemName: "pencil.circle.fill")
+                      .font(.title2)
+                      .foregroundStyle(.gray)
                   }
+                  .buttonStyle(.plain)
+
+                  Button(action: { deleteProfile(profile) }) {
+                    Image(systemName: "minus.circle.fill")
+                      .font(.title2)
+                      .foregroundStyle(.red)
+                  }
+                  .buttonStyle(.plain)
                 }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+
+                ProfileRow(profile: profile, isActive: profile.id == activeSessionProfileId)
+                  .padding(14)
+                  .background(
+                    Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+                  )
+                  .overlay(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                      .strokeBorder(themeManager.themeColor, lineWidth: 3.5)
+                  )
+                  .contentShape(Rectangle())
+                  .onTapGesture {
+                    if editMode == .inactive {
+                      profileToEdit = profile
+                    }
+                  }
+              }
+              .listRowSeparator(.hidden)
+              .listRowBackground(Color.clear)
+              .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
             }
-            .onDelete(perform: editMode == .active ? deleteProfiles : nil)
             .onMove(perform: editMode == .active ? moveProfiles : nil)
           }
           .listStyle(.plain)
@@ -76,6 +77,11 @@ struct BlockedProfileListView: View {
         }
       }
       .navigationTitle("Profiles")
+      .onChange(of: profiles) { _, newValue in
+        if newValue.isEmpty {
+          dismiss()
+        }
+      }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {
@@ -89,7 +95,7 @@ struct BlockedProfileListView: View {
               Image(systemName: "checkmark.circle")
             }
           }
-          if !profiles.isEmpty {
+          if editMode == .inactive && !profiles.isEmpty {
             Button(action: { editMode = .active }) {
               Image(systemName: "pencil")
             }
@@ -131,31 +137,21 @@ struct BlockedProfileListView: View {
     return activeSessionProfileId == nil
   }
 
-  private func deleteProfiles(at offsets: IndexSet) {
-    let activeSession = BlockedProfileSession.mostRecentActiveSession(
-      in: context)
-
-    // Check if any of the profiles to delete are active
-    for index in offsets {
-      let profile = profiles[index]
-      if profile.id == activeSession?.blockedProfile.id {
-        showErrorAlert = true
-        return
-      }
+  private func deleteProfile(_ profile: BlockedProfiles) {
+    let activeSession = BlockedProfileSession.mostRecentActiveSession(in: context)
+    if profile.id == activeSession?.blockedProfile.id {
+      showErrorAlert = true
+      return
     }
 
-    // Delete the profiles and reorder
     do {
-      for index in offsets {
-        let profile = profiles[index]
-        try BlockedProfiles.deleteProfile(profile, in: context)
-      }
+      try BlockedProfiles.deleteProfile(profile, in: context)
 
       // Reorder remaining profiles to fix gaps in ordering
       let remainingProfiles = try BlockedProfiles.fetchProfiles(in: context)
       try BlockedProfiles.reorderProfiles(remainingProfiles, in: context)
     } catch {
-      print("Failed to delete or reorder profiles: \(error)")
+      print("Failed to delete or reorder profile: \(error)")
     }
   }
 
