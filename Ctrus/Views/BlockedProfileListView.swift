@@ -31,20 +31,14 @@ struct BlockedProfileListView: View {
           List {
             ForEach(profiles) { profile in
               HStack(spacing: 12) {
-                // Custom leading controls instead of the system's swipe-to-delete
-                // circle, so the edit (pencil) button can sit to its left.
+                // Edit stays on the leading side; delete moves to the
+                // trailing side (replacing the system's reorder handle)
+                // so the two aren't next to each other and easy to mix up.
                 if editMode == .active {
                   Button(action: { profileToEdit = profile }) {
                     Image(systemName: "pencil.circle.fill")
                       .font(.title2)
                       .foregroundStyle(.gray)
-                  }
-                  .buttonStyle(.plain)
-
-                  Button(action: { deleteProfile(profile) }) {
-                    Image(systemName: "minus.circle.fill")
-                      .font(.title2)
-                      .foregroundStyle(.red)
                   }
                   .buttonStyle(.plain)
                 }
@@ -65,15 +59,22 @@ struct BlockedProfileListView: View {
                       profileToEdit = profile
                     }
                   }
+
+                if editMode == .active {
+                  Button(action: { deleteProfile(profile) }) {
+                    Image(systemName: "minus.circle.fill")
+                      .font(.title2)
+                      .foregroundStyle(.red)
+                  }
+                  .buttonStyle(.plain)
+                }
               }
               .listRowSeparator(.hidden)
               .listRowBackground(Color.clear)
               .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
             }
-            .onMove(perform: editMode == .active ? moveProfiles : nil)
           }
           .listStyle(.plain)
-          .environment(\.editMode, $editMode)
         }
       }
       .navigationTitle("Profiles")
@@ -155,16 +156,6 @@ struct BlockedProfileListView: View {
     }
   }
 
-  private func moveProfiles(from source: IndexSet, to destination: Int) {
-    var reorderedProfiles = Array(profiles)
-    reorderedProfiles.move(fromOffsets: source, toOffset: destination)
-
-    do {
-      try BlockedProfiles.reorderProfiles(reorderedProfiles, in: context)
-    } catch {
-      print("Failed to reorder profiles: \(error)")
-    }
-  }
 }
 
 #Preview {
