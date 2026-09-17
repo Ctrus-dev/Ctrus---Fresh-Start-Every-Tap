@@ -283,11 +283,6 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         String(localized: "Got it")
       ),
       (
-        String(localized: "Someone said make the most of your day."),
-        String(localized: "Not waste it on \(title)."),
-        String(localized: "Got it")
-      ),
-      (
         String(localized: "100% juice, they say."),
         String(localized: "Your focus is running at 0%."),
         String(localized: "Got it")

@@ -6947,29 +6947,6 @@
       }
     },
     "Not right now": {},
-    "Not waste it on %@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not waste it on %@."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No que lo desperdiciaras en %@."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não para o desperdiçares no %@."
-          }
-        }
-      }
-    },
     "OK": {
       "extractionState": "manual",
       "localizations": {
@@ -8852,29 +8829,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fazer uma coisa de cada vez é o novo superpoder"
-          }
-        }
-      }
-    },
-    "Someone said make the most of your day.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Someone said make the most of your day."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alguien dijo que exprimieras el día."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alguém disse para espremeres o dia."
           }
         }
       }
