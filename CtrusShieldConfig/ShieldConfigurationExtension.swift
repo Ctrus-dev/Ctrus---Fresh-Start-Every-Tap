@@ -278,43 +278,53 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     // Curated citrus-themed messages shown on the block screen.
     let messages: [FunMessage] = [
       (
-        String(localized: "Not ripe yet"),
-        String(localized: "\(title) can wait until you're ready to pick it."),
+        String(localized: "Life gave you lemons."),
+        String(localized: "And you want to turn them into infinite scroll."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Juicy trap"),
-        String(localized: "One click turns into twenty. Let's not squeeze this dry."),
+        String(localized: "Someone said make the most of your day."),
+        String(localized: "Not waste it on \(title)."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Protect the grove"),
-        String(localized: "A few minutes ripen into an hour before you know it."),
+        String(localized: "100% juice, they say."),
+        String(localized: "Your focus is running at 0%."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Nothing to peel"),
-        String(localized: "Relax, you're not missing anything."),
+        String(localized: "Vitamin C doesn't work like this."),
+        String(localized: "A daily dose of \(title) won't do you any good."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Drop by drop"),
-        String(localized: "Small squeezes of effort like this fill the glass fast."),
+        String(localized: "When life gives you lemons."),
+        String(localized: "You really think this is the lemonade?"),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Sour now, sweet later"),
-        String(localized: "This feeling fades faster than you think."),
+        String(localized: "The tree takes time to bear fruit."),
+        String(localized: "You keep coming back to \(title) whenever you want, that's the problem."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Make lemonade"),
-        String(localized: "When life gives you lemons, close \(title)."),
+        String(localized: "Sweet on the outside."),
+        String(localized: "Bitter when you realize how many hours you've already spent here."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Grow somewhere better"),
-        String(localized: "Your attention can bear more fruit elsewhere."),
+        String(localized: "Looks harmless on the outside."),
+        String(localized: "You know it's bitter on the inside."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Good things take time to ripen."),
+        String(localized: "\(title) isn't one of them."),
+        String(localized: "Got it")
+      ),
+      (
+        String(localized: "Here we are again."),
+        String(localized: "This is getting repetitive, and not in a sweet way."),
         String(localized: "Got it")
       ),
     ]

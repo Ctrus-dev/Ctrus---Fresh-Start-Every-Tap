@@ -253,6 +253,29 @@
         }
       }
     },
+    "%@ isn't one of them.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ isn't one of them."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no es una de ellas."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O %@ não é uma delas."
+          }
+        }
+      }
+    },
     "%@ selected": {
       "extractionState": "manual",
       "localizations": {
@@ -1012,6 +1035,29 @@
         }
       }
     },
+    "100% juice, they say.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100% juice, they say."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100% zumo, dicen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100% sumo, dizem eles."
+          }
+        }
+      }
+    },
     "15 minutes": {
       "extractionState": "manual",
       "localizations": {
@@ -1265,25 +1311,25 @@
         }
       }
     },
-    "A few minutes ripen into an hour before you know it.": {
+    "A daily dose of %@ won't do you any good.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "A few minutes ripen into an hour before you know it."
+            "value": "A daily dose of %@ won't do you any good."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unos minutos maduran en una hora sin darte cuenta."
+            "value": "Una dosis diaria de %@ no te va a hacer bien."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uns minutos amadurecem numa hora sem dares por isso."
+            "value": "Uma dose diária de %@ não te vai fazer bem."
           }
         }
       }
@@ -1813,6 +1859,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ícones alternativos da app não estão disponíveis neste dispositivo."
+          }
+        }
+      }
+    },
+    "And you want to turn them into infinite scroll.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "And you want to turn them into infinite scroll."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Y tú quieres convertirlos en scroll infinito."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E tu a querer transformá-los em scroll infinito."
           }
         }
       }
@@ -2503,6 +2572,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beta"
+          }
+        }
+      }
+    },
+    "Bitter when you realize how many hours you've already spent here.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitter when you realize how many hours you've already spent here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amargo cuando te das cuenta de las horas que ya pasaste aquí."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amargo quando percebes as horas que já cá passaste."
           }
         }
       }
@@ -4232,29 +4324,6 @@
         }
       }
     },
-    "Drop by drop": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop by drop"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gota a gota"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gota a gota"
-          }
-        }
-      }
-    },
     "Duplicate Profile": {
       "extractionState": "manual",
       "localizations": {
@@ -5152,6 +5221,29 @@
         }
       }
     },
+    "Good things take time to ripen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good things take time to ripen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las cosas buenas tardan en madurar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As coisas boas levam tempo a amadurecer."
+          }
+        }
+      }
+    },
     "Got it": {
       "extractionState": "manual",
       "localizations": {
@@ -5221,29 +5313,6 @@
         }
       }
     },
-    "Grow somewhere better": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grow somewhere better"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crece en otro lado"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cresce noutro lado"
-          }
-        }
-      }
-    },
     "Help": {
       "extractionState": "manual",
       "localizations": {
@@ -5263,6 +5332,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajuda"
+          }
+        }
+      }
+    },
+    "Here we are again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Here we are again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aquí estamos otra vez."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cá estamos outra vez."
           }
         }
       }
@@ -5589,29 +5681,6 @@
         }
       }
     },
-    "Juicy trap": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Juicy trap"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trampa jugosa"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Armadilha sumarenta"
-          }
-        }
-      }
-    },
     "Last Month": {
       "extractionState": "manual",
       "localizations": {
@@ -5700,6 +5769,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vamos começar criando o teu primeiro perfil. Podes personalizá-lo tanto quanto quiseres."
+          }
+        }
+      }
+    },
+    "Life gave you lemons.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Life gave you lemons."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vida te dio limones."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A vida deu-te limões."
           }
         }
       }
@@ -5796,6 +5888,29 @@
         }
       }
     },
+    "Looks harmless on the outside.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looks harmless on the outside."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por fuera parece inofensivo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por fora parece inofensivo."
+          }
+        }
+      }
+    },
     "Made in": {
       "extractionState": "manual",
       "localizations": {
@@ -5838,29 +5953,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Faz cada minuto valer a pena"
-          }
-        }
-      }
-    },
-    "Make lemonade": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Make lemonade"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haz limonada"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faz limonada"
           }
         }
       }
@@ -6855,48 +6947,25 @@
       }
     },
     "Not right now": {},
-    "Not ripe yet": {
+    "Not waste it on %@.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Not ripe yet"
+            "value": "Not waste it on %@."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Todavía no está maduro"
+            "value": "No que lo desperdiciaras en %@."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ainda não está maduro"
-          }
-        }
-      }
-    },
-    "Nothing to peel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nothing to peel"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nada que pelar"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nada para descascar"
+            "value": "Não para o desperdiçares no %@."
           }
         }
       }
@@ -6966,29 +7035,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Numa Pausa"
-          }
-        }
-      }
-    },
-    "One click turns into twenty. Let's not squeeze this dry.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "One click turns into twenty. Let's not squeeze this dry."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un clic se convierte en veinte. No exprimamos esto hasta el final."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um clique vira vinte. Não vamos espremer isto até ao fim."
           }
         }
       }
@@ -7568,29 +7614,6 @@
         }
       }
     },
-    "Protect the grove": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protect the grove"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protege el huerto"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protege o pomar"
-          }
-        }
-      }
-    },
     "Protect your attention": {
       "extractionState": "manual",
       "localizations": {
@@ -7794,29 +7817,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Atualizar"
-          }
-        }
-      }
-    },
-    "Relax, you're not missing anything.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relax, you're not missing anything."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relájate, no te estás perdiendo nada."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Descansa, não estás a perder nada."
           }
         }
       }
@@ -8856,25 +8856,25 @@
         }
       }
     },
-    "Small squeezes of effort like this fill the glass fast.": {
+    "Someone said make the most of your day.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Small squeezes of effort like this fill the glass fast."
+            "value": "Someone said make the most of your day."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pequeños chorritos de jugo como este llenan el vaso rápido."
+            "value": "Alguien dijo que exprimieras el día."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pequenas gotas de sumo como esta enchem o copo depressa."
+            "value": "Alguém disse para espremeres o dia."
           }
         }
       }
@@ -8898,29 +8898,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algo correu mal ao obter o perfil"
-          }
-        }
-      }
-    },
-    "Sour now, sweet later": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sour now, sweet later"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agrio ahora, dulce después"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Azedo agora, doce depois"
           }
         }
       }
@@ -9638,6 +9615,29 @@
         }
       }
     },
+    "Sweet on the outside.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweet on the outside."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dulce por fuera."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doce por fora."
+          }
+        }
+      }
+    },
     "Tag": {
       "extractionState": "manual",
       "localizations": {
@@ -10052,6 +10052,29 @@
         }
       }
     },
+    "The tree takes time to bear fruit.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The tree takes time to bear fruit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El árbol tarda en dar frutos."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A árvore demora a dar frutos."
+          }
+        }
+      }
+    },
     "Theme": {
       "extractionState": "manual",
       "localizations": {
@@ -10190,25 +10213,25 @@
         }
       }
     },
-    "This feeling fades faster than you think.": {
+    "This is getting repetitive, and not in a sweet way.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This feeling fades faster than you think."
+            "value": "This is getting repetitive, and not in a sweet way."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta sensación pasa más rápido de lo que piensas."
+            "value": "Esto se está volviendo repetitivo, y nada dulce."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta sensação passa mais depressa do que pensas."
+            "value": "Isto está a ficar repetitivo, e nada doce."
           }
         }
       }
@@ -11179,6 +11202,29 @@
         }
       }
     },
+    "Vitamin C doesn't work like this.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitamin C doesn't work like this."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vitamina C no se toma así."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitamina C não se toma assim."
+          }
+        }
+      }
+    },
     "Warning!": {
       "extractionState": "manual",
       "localizations": {
@@ -11340,25 +11386,25 @@
         }
       }
     },
-    "When life gives you lemons, close %@.": {
+    "When life gives you lemons.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "When life gives you lemons, close %@."
+            "value": "When life gives you lemons."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cuando la vida te da limones, cierra %@."
+            "value": "Cuando la vida te da limones."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quando a vida te dá limões, fecha o %@."
+            "value": "Quando a vida dá limões."
           }
         }
       }
@@ -11616,6 +11662,52 @@
         }
       }
     },
+    "You keep coming back to %@ whenever you want, that's the problem.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You keep coming back to %@ whenever you want, that's the problem."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú vuelves a %@ cuando quieres, ese es el problema."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu voltas ao %@ sempre que queres, isso é que é o problema."
+          }
+        }
+      }
+    },
+    "You know it's bitter on the inside.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You know it's bitter on the inside."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por dentro sabes que es amargo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por dentro sabes que é amargo."
+          }
+        }
+      }
+    },
     "You must scan the original tag to stop focus": {
       "extractionState": "manual",
       "localizations": {
@@ -11635,6 +11727,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tens de ler a tag original para parar o foco"
+          }
+        }
+      }
+    },
+    "You really think this is the lemonade?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You really think this is the lemonade?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿De verdad crees que esto es la limonada?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Achas mesmo que isto é a limonada?"
           }
         }
       }
@@ -11685,29 +11800,6 @@
         }
       }
     },
-    "Your attention can bear more fruit elsewhere.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your attention can bear more fruit elsewhere."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu atención puede dar más frutos en otro lado."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A tua atenção pode dar mais frutos noutro lado."
-          }
-        }
-      }
-    },
     "Your attention determines your direction": {
       "extractionState": "manual",
       "localizations": {
@@ -11750,6 +11842,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "A tua atenção é preciosa"
+          }
+        }
+      }
+    },
+    "Your focus is running at 0%.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your focus is running at 0%."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu concentración anda al 0%."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tua concentração é que anda a 0%."
           }
         }
       }
