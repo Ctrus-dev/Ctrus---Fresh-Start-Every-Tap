@@ -228,7 +228,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
 #Preview {
   @Previewable @State var physicalUnblockItems: [PhysicalUnblockItem] = [
     PhysicalUnblockItem(name: "Tag 1", type: .nfc, codeValue: "04AABBCC11223344"),
-    PhysicalUnblockItem(name: "Tag 2", type: .nfc, codeValue: "https://ctrus.net/profile/tag-2"),
+    PhysicalUnblockItem(name: "Tag 2", type: .nfc, codeValue: "https://ctrus.pt/profile/tag-2"),
   ]
 
   NavigationStack {

@@ -157,7 +157,7 @@ class StrategyManager: ObservableObject {
     )
   }
 
-  // Opening a `ctrus.net/profile/<id>` universal link can reach this app
+  // Opening a `ctrus.pt/profile/<id>` universal link can reach this app
   // with zero user confirmation (a link tapped in Messages/Safari/anywhere).
   // Starting a session from that is harmless, but silently *stopping* one
   // defeats the whole point of a self-control app, so resolving what a link
@@ -857,7 +857,7 @@ class StrategyManager: ObservableObject {
   }
 
   // Recovery path for someone who lost their Ctrus tag and has no emergency
-  // breaks left. The code is fetched from recover.ctrus.net, outside the app,
+  // breaks left. The code is fetched from recover.ctrus.pt, outside the app,
   // and is single-use.
   func unlockWithRecoveryCode(_ code: String, context: ModelContext) async -> RecoveryCodeVerification {
     // Do not allow verification if the recovery unlock is still on cooldown

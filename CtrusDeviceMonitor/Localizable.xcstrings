@@ -7408,25 +7408,25 @@
         }
       }
     },
-    "That unlock code isn't valid. Visit ctrus.net to get one.": {
+    "That unlock code isn't valid. Visit ctrus.pt to get one.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "That unlock code isn't valid. Visit ctrus.net to get one."
+            "value": "That unlock code isn't valid. Visit ctrus.pt to get one."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esse código de desbloqueio não é válido. Visita ctrus.net para obteres um."
+            "value": "Esse código de desbloqueio não é válido. Visita ctrus.pt para obteres um."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ese código de desbloqueo no es válido. Visita ctrus.net para obtener uno."
+            "value": "Ese código de desbloqueo no es válido. Visita ctrus.pt para obtener uno."
           }
         }
       }

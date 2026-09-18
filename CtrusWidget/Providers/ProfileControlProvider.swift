@@ -21,7 +21,7 @@ struct ProfileControlProvider: AppIntentTimelineProvider {
       profileName: "Focus Session",
       activeSession: nil,
       profileSnapshot: nil,
-      deepLinkURL: URL(string: "https://ctrus.net/profile/placeholder"),
+      deepLinkURL: URL(string: "https://ctrus.pt/profile/placeholder"),
       focusMessage: "Stay focused and avoid distractions",
       useProfileURL: false
     )
@@ -99,9 +99,9 @@ struct ProfileControlProvider: AppIntentTimelineProvider {
     var deepLinkURL: URL?
     if let profileId = targetProfileId {
       if let useProfileURL = configuration.useProfileURL, useProfileURL == true {
-        deepLinkURL = URL(string: "https://ctrus.net/profile/\(profileId)")
+        deepLinkURL = URL(string: "https://ctrus.pt/profile/\(profileId)")
       } else {
-        deepLinkURL = URL(string: "https://ctrus.net/navigate/\(profileId)")
+        deepLinkURL = URL(string: "https://ctrus.pt/navigate/\(profileId)")
       }
     } else {
       deepLinkURL = URL(string: "Ctrus://")

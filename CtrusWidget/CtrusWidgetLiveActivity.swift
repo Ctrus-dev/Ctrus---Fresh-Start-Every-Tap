@@ -130,7 +130,7 @@ struct CtrusWidgetLiveActivity: Widget {
         CtrusLogo(size: minimalLogoSize)
           .frame(width: minimalLogoSize, height: minimalLogoSize)
       }
-      .widgetURL(URL(string: "http://www.ctrus.net"))
+      .widgetURL(URL(string: "http://www.ctrus.pt"))
       .keylineTint(Color.purple)
     }
   }

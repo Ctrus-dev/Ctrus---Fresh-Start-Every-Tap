@@ -11,7 +11,7 @@ Não guarda nenhuma informação pessoal — o `deviceId` é só um UUID aleató
 
 ## Deploy (primeira vez)
 
-Estes passos exigem a tua conta Cloudflare (onde já está registado o domínio `ctrus.net`).
+Estes passos exigem a tua conta Cloudflare (onde já está registado o domínio `ctrus.pt`).
 
 ```bash
 cd CtrusRecoveryWorker
@@ -38,15 +38,15 @@ Copia esse `id` para o `wrangler.toml` (substitui `REPLACE_ME_AFTER_RUNNING_WRAN
 npx wrangler deploy
 ```
 
-## Ligar o domínio `recover.ctrus.net`
+## Ligar o domínio `recover.ctrus.pt`
 
 Na dashboard da Cloudflare:
 
 1. **Workers & Pages** -> `ctrus-recovery` -> **Settings** -> **Domains & Routes**
-2. **Add** -> **Custom Domain** -> escreve `recover.ctrus.net`
+2. **Add** -> **Custom Domain** -> escreve `recover.ctrus.pt`
 3. Confirma. A Cloudflare trata do DNS automaticamente porque o domínio já está na tua conta.
 
-Depois disto, `https://recover.ctrus.net` já serve a página de recuperação e os dois endpoints.
+Depois disto, `https://recover.ctrus.pt` já serve a página de recuperação e os dois endpoints.
 
 ## Deploys seguintes
 
@@ -58,11 +58,11 @@ npx wrangler deploy
 ## Testar
 
 ```bash
-curl -X POST https://recover.ctrus.net/request-code \
+curl -X POST https://recover.ctrus.pt/request-code \
   -H "content-type: application/json" \
   -d '{"deviceId":"teste-123"}'
 
-curl -X POST https://recover.ctrus.net/verify-code \
+curl -X POST https://recover.ctrus.pt/verify-code \
   -H "content-type: application/json" \
   -d '{"deviceId":"teste-123","code":"CODIGO-RECEBIDO"}'
 ```

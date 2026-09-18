@@ -93,7 +93,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
       (payload: NFCNDEFPayload) -> URLComponents? in
       if let url = payload.wellKnownTypeURIPayload() {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        if components?.host == "ctrus.net" && components?.scheme == "https" {
+        if components?.host == "ctrus.pt" && components?.scheme == "https" {
           return components
         }
       }

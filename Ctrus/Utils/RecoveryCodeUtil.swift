@@ -12,7 +12,7 @@ enum RecoveryCodeUtil {
   )!
 
   private static let deviceIDKey = "recoveryCode.deviceID"
-  private static let baseURL = URL(string: "https://recover.ctrus.net")!
+  private static let baseURL = URL(string: "https://recover.ctrus.pt")!
 
   static var deviceID: String {
     if let existing = suite.string(forKey: deviceIDKey) {

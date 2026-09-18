@@ -9,4 +9,4 @@ binding = "RECOVERY_CODES"
 id = "c95272d588ce43eda5d292b59d28a227"
 
 # After `wrangler deploy`, attach the custom domain from the dashboard:
-# Workers & Pages -> ctrus-recovery -> Settings -> Domains & Routes -> Add Custom Domain -> recover.ctrus.net
+# Workers & Pages -> ctrus-recovery -> Settings -> Domains & Routes -> Add Custom Domain -> recover.ctrus.pt

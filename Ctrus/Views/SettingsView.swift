@@ -66,7 +66,7 @@ struct SettingsView: View {
 
   @ViewBuilder
   private var recoverySectionContent: some View {
-    Link(destination: URL(string: "https://recover.ctrus.net")!) {
+    Link(destination: URL(string: "https://recover.ctrus.pt")!) {
       HStack {
         Text("Get an Unlock Code")
           .foregroundColor(.primary)
@@ -287,7 +287,7 @@ struct SettingsView: View {
       .alert("Invalid Code", isPresented: $showInvalidUnlockCodeAlert) {
         Button("OK", role: .cancel) {}
       } message: {
-        Text("That unlock code isn't valid or has expired. Visit recover.ctrus.net to get a new one.")
+        Text("That unlock code isn't valid or has expired. Visit recover.ctrus.pt to get a new one.")
       }
       .alert("Connection Problem", isPresented: $showUnlockNetworkErrorAlert) {
         Button("OK", role: .cancel) {}

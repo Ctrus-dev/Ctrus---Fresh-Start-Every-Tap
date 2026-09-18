@@ -347,7 +347,7 @@ class BlockedProfiles {
   }
 
   static func getProfileDeepLink(_ profile: BlockedProfiles) -> String {
-    return "https://ctrus.net/profile/" + profile.id.uuidString
+    return "https://ctrus.pt/profile/" + profile.id.uuidString
   }
 
   static func getSnapshot(for profile: BlockedProfiles) -> SharedData.ProfileSnapshot {

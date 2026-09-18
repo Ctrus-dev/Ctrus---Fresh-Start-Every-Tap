@@ -39,7 +39,7 @@ struct ProfileWidgetEntryView: View {
   private var linkToOpen: URL {
     // Don't open the app via profile to stop the session
     if entry.isBreakActive || entry.isSessionActive {
-      return URL(string: "https://ctrus.net")!
+      return URL(string: "https://ctrus.pt")!
     }
 
     return entry.deepLinkURL ?? URL(string: "Ctrus://")!
@@ -285,7 +285,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/test-id"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/test-id"),
     focusMessage: "Stay focused and avoid distractions",
     useProfileURL: true
   )
@@ -326,7 +326,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(activeProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(activeProfileId.uuidString)"),
     focusMessage: "Deep focus time",
     useProfileURL: true
   )
@@ -367,7 +367,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(breakProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(breakProfileId.uuidString)"),
     focusMessage: "Take a well-deserved break",
     useProfileURL: true
   )
@@ -410,7 +410,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(pauseProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(pauseProfileId.uuidString)"),
     focusMessage: "Session is paused",
     useProfileURL: true
   )
@@ -464,7 +464,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(unavailableProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(unavailableProfileId.uuidString)"),
     focusMessage: "Different profile is currently active",
     useProfileURL: true
   )
@@ -501,7 +501,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(idleProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(idleProfileId.uuidString)"),
     focusMessage: "Stay focused",
     useProfileURL: true
   )
@@ -542,7 +542,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(activeProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(activeProfileId.uuidString)"),
     focusMessage: "Deep focus time",
     useProfileURL: true
   )
@@ -583,7 +583,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(breakProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(breakProfileId.uuidString)"),
     focusMessage: "Take a break",
     useProfileURL: true
   )
@@ -638,7 +638,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(pauseProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(pauseProfileId.uuidString)"),
     focusMessage: "Session paused",
     useProfileURL: true
   )
@@ -675,7 +675,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(idleProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(idleProfileId.uuidString)"),
     focusMessage: "Stay focused",
     useProfileURL: true
   )
@@ -716,7 +716,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(activeProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(activeProfileId.uuidString)"),
     focusMessage: "Deep focus",
     useProfileURL: true
   )
@@ -769,7 +769,7 @@ struct ProfileWidgetEntryView: View {
       schedule: nil,
       disableBackgroundStops: nil
     ),
-    deepLinkURL: URL(string: "https://ctrus.net/profile/\(breakProfileId.uuidString)"),
+    deepLinkURL: URL(string: "https://ctrus.pt/profile/\(breakProfileId.uuidString)"),
     focusMessage: "Take a break",
     useProfileURL: true
   )
