@@ -1863,13 +1863,13 @@
         }
       }
     },
-    "And you want to turn them into infinite scroll.": {
+    "And you want to turn them into doomscrolling.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "And you want to turn them into infinite scroll."
+            "value": "And you want to turn them into doomscrolling."
           }
         },
         "es": {

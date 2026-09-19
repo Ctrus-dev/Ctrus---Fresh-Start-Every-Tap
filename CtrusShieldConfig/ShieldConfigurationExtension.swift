@@ -279,7 +279,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     let messages: [FunMessage] = [
       (
         String(localized: "Life gave you lemons."),
-        String(localized: "And you want to turn them into infinite scroll."),
+        String(localized: "And you want to turn them into doomscrolling."),
         String(localized: "Got it")
       ),
       (
