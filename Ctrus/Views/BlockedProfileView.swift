@@ -9,6 +9,7 @@ struct AlertIdentifier: Identifiable {
     case error
     case deleteProfile
     case missingPhysicalUnlock
+    case missingScheduleDays
     case discardChanges
   }
 
@@ -81,6 +82,10 @@ struct BlockedProfileView: View {
           draft: draft,
           disabled: isBlocking
         )
+
+        if draft.useSchedule {
+          BlockedProfileScheduleSection(draft: draft, disabled: isBlocking)
+        }
 
         BlockedProfileAppsSection(
           draft: draft,
@@ -229,6 +234,12 @@ struct BlockedProfileView: View {
             message: Text("Set a Physical Unlock to continue."),
             dismissButton: .default(Text("OK"))
           )
+        case .missingScheduleDays:
+          return Alert(
+            title: Text("Warning!"),
+            message: Text("Choose at least one day for the schedule."),
+            dismissButton: .default(Text("OK"))
+          )
         case .discardChanges:
           return Alert(
             title: Text("Discard Changes?"),
@@ -258,6 +269,13 @@ struct BlockedProfileView: View {
     guard !draft.physicalUnblockItems.isEmpty else {
       alertIdentifier = AlertIdentifier(id: .missingPhysicalUnlock)
       return
+    }
+
+    if draft.useSchedule {
+      guard !draft.schedule.days.isEmpty else {
+        alertIdentifier = AlertIdentifier(id: .missingScheduleDays)
+        return
+      }
     }
 
     do {

@@ -16,6 +16,7 @@ class StrategyManager: ObservableObject {
     NFCTimerBlockingStrategy(),
     NFCPauseTimerBlockingStrategy(),
     ShortcutTimerBlockingStrategy(),
+    ScheduleBlockingStrategy(),
   ]
 
   // Strategies offered when creating or editing a profile.

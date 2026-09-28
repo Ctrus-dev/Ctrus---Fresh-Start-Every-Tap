@@ -166,6 +166,16 @@ struct SettingsView: View {
         AppIconPicker(selectionColor: themeManager.themeColor)
 
         Section("Help") {
+          Link(destination: URL(string: "https://ctrus.pt/pages/faq")!) {
+            HStack {
+              Text("Looking for Answers?")
+                .foregroundColor(.primary)
+              Spacer()
+              Image(systemName: "arrow.up.right.square")
+                .foregroundColor(.secondary)
+            }
+          }
+
           HStack {
             Text("Debug Mode")
               .foregroundColor(.primary)

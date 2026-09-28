@@ -5,7 +5,8 @@ class NFCBlockingStrategy: BlockingStrategy {
   static var id: String = "NFCBlockingStrategy"
 
   var name: String = String(localized: "Ctrus NFC")
-  var description: String = String(localized: "Start and stop by tapping your Ctrus.")
+  var description: String = String(
+    localized: "You'll need your Ctrus to both start and end the session.")
   var color: Color = .yellow
   var pickerCategory: BlockingStrategyPickerCategory = .mostPopular
 

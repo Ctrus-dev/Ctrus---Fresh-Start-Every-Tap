@@ -8598,29 +8598,6 @@
         }
       }
     },
-    "Start and stop by tapping your Ctrus.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start and stop by tapping your Ctrus."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia y detén tocando tu Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia e para tocando no teu Ctrus."
-          }
-        }
-      }
-    },
     "Start and stop in the app. You do not need to scan anything.": {
       "extractionState": "manual",
       "localizations": {
@@ -8663,29 +8640,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar configuração guiada do perfil"
-          }
-        }
-      }
-    },
-    "Start in the app. Stop by tapping your Ctrus.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start in the app. Stop by tapping your Ctrus."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia en la app. Detén tocando tu Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia na app. Para tocando no teu Ctrus."
           }
         }
       }
@@ -11755,7 +11709,375 @@
         }
       }
     },
-    "🇵🇹": {}
+    "🇵🇹": {},
+    "Schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horario"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário"
+          }
+        }
+      }
+    },
+    "Start Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Inicio"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Início"
+          }
+        }
+      }
+    },
+    "Set your schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your schedule"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura tu horario"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura o teu horário"
+          }
+        }
+      }
+    },
+    "Choose at least one day for the schedule.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose at least one day for the schedule."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige al menos un día para el horario."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe pelo menos um dia para o horário."
+          }
+        }
+      }
+    },
+    "Looking for Answers?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looking for Answers?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Buscas Respuestas?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À Procura de Respostas?"
+          }
+        }
+      }
+    },
+    "Choose the days of the week and start time this profile should turn on by itself.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the days of the week and start time this profile should turn on by itself."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige los días de la semana y la hora a la que este perfil debe activarse solo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe os dias da semana e a hora a que este perfil se deve ligar sozinho."
+          }
+        }
+      }
+    },
+    "Schedule + Ctrus NFC": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule + Ctrus NFC"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horario + Ctrus NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário + Ctrus NFC"
+          }
+        }
+      }
+    },
+    "Automatic Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicio Automático"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Início Automático"
+          }
+        }
+      }
+    },
+    "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define la hora y en qué días de la semana quieres que este perfil empiece automáticamente. Para terminarlo vas a necesitar tu Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define a hora e em que dias da semana queres que este perfil comece automáticamente. Para terminar vais precisar do teu Ctrus."
+          }
+        }
+      }
+    },
+    "Start by pressing the session bubble in the app. You'll need your Ctrus to end it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start by pressing the session bubble in the app. You'll need your Ctrus to end it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia al pulsar la burbuja de la sesión en la app. Para terminarla vas a necesitar tu Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia ao pressionar a bolha da sessão na app. Para terminar vais precisar do teu Ctrus."
+          }
+        }
+      }
+    },
+    "You'll need your Ctrus to both start and end the session.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You'll need your Ctrus to both start and end the session."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vas a necesitar tu Ctrus tanto para empezar la sesión como para terminarla."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vais precisar do teu Ctrus tanto para começar a sessão como para acabar."
+          }
+        }
+      }
+    },
+    "Starting Soon!": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting Soon!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Casi Empieza!"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quase a Começar!"
+          }
+        }
+      }
+    },
+    "%@ starts in 5 minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ starts in 5 minutes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ comienza en 5 minutos."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ começa dentro de 5 minutos."
+          }
+        }
+      }
+    },
+    "Couldn't Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Se Pudo Iniciar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não Foi Possível Iniciar"
+          }
+        }
+      }
+    },
+    "%@ didn't start because %@ is still active.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ didn't start because %@ is still active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no empezó porque %@ todavía está activo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não começou porque %@ ainda está ativo."
+          }
+        }
+      }
+    },
+    "%@ didn't start because another profile is still active.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ didn't start because another profile is still active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no empezó porque otro perfil todavía está activo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não começou porque outro perfil ainda está ativo."
+          }
+        }
+      }
+    }
   },
   "version": "1.0"
 }

@@ -1,21 +1,27 @@
 import SwiftData
 import SwiftUI
 
-class NFCManualBlockingStrategy: BlockingStrategy {
-  static var id: String = "NFCManualBlockingStrategy"
+// Backs the "Schedule" option in profile creation. ScheduleTimerActivity
+// starts a session automatically at the configured days/time through
+// DeviceActivityCenter, but never ends one — stopping always goes through
+// this strategy's NFC scan, same as tapping "Stop" would for any other
+// physically-unlocked profile.
+class ScheduleBlockingStrategy: BlockingStrategy {
+  static var id: String = "ScheduleBlockingStrategy"
 
-  var name: String = String(localized: "Manual + Ctrus NFC")
+  var name: String = String(localized: "Schedule + Ctrus NFC")
   var description: String = String(
-    localized: "Start by pressing the session bubble in the app. You'll need your Ctrus to end it."
+    localized:
+      "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it."
   )
-  var color: Color = .yellow
-  var pickerCategory: BlockingStrategyPickerCategory = .easyToStart
+  var color: Color = .green
+  var pickerCategory: BlockingStrategyPickerCategory = .mostPopular
 
   var usesNFC: Bool = true
   var startsManually: Bool = true
 
   var tags: [BlockingStrategyTag] {
-    [.manualStart, .nfc]
+    [.automaticStart, .nfc]
   }
 
   var onSessionCreation: ((SessionStatus) -> Void)?
@@ -25,7 +31,7 @@ class NFCManualBlockingStrategy: BlockingStrategy {
   private let appBlocker: AppBlockerUtil = AppBlockerUtil()
 
   func getIdentifier() -> String {
-    return NFCManualBlockingStrategy.id
+    return ScheduleBlockingStrategy.id
   }
 
   func startBlocking(
@@ -39,8 +45,7 @@ class NFCManualBlockingStrategy: BlockingStrategy {
       BlockedProfileSession
       .createSession(
         in: context,
-        // Manually starting sessions, since nothing was scanned to start there is no tag to store for each session
-        withTag: ManualBlockingStrategy.id,
+        withTag: ScheduleBlockingStrategy.id,
         withProfile: profile,
         forceStart: forceStart ?? false
       )

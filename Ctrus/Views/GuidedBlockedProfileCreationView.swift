@@ -2,12 +2,13 @@ import FamilyControls
 import SwiftData
 import SwiftUI
 
-private enum GuidedProfileStep: Int, CaseIterable, Identifiable {
+private enum GuidedProfileStep: Int, Identifiable {
   case name
   case strategy
   case apps
   case domains
   case strictUnlocks
+  case schedule
   case breaks
   case strictSafeguards
   case review
@@ -26,6 +27,8 @@ private enum GuidedProfileStep: Int, CaseIterable, Identifiable {
       return "Websites"
     case .strictUnlocks:
       return "Unlocks"
+    case .schedule:
+      return "Schedule"
     case .breaks:
       return "Breaks"
     case .strictSafeguards:
@@ -47,6 +50,8 @@ private enum GuidedProfileStep: Int, CaseIterable, Identifiable {
       return String(localized: "Choose domains and how to block them")
     case .strictUnlocks:
       return String(localized: "Set your Ctrus")
+    case .schedule:
+      return String(localized: "Set your schedule")
     case .breaks:
       return String(localized: "Allow breaks")
     case .strictSafeguards:
@@ -69,6 +74,10 @@ private enum GuidedProfileStep: Int, CaseIterable, Identifiable {
     case .strictUnlocks:
       return String(
         localized: "You'll need to bring your iPhone close to your Ctrus to scan it before you can continue."
+      )
+    case .schedule:
+      return String(
+        localized: "Choose the days of the week and start time this profile should turn on by itself."
       )
     case .breaks:
       return String(localized: "Timed breaks let you pause once during a session without ending the profile.")
@@ -97,7 +106,17 @@ struct GuidedBlockedProfileCreationView: View {
   @State private var alertIdentifier: AlertIdentifier?
   @State private var navigationDirection: CGFloat = 1
 
-  private let steps = GuidedProfileStep.allCases
+  private var steps: [GuidedProfileStep] {
+    var result: [GuidedProfileStep] = [.name, .strategy]
+
+    if draft.useSchedule {
+      result.append(.schedule)
+    }
+
+    result.append(
+      contentsOf: [.apps, .domains, .strictUnlocks, .breaks, .strictSafeguards, .review])
+    return result
+  }
 
   private var currentStepIndex: Int {
     return steps.firstIndex(of: currentStep) ?? 0
@@ -117,6 +136,8 @@ struct GuidedBlockedProfileCreationView: View {
       return draft.isValid
     case .strictUnlocks:
       return !draft.physicalUnblockItems.isEmpty
+    case .schedule:
+      return !draft.schedule.days.isEmpty
     default:
       return true
     }
@@ -297,6 +318,15 @@ struct GuidedBlockedProfileCreationView: View {
         BlockedProfileStrictUnlocksFields(draft: draft, disabled: false)
       }
 
+    case .schedule:
+      guidedCard(title: "Schedule") {
+        BlockedProfileScheduleFields(
+          draft: draft,
+          disabled: false,
+          showsSeparators: true
+        )
+      }
+
     case .breaks:
       guidedCard(title: "Breaks") {
         BlockedProfileBreaksFields(
@@ -411,6 +441,10 @@ private struct GuidedProfileReviewContent: View {
       reviewDivider
       reviewRow(title: String(localized: "Domains"), value: domainSummary)
       reviewDivider
+      if draft.useSchedule {
+        reviewRow(title: String(localized: "Schedule"), value: draft.schedule.summaryText)
+        reviewDivider
+      }
       reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
       reviewDivider
       reviewRow(title: String(localized: "Safeguards"), value: safeguardsSummary)
@@ -476,10 +510,6 @@ private struct GuidedProfileReviewContent: View {
 
     if draft.enableBlockAppInstallation {
       enabled.append(String(localized: "New app installs blocked"))
-    }
-
-    if draft.disableBackgroundStops {
-      enabled.append(String(localized: "Ctrus required to stop"))
     }
 
     if !draft.enableEmergencyUnblock {

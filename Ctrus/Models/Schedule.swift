@@ -61,10 +61,11 @@ struct BlockedProfileSchedule: Codable, Equatable {
       .map { $0.shortLabel }
       .joined(separator: " ")
 
+    // There is no automatic end time to show here — stopping always
+    // requires the Ctrus NFC, so only the automatic start is a schedule row.
     let start = formattedTimeString(hour24: startHour, minute: startMinute)
-    let end = formattedTimeString(hour24: endHour, minute: endMinute)
 
-    return "\(daysSummary) · \(start) - \(end)"
+    return "\(daysSummary) · \(start)"
   }
 
   func isTodayScheduled(now: Date = Date(), calendar: Calendar = .current) -> Bool {
@@ -147,9 +148,13 @@ struct BlockedProfileSchedule: Codable, Equatable {
   }
 
   private func formattedTimeString(hour24: Int, minute: Int) -> String {
-    var hour = hour24 % 12
-    if hour == 0 { hour = 12 }
-    let isPM = hour24 >= 12
-    return "\(hour):\(String(format: "%02d", minute)) \(isPM ? "PM" : "AM")"
+    let date =
+      Calendar.current.date(bySettingHour: hour24, minute: minute, second: 0, of: Date())
+      ?? Date()
+
+    let formatter = DateFormatter()
+    formatter.locale = Locale.autoupdatingCurrent
+    formatter.setLocalizedDateFormatFromTemplate("jm")
+    return formatter.string(from: date)
   }
 }

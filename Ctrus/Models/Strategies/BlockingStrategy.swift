@@ -56,6 +56,7 @@ enum BlockingStrategyTag: String, Hashable {
   case timer
   case pause
   case manualStart
+  case automaticStart
   case beta
 
   var title: String {
@@ -68,6 +69,8 @@ enum BlockingStrategyTag: String, Hashable {
       return String(localized: "Pause")
     case .manualStart:
       return String(localized: "Manual Start")
+    case .automaticStart:
+      return String(localized: "Automatic Start")
     case .beta:
       return String(localized: "Beta")
     }

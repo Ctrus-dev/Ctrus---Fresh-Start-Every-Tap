@@ -57,7 +57,7 @@ struct StrategyRow: View {
         Text(strategy.description)
           .font(.subheadline)
           .foregroundStyle(.secondary)
-          .lineLimit(2)
+          .lineLimit(3)
 
         if !strategy.tags.isEmpty {
           HStack(spacing: 6) {

@@ -1,5 +1,6 @@
 import DeviceActivity
 import OSLog
+import UserNotifications
 
 private let log: Logger = Logger(subsystem: "com.Ctrus.monitor", category: ScheduleTimerActivity.id)
 
@@ -55,12 +56,17 @@ class ScheduleTimerActivity: TimerActivity {
           "Start schedule timer activity for \(profileId), existing session profile matches device activity profile, continuing active session"
         )
         return
-      } else {
-        log.info(
-          "Start schedule timer activity for \(profileId), existing session profile does not match device activity profile, ending active session"
-        )
-        SharedData.endActiveSharedSession()
       }
+
+      // A different profile is already active (started manually, by NFC, or
+      // by another schedule). Never end it or swap its restrictions here —
+      // leave it running until it's stopped the normal way, and just skip
+      // this trigger.
+      log.info(
+        "Start schedule timer activity for \(profileId), a different profile is already active, skipping"
+      )
+      notifyBlockedBySkippedStart(for: profile, activeProfileId: existingSession.blockedProfileId)
+      return
     }
 
     // Create a new active scheduled session for the profile
@@ -70,27 +76,44 @@ class ScheduleTimerActivity: TimerActivity {
     appBlocker.activateRestrictions(for: profile)
   }
 
+  private func notifyBlockedBySkippedStart(
+    for profile: SharedData.ProfileSnapshot,
+    activeProfileId: UUID
+  ) {
+    let activeProfileName = SharedData.snapshot(for: activeProfileId.uuidString)?.name
+
+    let content = UNMutableNotificationContent()
+    content.title = String(localized: "Couldn't Start")
+    content.body =
+      if let activeProfileName {
+        String(
+          localized: "\(profile.name) didn't start because \(activeProfileName) is still active.")
+      } else {
+        String(localized: "\(profile.name) didn't start because another profile is still active.")
+      }
+    content.sound = .default
+
+    let request = UNNotificationRequest(
+      identifier: "ScheduleSkippedStart:\(profile.id.uuidString):\(Date().timeIntervalSince1970)",
+      content: content,
+      trigger: nil
+    )
+
+    UNUserNotificationCenter.current().add(request) { error in
+      if let error {
+        log.error("Failed to schedule skipped-start notification: \(error.localizedDescription)")
+      }
+    }
+  }
+
   func stop(for profile: SharedData.ProfileSnapshot) {
-    let profileId = profile.id.uuidString
-
-    guard let activeSession = SharedData.getActiveSharedSession() else {
-      log.info("Stop schedule timer activity for \(profileId), no active session found")
-      return
-    }
-
-    // Check to make sure the active session is the same as the profile before disabling restrictions
-    if activeSession.blockedProfileId != profile.id {
-      log.info(
-        "Stop schedule timer activity for \(profileId), active session profile does not match device activity profile"
-      )
-      return
-    }
-
-    // End restrictions
-    appBlocker.deactivateRestrictions()
-
-    // End the active scheduled session
-    SharedData.endActiveSharedSession()
+    // Scheduled sessions only ever start automatically. Ending one always
+    // requires scanning the Ctrus NFC tag in the app, same as any other
+    // physically-unlocked profile, so the interval ending here does not
+    // touch restrictions or the active session.
+    log.info(
+      "Interval ended for scheduled profile \(profile.id.uuidString), leaving restrictions active until the Ctrus is scanned"
+    )
   }
 
   func getScheduleInterval(from schedule: BlockedProfileSchedule) -> (

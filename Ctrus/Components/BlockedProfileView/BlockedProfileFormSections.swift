@@ -43,6 +43,8 @@ struct BlockedProfileStrategyFields: View {
   var disabled: Bool
   var showsSeparators: Bool = false
 
+  private let scheduleStrategy: BlockingStrategy = ScheduleBlockingStrategy()
+
   var body: some View {
     ForEach(Array(StrategyManager.pickerStrategies.enumerated()), id: \.element.name) {
       index, strategy in
@@ -59,6 +61,17 @@ struct BlockedProfileStrategyFields: View {
       )
       .disabled(disabled)
     }
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    StrategyRow(
+      strategy: scheduleStrategy,
+      isSelected: draft.useSchedule,
+      onTap: {
+        draft.selectedStrategy = ScheduleBlockingStrategy()
+      }
+    )
+    .disabled(disabled)
   }
 }
 
@@ -225,6 +238,81 @@ struct BlockedProfileStrictUnlocksSection: View {
   var body: some View {
     Section("Physical Unlocks") {
       BlockedProfileStrictUnlocksFields(draft: draft, disabled: disabled)
+    }
+  }
+}
+
+struct BlockedProfileScheduleFields: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
+  var disabled: Bool
+  var showsSeparators: Bool = false
+
+  var body: some View {
+    weekdaySelector
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    DatePicker(
+      String(localized: "Start Time"),
+      selection: startTimeBinding,
+      displayedComponents: .hourAndMinute
+    )
+    .disabled(disabled)
+  }
+
+  private var weekdaySelector: some View {
+    HStack(spacing: 0) {
+      ForEach(Weekday.allCases, id: \.self) { day in
+        let isSelected = draft.schedule.days.contains(day)
+
+        Button(action: { toggle(day) }) {
+          Text(day.shortLabel)
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .frame(width: 42, height: 42)
+            .background(isSelected ? themeManager.themeColor : Color.secondary.opacity(0.14))
+            .foregroundStyle(isSelected ? Color.white : Color.primary)
+            .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(disabled)
+        .frame(maxWidth: .infinity)
+      }
+    }
+  }
+
+  private func toggle(_ day: Weekday) {
+    if let index = draft.schedule.days.firstIndex(of: day) {
+      draft.schedule.days.remove(at: index)
+    } else {
+      draft.schedule.days.append(day)
+    }
+  }
+
+  private var startTimeBinding: Binding<Date> {
+    Binding(
+      get: { dateFrom(hour: draft.schedule.startHour, minute: draft.schedule.startMinute) },
+      set: { newValue in
+        let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+        draft.schedule.startHour = components.hour ?? draft.schedule.startHour
+        draft.schedule.startMinute = components.minute ?? draft.schedule.startMinute
+      }
+    )
+  }
+
+  private func dateFrom(hour: Int, minute: Int) -> Date {
+    Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? Date()
+  }
+}
+
+struct BlockedProfileScheduleSection: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  var disabled: Bool
+
+  var body: some View {
+    Section("Schedule") {
+      BlockedProfileScheduleFields(draft: draft, disabled: disabled)
     }
   }
 }

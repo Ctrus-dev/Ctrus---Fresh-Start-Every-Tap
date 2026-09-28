@@ -2,11 +2,15 @@ import DeviceActivity
 import FamilyControls
 import ManagedSettings
 import SwiftUI
+import UserNotifications
 
 class DeviceActivityCenterUtil {
   static func scheduleTimerActivity(for profile: BlockedProfiles) {
     // Only schedule if the schedule is active
-    guard let schedule = profile.schedule else { return }
+    guard let schedule = profile.schedule else {
+      cancelUpcomingSessionReminders(for: profile)
+      return
+    }
 
     let center = DeviceActivityCenter()
     let scheduleTimerActivity = ScheduleTimerActivity()
@@ -16,6 +20,7 @@ class DeviceActivityCenterUtil {
     // If the schedule is not active, remove any existing schedule
     if !schedule.isActive {
       stopActivities(for: [deviceActivityName], with: center)
+      cancelUpcomingSessionReminders(for: profile)
       return
     }
 
@@ -34,6 +39,90 @@ class DeviceActivityCenterUtil {
     } catch {
       print("Failed to start monitoring: \(error.localizedDescription)")
     }
+
+    scheduleUpcomingSessionReminders(for: profile, schedule: schedule)
+  }
+
+  // MARK: - Schedule start reminders
+
+  private static let scheduleReminderMinutesBefore = 5
+
+  static func cancelUpcomingSessionReminders(for profile: BlockedProfiles) {
+    let identifiers = Weekday.allCases.map { reminderIdentifier(for: profile, day: $0) }
+    UNUserNotificationCenter.current().removePendingNotificationRequests(
+      withIdentifiers: identifiers)
+  }
+
+  private static func scheduleUpcomingSessionReminders(
+    for profile: BlockedProfiles,
+    schedule: BlockedProfileSchedule
+  ) {
+    cancelUpcomingSessionReminders(for: profile)
+
+    let profileId = profile.id
+    let profileName = profile.name
+    let days = schedule.days
+    let center = UNUserNotificationCenter.current()
+
+    center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+      guard granted else { return }
+
+      for day in days {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Starting Soon!")
+        content.body = String(localized: "\(profileName) starts in 5 minutes.")
+        content.sound = .default
+
+        let trigger = UNCalendarNotificationTrigger(
+          dateMatching: reminderComponents(for: day, schedule: schedule),
+          repeats: true
+        )
+
+        let request = UNNotificationRequest(
+          identifier: reminderIdentifier(forProfileId: profileId, day: day),
+          content: content,
+          trigger: trigger
+        )
+
+        center.add(request) { error in
+          if let error {
+            print("Failed to schedule start reminder: \(error.localizedDescription)")
+          }
+        }
+      }
+    }
+  }
+
+  private static func reminderIdentifier(for profile: BlockedProfiles, day: Weekday) -> String {
+    reminderIdentifier(forProfileId: profile.id, day: day)
+  }
+
+  private static func reminderIdentifier(forProfileId profileId: UUID, day: Weekday) -> String {
+    "ScheduleStartReminder:\(profileId.uuidString):\(day.rawValue)"
+  }
+
+  private static func reminderComponents(
+    for day: Weekday,
+    schedule: BlockedProfileSchedule
+  ) -> DateComponents {
+    let totalStartMinutes = schedule.startHour * 60 + schedule.startMinute
+    var reminderMinutes = totalStartMinutes - scheduleReminderMinutesBefore
+    var weekdayRawValue = day.rawValue
+
+    // Roll back to the previous day when the reminder falls before midnight
+    if reminderMinutes < 0 {
+      reminderMinutes += 24 * 60
+      weekdayRawValue =
+        weekdayRawValue == Weekday.sunday.rawValue
+        ? Weekday.saturday.rawValue
+        : weekdayRawValue - 1
+    }
+
+    var components = DateComponents()
+    components.weekday = weekdayRawValue
+    components.hour = reminderMinutes / 60
+    components.minute = reminderMinutes % 60
+    return components
   }
 
   static func startBreakTimerActivity(for profile: BlockedProfiles) {
@@ -104,6 +193,7 @@ class DeviceActivityCenterUtil {
     let deviceActivityName = scheduleTimerActivity.getDeviceActivityName(
       from: profile.id.uuidString)
     stopActivities(for: [deviceActivityName])
+    cancelUpcomingSessionReminders(for: profile)
   }
 
   static func removeScheduleTimerActivities(for activity: DeviceActivityName) {
