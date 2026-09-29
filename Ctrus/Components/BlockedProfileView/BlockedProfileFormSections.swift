@@ -290,11 +290,23 @@ struct BlockedProfileScheduleFields: View {
   }
 
   private var durationPicker: some View {
-    Picker("Duration", selection: durationBinding) {
-      Text(BlockedProfileSchedule.durationText(forHours: nil)).tag(Int?.none)
-      ForEach(BlockedProfileSchedule.availableDurationsInHours, id: \.self) { hours in
-        Text(BlockedProfileSchedule.durationText(forHours: hours)).tag(Int?.some(hours))
+    // Drawn as its own labeled row instead of relying on Picker's default
+    // style, which only shows the row's label when the picker sits inside a
+    // List/Form — outside one (the guided flow's plain VStack) it collapses
+    // to just the value, dropping "Duration" entirely.
+    HStack {
+      Text("Duration")
+
+      Spacer()
+
+      Picker("Duration", selection: durationBinding) {
+        Text(BlockedProfileSchedule.durationText(forHours: nil)).tag(Int?.none)
+        ForEach(BlockedProfileSchedule.availableDurationsInHours, id: \.self) { hours in
+          Text(BlockedProfileSchedule.durationText(forHours: hours)).tag(Int?.some(hours))
+        }
       }
+      .labelsHidden()
+      .pickerStyle(.menu)
     }
     .disabled(disabled)
   }
