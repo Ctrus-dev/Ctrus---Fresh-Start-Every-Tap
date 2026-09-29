@@ -395,6 +395,13 @@ class StrategyManager: ObservableObject {
       return
     }
 
+    // Enforce the profile's own setting here too, not just in the UI that
+    // decides whether to show the button — any future caller of this
+    // function must not be able to bypass a profile that disabled it.
+    guard activeSession.blockedProfile.enableEmergencyUnblock else {
+      return
+    }
+
     // Stop the active session using the manual strategy, by passes any other strategy in view
     let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
     _ = manualStrategy.stopBlocking(

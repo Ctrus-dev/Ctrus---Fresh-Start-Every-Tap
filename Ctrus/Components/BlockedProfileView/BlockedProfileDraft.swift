@@ -27,6 +27,11 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var domains: [String]
   @Published var physicalUnblockItems: [PhysicalUnblockItem]
   @Published var schedule: BlockedProfileSchedule
+  // Captured once at load so save() can tell whether the schedule itself
+  // changed, instead of always bumping `updatedAt` on every save (which
+  // re-arms the "too new, skip today" guard and can silently cancel that
+  // day's automatic start just from an unrelated edit).
+  private let initialSchedule: BlockedProfileSchedule
   @Published var selectedActivity: FamilyActivitySelection
   @Published var selectedStrategy: BlockingStrategy? {
     didSet {
@@ -60,7 +65,11 @@ final class BlockedProfileDraft: ObservableObject {
     customReminderMessage = profile?.customReminderMessage ?? ""
     domains = profile?.domains ?? []
     physicalUnblockItems = profile?.physicalUnblockItems ?? []
-    schedule =
+    // Resolved locally, then used for both `schedule` and `initialSchedule`
+    // below — reading `self.schedule` back to fill `initialSchedule` isn't
+    // allowed until every stored property (selectedStrategy included) has a
+    // value, which is exactly the circular problem this avoids.
+    let resolvedSchedule =
       profile?.schedule
       ?? BlockedProfileSchedule(
         days: [],
@@ -69,6 +78,8 @@ final class BlockedProfileDraft: ObservableObject {
         durationInHours: nil,
         updatedAt: Date()
       )
+    schedule = resolvedSchedule
+    initialSchedule = resolvedSchedule
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -100,7 +111,9 @@ final class BlockedProfileDraft: ObservableObject {
     existingProfile: BlockedProfiles?,
     in context: ModelContext
   ) throws -> BlockedProfiles {
-    schedule.updatedAt = Date()
+    if schedule != initialSchedule {
+      schedule.updatedAt = Date()
+    }
 
     let reminderTimeSeconds: UInt32? =
       enableReminder ? UInt32(reminderTimeInMinutes * 60) : nil
