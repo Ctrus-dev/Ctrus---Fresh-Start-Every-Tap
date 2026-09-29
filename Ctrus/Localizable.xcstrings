@@ -2,98 +2,6 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
-    "Accessibility": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Accessibility"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Accesibilidad"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acessibilidade"
-          }
-        }
-      }
-    },
-    "A link is trying to stop your active session. Only continue if you opened this yourself.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A link is trying to stop your active session. Only continue if you opened this yourself."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un enlace está intentando detener tu sesión activa. Solo continúa si fuiste tú quien lo abrió."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um link está a tentar parar a tua sessão ativa. Só continues se foste tu que abriste isto."
-          }
-        }
-      }
-    },
-    "Paused Profile %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paused Profile %@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfil Pausado %@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfil Pausado %@"
-          }
-        }
-      }
-    },
-    "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantén presionado tu perfil para iniciar una sesión. Tócalo mientras está activo para mostrar Pausa, Emergencia y Detener."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantém pressionado o teu perfil para iniciar uma sessão. Toca nele enquanto está ativo para revelar Pausa, Emergência e Parar."
-          }
-        }
-      }
-    },
     " if you're skeptical": {
       "extractionState": "manual",
       "localizations": {
@@ -117,6 +25,7 @@
         }
       }
     },
+    "/ 50": {},
     "%@": {},
     "%@ - Pause": {
       "extractionState": "manual",
@@ -137,75 +46,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ - Pausa"
-          }
-        }
-      }
-    },
-    "%@ Copy": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Copy"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Copia"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Cópia"
-          }
-        }
-      }
-    },
-    "%@ Insights": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Insights"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estadísticas de %@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estatísticas de %@"
-          }
-        }
-      }
-    },
-    "%@ Profile %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Profile %@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfil %@ %@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfil %@ %@"
           }
         }
       }
@@ -233,6 +73,75 @@
         }
       }
     },
+    "%@ Copy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Copy"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Copia"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Cópia"
+          }
+        }
+      }
+    },
+    "%@ didn't start because %@ is still active.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ didn't start because %@ is still active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no empezó porque %@ todavía está activo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não começou porque %@ ainda está ativo."
+          }
+        }
+      }
+    },
+    "%@ didn't start because another profile is still active.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ didn't start because another profile is still active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no empezó porque otro perfil todavía está activo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não começou porque outro perfil ainda está ativo."
+          }
+        }
+      }
+    },
     "%@ does not use a strategy that supports pausing.": {
       "extractionState": "manual",
       "localizations": {
@@ -252,6 +161,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ não usa uma estratégia que suporte pausa."
+          }
+        }
+      }
+    },
+    "%@ Insights": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Insights"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estadísticas de %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estatísticas de %@"
           }
         }
       }
@@ -325,6 +257,29 @@
         }
       }
     },
+    "%@ Profile %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Profile %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil %@ %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil %@ %@"
+          }
+        }
+      }
+    },
     "%@ selected": {
       "extractionState": "manual",
       "localizations": {
@@ -344,6 +299,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ selecionado(s)"
+          }
+        }
+      }
+    },
+    "%@ starts in 5 minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ starts in 5 minutes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ comienza en 5 minutos."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ começa dentro de 5 minutos."
           }
         }
       }
@@ -418,6 +396,29 @@
       }
     },
     "%lld": {},
+    "%lld app(s) selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld app(s) selected"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld app(s) seleccionada(s)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld app(s) selecionada(s)"
+          }
+        }
+      }
+    },
     "%lld Apps": {
       "extractionState": "manual",
       "localizations": {
@@ -460,52 +461,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Bloqueadas"
-          }
-        }
-      }
-    },
-    "%lld Domains": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Domains"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Dominios"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Domínios"
-          }
-        }
-      }
-    },
-    "%lld app(s) selected": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld app(s) selected"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld app(s) seleccionada(s)"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld app(s) selecionada(s)"
           }
         }
       }
@@ -602,6 +557,29 @@
         }
       }
     },
+    "%lld Domains": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Domains"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Dominios"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Domínios"
+          }
+        }
+      }
+    },
     "%lld domains added": {
       "extractionState": "manual",
       "localizations": {
@@ -644,6 +622,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld domínios selecionados"
+          }
+        }
+      }
+    },
+    "%lld hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld hours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas"
           }
         }
       }
@@ -934,6 +935,8 @@
         }
       }
     },
+    "•": {},
+    "• %@": {},
     "+%lld more active": {
       "extractionState": "manual",
       "localizations": {
@@ -957,7 +960,76 @@
         }
       }
     },
-    "/ 50": {},
+    ">5h": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ">5h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ">5h"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ">5h"
+          }
+        }
+      }
+    },
+    "⚠️ Maximum of 50 domains reached (Apple's limit)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Maximum of 50 domains reached (Apple's limit)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Se alcanzó el límite máximo de 50 dominios (límite de Apple)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Limite máximo de 50 domínios atingido (limite da Apple)"
+          }
+        }
+      }
+    },
+    "🇵🇹": {},
+    "✓ Successfully wrote profile to tag": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✓ Successfully wrote profile to tag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✓ Perfil escrito correctamente en la etiqueta"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✓ Perfil escrito na tag com sucesso"
+          }
+        }
+      }
+    },
     "0m": {
       "extractionState": "manual",
       "localizations": {
@@ -1073,75 +1145,6 @@
         }
       }
     },
-    "10 minutes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 minutes"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 minutos"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 minutos"
-          }
-        }
-      }
-    },
-    "15 minutes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15 minutes"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15 minutos"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15 minutos"
-          }
-        }
-      }
-    },
-    "15m": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15m"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15m"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "15m"
-          }
-        }
-      }
-    },
     "1h": {
       "extractionState": "manual",
       "localizations": {
@@ -1184,29 +1187,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "2 semanas"
-          }
-        }
-      }
-    },
-    "24h": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "24h"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "24h"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "24h"
           }
         }
       }
@@ -1303,25 +1283,94 @@
         }
       }
     },
-    ">5h": {
+    "10 minutes": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": ">5h"
+            "value": "10 minutes"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": ">5h"
+            "value": "10 minutos"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": ">5h"
+            "value": "10 minutos"
+          }
+        }
+      }
+    },
+    "15 minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 minutes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 minutos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 minutos"
+          }
+        }
+      }
+    },
+    "15m": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15m"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15m"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15m"
+          }
+        }
+      }
+    },
+    "24h": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24h"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24h"
           }
         }
       }
@@ -1368,6 +1417,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uns minutos podem tornar-se numa hora. Mantém o teu ritmo."
+          }
+        }
+      }
+    },
+    "A link is trying to stop your active session. Only continue if you opened this yourself.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A link is trying to stop your active session. Only continue if you opened this yourself."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un enlace está intentando detener tu sesión activa. Solo continúa si fuiste tú quien lo abrió."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um link está a tentar parar a tua sessão ativa. Só continues se foste tu que abriste isto."
           }
         }
       }
@@ -1437,6 +1509,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Acerca de"
+          }
+        }
+      }
+    },
+    "access duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "access duration"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "duración de acceso"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "duração de acesso"
+          }
+        }
+      }
+    },
+    "Accessibility": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessibility"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accesibilidad"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acessibilidade"
           }
         }
       }
@@ -1556,29 +1674,6 @@
         }
       }
     },
-    "Add Tag": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add Tag"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir Etiqueta"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adicionar Tag"
-          }
-        }
-      }
-    },
     "Add specific domains and decide whether Safari website blocking applies.": {
       "extractionState": "manual",
       "localizations": {
@@ -1602,6 +1697,29 @@
         }
       }
     },
+    "Add Tag": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Tag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir Etiqueta"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar Tag"
+          }
+        }
+      }
+    },
     "All Sessions": {
       "extractionState": "manual",
       "localizations": {
@@ -1621,6 +1739,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Todas as Sessões"
+          }
+        }
+      }
+    },
+    "Allow breaks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow breaks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir descansos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir pausas"
           }
         }
       }
@@ -1759,29 +1900,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Permitir Pausas Cronometradas"
-          }
-        }
-      }
-    },
-    "Allow breaks": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Allow breaks"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permitir descansos"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permitir pausas"
           }
         }
       }
@@ -1947,29 +2065,6 @@
         }
       }
     },
-    "App Icon": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App Icon"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icono de la App"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ícone da App"
-          }
-        }
-      }
-    },
     "App deletion blocked": {
       "extractionState": "manual",
       "localizations": {
@@ -1989,6 +2084,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eliminação de apps bloqueada"
+          }
+        }
+      }
+    },
+    "App Icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Icon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icono de la App"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ícone da App"
           }
         }
       }
@@ -2265,6 +2383,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Autorizado"
+          }
+        }
+      }
+    },
+    "Automatic Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicio Automático"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Início Automático"
           }
         }
       }
@@ -2591,6 +2732,29 @@
         }
       }
     },
+    "Blocking is paused until access is restored.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocking is paused until access is restored."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El bloqueo está en pausa hasta que se restablezca el acceso."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O bloqueio está em pausa até o acesso ser restaurado."
+          }
+        }
+      }
+    },
     "Blocking Native Apps": {
       "extractionState": "manual",
       "localizations": {
@@ -2633,29 +2797,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Estratégia de Bloqueio"
-          }
-        }
-      }
-    },
-    "Blocking is paused until access is restored.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blocking is paused until access is restored."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El bloqueo está en pausa hasta que se restablezca el acceso."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O bloqueio está em pausa até o acesso ser restaurado."
           }
         }
       }
@@ -2706,29 +2847,6 @@
         }
       }
     },
-    "Break Duration": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Break Duration"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duración del Descanso"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duração da Pausa"
-          }
-        }
-      }
-    },
     "Break almost over!": {
       "extractionState": "manual",
       "localizations": {
@@ -2748,6 +2866,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "A pausa está quase a terminar!"
+          }
+        }
+      }
+    },
+    "Break Duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Break Duration"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duración del Descanso"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duração da Pausa"
           }
         }
       }
@@ -2913,29 +3054,6 @@
         }
       }
     },
-    "Check if Ctrus Session is Active": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check if Ctrus Session is Active"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comprobar si la Sesión de Ctrus Está Activa"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verificar se a Sessão Ctrus Está Ativa"
-          }
-        }
-      }
-    },
     "Check if a Ctrus profile is currently active and return the status as a boolean value.": {
       "extractionState": "manual",
       "localizations": {
@@ -2982,6 +3100,29 @@
         }
       }
     },
+    "Check if Ctrus Session is Active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check if Ctrus Session is Active"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar si la Sesión de Ctrus Está Activa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verificar se a Sessão Ctrus Está Ativa"
+          }
+        }
+      }
+    },
     "Choose apps and how to block them": {
       "extractionState": "manual",
       "localizations": {
@@ -3001,6 +3142,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Escolhe as apps e como bloqueá-las"
+          }
+        }
+      }
+    },
+    "Choose at least one day for the schedule.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose at least one day for the schedule."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige al menos un día para el horario."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe pelo menos um dia para o horário."
           }
         }
       }
@@ -3166,6 +3330,29 @@
         }
       }
     },
+    "Choose the days of the week and start time this profile should turn on by itself.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the days of the week and start time this profile should turn on by itself."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige los días de la semana y la hora a la que este perfil debe activarse solo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe os dias da semana e a hora a que este perfil se deve ligar sozinho."
+          }
+        }
+      }
+    },
     "Close": {
       "extractionState": "manual",
       "localizations": {
@@ -3189,19 +3376,25 @@
         }
       }
     },
-    "Connection Problem": {
+    "Connection error: %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connection Problem"
+            "value": "Connection error: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error de conexión: %@"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Problema de Ligação"
+            "value": "Erro de ligação: %@"
           }
         }
       }
@@ -3229,25 +3422,19 @@
         }
       }
     },
-    "Connection error: %@": {
+    "Connection Problem": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connection error: %@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Error de conexión: %@"
+            "value": "Connection Problem"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erro de ligação: %@"
+            "value": "Problema de Ligação"
           }
         }
       }
@@ -3361,6 +3548,29 @@
         }
       }
     },
+    "Couldn't Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Se Pudo Iniciar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não Foi Possível Iniciar"
+          }
+        }
+      }
+    },
     "Create": {
       "extractionState": "manual",
       "localizations": {
@@ -3384,29 +3594,6 @@
         }
       }
     },
-    "Create Profile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crear Perfil"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Criar Perfil"
-          }
-        }
-      }
-    },
     "Create a profile before starting a focus session": {
       "extractionState": "manual",
       "localizations": {
@@ -3426,6 +3613,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cria um perfil antes de iniciar uma sessão de foco"
+          }
+        }
+      }
+    },
+    "Create Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear Perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criar Perfil"
           }
         }
       }
@@ -3476,52 +3686,6 @@
         }
       }
     },
-    "Ctrus NFC": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus NFC"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus NFC"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus NFC"
-          }
-        }
-      }
-    },
-    "Ctrus Profile Status": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus Profile Status"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado del Perfil Ctrus"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estado do Perfil Ctrus"
-          }
-        }
-      }
-    },
     "Ctrus is 100% open source, ": {
       "extractionState": "manual",
       "localizations": {
@@ -3564,6 +3728,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "O Ctrus precisa de acesso ao Tempo de Ecrã para bloquear apps e sites. Concede o acesso novamente para restaurar o bloqueio."
+          }
+        }
+      }
+    },
+    "Ctrus NFC": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus NFC"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus NFC"
+          }
+        }
+      }
+    },
+    "Ctrus Profile Status": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus Profile Status"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estado del Perfil Ctrus"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estado do Perfil Ctrus"
           }
         }
       }
@@ -3660,29 +3870,6 @@
         }
       }
     },
-    "Debug Mode": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debug Mode"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Modo de Depuración"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Modo de Depuração"
-          }
-        }
-      }
-    },
     "Debug information has been copied as Markdown.": {
       "extractionState": "manual",
       "localizations": {
@@ -3702,6 +3889,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "As informações de depuração foram copiadas como Markdown."
+          }
+        }
+      }
+    },
+    "Debug Mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de Depuración"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de Depuração"
           }
         }
       }
@@ -4689,6 +4899,29 @@
         }
       }
     },
+    "First Steps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First Steps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeros Pasos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeiros Passos"
+          }
+        }
+      }
+    },
     "Fix Schedule": {
       "extractionState": "manual",
       "localizations": {
@@ -4886,29 +5119,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Volta à produtividade ativando %@"
-          }
-        }
-      }
-    },
-    "First Steps": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First Steps"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Primeros Pasos"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Primeiros Passos"
           }
         }
       }
@@ -5189,6 +5399,29 @@
         }
       }
     },
+    "Indefinite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinite"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida"
+          }
+        }
+      }
+    },
     "Insights": {
       "extractionState": "manual",
       "localizations": {
@@ -5350,6 +5583,29 @@
         }
       }
     },
+    "Left-Handed Layout": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Left-Handed Layout"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diseño para Zurdos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disposição para Canhotos"
+          }
+        }
+      }
+    },
     "Leftover pulp from distraction dilutes your juice": {
       "extractionState": "manual",
       "localizations": {
@@ -5419,52 +5675,6 @@
         }
       }
     },
-    "Left-Handed Layout": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Left-Handed Layout"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diseño para Zurdos"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disposição para Canhotos"
-          }
-        }
-      }
-    },
-    "Moves the profile and settings buttons to the left": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Moves the profile and settings buttons to the left"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mueve los botones de perfil y ajustes hacia la izquierda"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move os botões de perfil e definições para a esquerda"
-          }
-        }
-      }
-    },
     "Let's get you started by creating your first profile": {
       "extractionState": "manual",
       "localizations": {
@@ -5484,6 +5694,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vamos começar por criar o teu primeiro perfil"
+          }
+        }
+      }
+    },
+    "License": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "License"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licencia"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licença"
           }
         }
       }
@@ -5553,6 +5786,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ficaste Bloqueado e Perdeste o Teu Ctrus?"
+          }
+        }
+      }
+    },
+    "Looking for Answers?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looking for Answers?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Buscas Respuestas?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À Procura de Respostas?"
           }
         }
       }
@@ -5718,6 +5974,29 @@
         }
       }
     },
+    "MIT License": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MIT License"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licencia MIT"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licença MIT"
+          }
+        }
+      }
+    },
     "Mo": {
       "extractionState": "manual",
       "localizations": {
@@ -5810,140 +6089,25 @@
         }
       }
     },
-    "NFC": {
+    "Moves the profile and settings buttons to the left": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "NFC"
+            "value": "Moves the profile and settings buttons to the left"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "NFC"
+            "value": "Mueve los botones de perfil y ajustes hacia la izquierda"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "NFC"
-          }
-        }
-      }
-    },
-    "NFC + Pause Timer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Pause Timer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Temporizador de Pausa"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Temporizador de Pausa"
-          }
-        }
-      }
-    },
-    "NFC + Timer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Timer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Temporizador"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC + Temporizador"
-          }
-        }
-      }
-    },
-    "NFC Tag": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC Tag"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Etiqueta NFC"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tag NFC"
-          }
-        }
-      }
-    },
-    "NFC scanning not available on this device": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC scanning not available on this device"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El escaneo NFC no está disponible en este dispositivo"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leitura NFC não disponível neste dispositivo"
-          }
-        }
-      }
-    },
-    "NFC writing not available on this device": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NFC writing not available on this device"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La escritura NFC no está disponible en este dispositivo"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escrita NFC não disponível neste dispositivo"
+            "value": "Move os botões de perfil e definições para a esquerda"
           }
         }
       }
@@ -6017,29 +6181,6 @@
         }
       }
     },
-    "New Profile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuevo Perfil"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Novo Perfil"
-          }
-        }
-      }
-    },
     "New app installs blocked": {
       "extractionState": "manual",
       "localizations": {
@@ -6059,6 +6200,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Instalação de novas apps bloqueada"
+          }
+        }
+      }
+    },
+    "New Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo Perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Novo Perfil"
           }
         }
       }
@@ -6109,6 +6273,144 @@
         }
       }
     },
+    "NFC": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC"
+          }
+        }
+      }
+    },
+    "NFC + Pause Timer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Pause Timer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Temporizador de Pausa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Temporizador de Pausa"
+          }
+        }
+      }
+    },
+    "NFC + Timer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Timer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Temporizador"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC + Temporizador"
+          }
+        }
+      }
+    },
+    "NFC scanning not available on this device": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC scanning not available on this device"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El escaneo NFC no está disponible en este dispositivo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leitura NFC não disponível neste dispositivo"
+          }
+        }
+      }
+    },
+    "NFC Tag": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC Tag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiqueta NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag NFC"
+          }
+        }
+      }
+    },
+    "NFC writing not available on this device": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NFC writing not available on this device"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La escritura NFC no está disponible en este dispositivo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escrita NFC não disponível neste dispositivo"
+          }
+        }
+      }
+    },
     "No": {
       "extractionState": "manual",
       "localizations": {
@@ -6128,75 +6430,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Não"
-          }
-        }
-      }
-    },
-    "No Ctrus session is active.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Ctrus session is active."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No hay ninguna sesión de Ctrus activa."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não há nenhuma sessão Ctrus ativa."
-          }
-        }
-      }
-    },
-    "No Profile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin Perfil"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sem Perfil"
-          }
-        }
-      }
-    },
-    "No Schedule Set": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Schedule Set"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin Horario Establecido"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sem Horário Definido"
           }
         }
       }
@@ -6266,6 +6499,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nenhuma app selecionada"
+          }
+        }
+      }
+    },
+    "No Ctrus session is active.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Ctrus session is active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay ninguna sesión de Ctrus activa."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não há nenhuma sessão Ctrus ativa."
           }
         }
       }
@@ -6408,6 +6664,29 @@
         }
       }
     },
+    "No Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin Perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem Perfil"
+          }
+        }
+      }
+    },
     "No profile selected": {
       "extractionState": "manual",
       "localizations": {
@@ -6450,6 +6729,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nenhum perfil usa a estratégia de desbloqueio suave"
+          }
+        }
+      }
+    },
+    "No Schedule Set": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Schedule Set"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin Horario Establecido"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem Horário Definido"
           }
         }
       }
@@ -6672,29 +6974,6 @@
         }
       }
     },
-    "On Break": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On Break"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En Descanso"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Em Pausa"
-          }
-        }
-      }
-    },
     "On a Break": {
       "extractionState": "manual",
       "localizations": {
@@ -6714,6 +6993,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Numa Pausa"
+          }
+        }
+      }
+    },
+    "On Break": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On Break"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Descanso"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em Pausa"
           }
         }
       }
@@ -6787,25 +7089,25 @@
         }
       }
     },
-    "Open Time": {
+    "open": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open Time"
+            "value": "open"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiempo de Apertura"
+            "value": "apertura"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempo de Abertura"
+            "value": "abertura"
           }
         }
       }
@@ -6829,6 +7131,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aberto durante %lldm"
+          }
+        }
+      }
+    },
+    "Open Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiempo de Apertura"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempo de Abertura"
+          }
+        }
+      }
+    },
+    "opens": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "opens"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aperturas"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aberturas"
           }
         }
       }
@@ -6971,6 +7319,52 @@
         }
       }
     },
+    "Paused Profile %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused Profile %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil Pausado %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil Pausado %@"
+          }
+        }
+      }
+    },
+    "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por la presente se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y de los archivos de documentación asociados (el \"Software\"), para utilizar el Software sin restricción alguna, incluyendo sin limitación los derechos de usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del Software, y de permitir a las personas a quienes se les proporcione el Software que hagan lo mismo, sujeto a las siguientes condiciones:"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "É concedida permissão, gratuitamente, a qualquer pessoa que obtenha uma cópia deste software e dos ficheiros de documentação associados (o \"Software\"), para lidar com o Software sem qualquer restrição, incluindo, sem limitação, os direitos de usar, copiar, modificar, fundir, publicar, distribuir, sublicenciar e/ou vender cópias do Software, e de permitir que as pessoas a quem o Software é fornecido o façam, sujeito às seguintes condições:"
+          }
+        }
+      }
+    },
     "Physical Unlocks": {
       "extractionState": "manual",
       "localizations": {
@@ -7040,6 +7434,29 @@
         }
       }
     },
+    "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén presionado tu perfil para iniciar una sesión. Tócalo mientras está activo para mostrar Pausa, Emergencia y Detener."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantém pressionado o teu perfil para iniciar uma sessão. Toca nele enquanto está ativo para revelar Pausa, Emergência e Parar."
+          }
+        }
+      }
+    },
     "Prevent App Deletion": {
       "extractionState": "manual",
       "localizations": {
@@ -7063,29 +7480,6 @@
         }
       }
     },
-    "Prevent New App Installs": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prevent New App Installs"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impedir Instalación de Nuevas Apps"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impedir Instalação de Novas Apps"
-          }
-        }
-      }
-    },
     "Prevent early stopping during timer sessions": {
       "extractionState": "manual",
       "localizations": {
@@ -7105,6 +7499,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impede a paragem antecipada durante sessões com temporizador"
+          }
+        }
+      }
+    },
+    "Prevent New App Installs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prevent New App Installs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impedir Instalación de Nuevas Apps"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impedir Instalação de Novas Apps"
           }
         }
       }
@@ -7404,6 +7821,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pausa rápida"
+          }
+        }
+      }
+    },
+    "read the code yourself": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "read the code yourself"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lee el código tú mismo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lê o código tu mesmo"
           }
         }
       }
@@ -7770,6 +8210,52 @@
         }
       }
     },
+    "Schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horario"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário"
+          }
+        }
+      }
+    },
+    "Schedule + Ctrus NFC": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule + Ctrus NFC"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horario + Ctrus NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário + Ctrus NFC"
+          }
+        }
+      }
+    },
     "Schedule needs repair": {
       "extractionState": "manual",
       "localizations": {
@@ -7977,52 +8463,6 @@
         }
       }
     },
-    "Select Month...": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select Month..."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleccionar Mes..."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionar Mês..."
-          }
-        }
-      }
-    },
-    "Select Week...": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select Week..."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleccionar Semana..."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selecionar Semana..."
-          }
-        }
-      }
-    },
     "Select how long you want %@ to last.": {
       "extractionState": "manual",
       "localizations": {
@@ -8069,6 +8509,29 @@
         }
       }
     },
+    "Select Month...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Month..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar Mes..."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar Mês..."
+          }
+        }
+      }
+    },
     "Select the apps or categories this profile should restrict or allow.": {
       "extractionState": "manual",
       "localizations": {
@@ -8111,6 +8574,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seleciona até 50 apps ou categorias. Cada categoria conta como um item."
+          }
+        }
+      }
+    },
+    "Select Week...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Week..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar Semana..."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar Semana..."
           }
         }
       }
@@ -8184,29 +8670,6 @@
         }
       }
     },
-    "Session Protection": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Session Protection"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protección de la Sesión"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Proteção da Sessão"
-          }
-        }
-      }
-    },
     "Session is not active for profile: %@, not stopping it": {
       "extractionState": "manual",
       "localizations": {
@@ -8226,6 +8689,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "A sessão não está ativa para o perfil: %@, não a vou parar"
+          }
+        }
+      }
+    },
+    "Session Protection": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Session Protection"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protección de la Sesión"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proteção da Sessão"
           }
         }
       }
@@ -8299,29 +8785,6 @@
         }
       }
     },
-    "Set Duration": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set Duration"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Definir Duración"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Definir Duração"
-          }
-        }
-      }
-    },
     "Set a Physical Unlock to continue.": {
       "extractionState": "manual",
       "localizations": {
@@ -8345,6 +8808,52 @@
         }
       }
     },
+    "Set Duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Duration"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definir Duración"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definir Duração"
+          }
+        }
+      }
+    },
+    "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define la hora y en qué días de la semana quieres que este perfil empiece automáticamente. Vas a necesitar tu Ctrus para pararlo antes de tiempo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define a hora e em que dias da semana queres que este perfil comece automaticamente. Vais precisar do teu Ctrus para o parar antes do tempo."
+          }
+        }
+      }
+    },
     "Set your Ctrus": {
       "extractionState": "manual",
       "localizations": {
@@ -8364,6 +8873,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Configura o teu Ctrus"
+          }
+        }
+      }
+    },
+    "Set your schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your schedule"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura tu horario"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura o teu horário"
           }
         }
       }
@@ -8506,75 +9038,6 @@
         }
       }
     },
-    "Start Blocking": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Blocking"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Bloqueo"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Bloqueio"
-          }
-        }
-      }
-    },
-    "Start Ctrus Profile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Ctrus Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Perfil de Ctrus"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Perfil Ctrus"
-          }
-        }
-      }
-    },
-    "Start Profile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Perfil"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar Perfil"
-          }
-        }
-      }
-    },
     "Start a Ctrus blocking profile. Optionally specify a timer duration in minutes (15-1440).": {
       "extractionState": "manual",
       "localizations": {
@@ -8621,6 +9084,75 @@
         }
       }
     },
+    "Start Blocking": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Blocking"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Bloqueo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Bloqueio"
+          }
+        }
+      }
+    },
+    "Start by pressing the session bubble in the app. You'll need your Ctrus to end it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start by pressing the session bubble in the app. You'll need your Ctrus to end it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia al pulsar la burbuja de la sesión en la app. Para terminarla vas a necesitar tu Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia ao pressionar a bolha da sessão na app. Para terminar vais precisar do teu Ctrus."
+          }
+        }
+      }
+    },
+    "Start Ctrus Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Ctrus Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Perfil de Ctrus"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Perfil Ctrus"
+          }
+        }
+      }
+    },
     "Start guided profile setup": {
       "extractionState": "manual",
       "localizations": {
@@ -8640,6 +9172,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar configuração guiada do perfil"
+          }
+        }
+      }
+    },
+    "Start Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar Perfil"
           }
         }
       }
@@ -8667,6 +9222,29 @@
         }
       }
     },
+    "Start Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Inicio"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Início"
+          }
+        }
+      }
+    },
     "Started": {
       "extractionState": "manual",
       "localizations": {
@@ -8686,6 +9264,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Iniciada"
+          }
+        }
+      }
+    },
+    "Starting Soon!": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting Soon!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Casi Empieza!"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quase a Começar!"
           }
         }
       }
@@ -8805,6 +9406,29 @@
         }
       }
     },
+    "Stop a Ctrus blocking profile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop a Ctrus blocking profile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detiene un perfil de bloqueo de Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para um perfil de bloqueio Ctrus."
+          }
+        }
+      }
+    },
     "Stop Active Ctrus Session": {
       "extractionState": "manual",
       "localizations": {
@@ -8824,6 +9448,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Parar Sessão Ctrus Ativa"
+          }
+        }
+      }
+    },
+    "Stop apps from being deleted during sessions, including Ctrus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop apps from being deleted during sessions, including Ctrus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evita que las apps se eliminen durante las sesiones, incluyendo Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impede que as apps sejam eliminadas durante as sessões, incluindo o Ctrus."
           }
         }
       }
@@ -8874,52 +9521,6 @@
         }
       }
     },
-    "Stop a Ctrus blocking profile.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop a Ctrus blocking profile."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detiene un perfil de bloqueo de Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para um perfil de bloqueio Ctrus."
-          }
-        }
-      }
-    },
-    "Stop apps from being deleted during sessions, including Ctrus.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop apps from being deleted during sessions, including Ctrus."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Evita que las apps se eliminen durante las sesiones, incluyendo Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impede que as apps sejam eliminadas durante as sessões, incluindo o Ctrus."
-          }
-        }
-      }
-    },
     "Stop new apps from being installed during sessions.": {
       "extractionState": "manual",
       "localizations": {
@@ -8939,29 +9540,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impede que novas apps sejam instaladas durante as sessões."
-          }
-        }
-      }
-    },
-    "Stop your session?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop your session?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Detener tu sesión?"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Parar a tua sessão?"
           }
         }
       }
@@ -9008,6 +9586,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Para o perfil ativo antes de iniciar outro."
+          }
+        }
+      }
+    },
+    "Stop your session?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop your session?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Detener tu sesión?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar a tua sessão?"
           }
         }
       }
@@ -9581,6 +10182,29 @@
         }
       }
     },
+    "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O aviso de direitos de autor acima e este aviso de permissão devem ser incluídos em todas as cópias ou partes substanciais do Software."
+          }
+        }
+      }
+    },
     "The affected profile could not be found.": {
       "extractionState": "manual",
       "localizations": {
@@ -9646,6 +10270,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "O código lido estava vazio."
+          }
+        }
+      }
+    },
+    "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EL SOFTWARE SE PROPORCIONA \"TAL CUAL\", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A LAS GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑOS U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O DE OTRO MODO, DERIVADA DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O EL USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O SOFTWARE É FORNECIDO \"TAL COMO ESTÁ\", SEM QUALQUER GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO MAS NÃO SE LIMITANDO ÀS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM FIM ESPECÍFICO E NÃO VIOLAÇÃO. EM CASO ALGUM OS AUTORES OU TITULARES DOS DIREITOS DE AUTOR SERÃO RESPONSÁVEIS POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, QUER EM AÇÃO DE CONTRATO, ATO ILÍCITO OU DE OUTRA FORMA, DECORRENTE DE, FORA DE OU EM LIGAÇÃO COM O SOFTWARE OU O USO OU OUTRAS NEGOCIAÇÕES NO SOFTWARE."
           }
         }
       }
@@ -9719,71 +10366,48 @@
         }
       }
     },
-    "This Month": {
+    "this app": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This Month"
+            "value": "this app"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Este Mes"
+            "value": "esta app"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Este Mês"
+            "value": "esta app"
           }
         }
       }
     },
-    "This NFC tag can't stop this profile.": {
+    "this category": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This NFC tag can't stop this profile."
+            "value": "this category"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta etiqueta NFC no puede detener este perfil."
+            "value": "esta categoría"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta tag NFC não pode parar este perfil."
-          }
-        }
-      }
-    },
-    "This Week": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This Week"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esta Semana"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esta Semana"
+            "value": "esta categoria"
           }
         }
       }
@@ -9830,6 +10454,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este momento molda o citrino que colherás amanhã"
+          }
+        }
+      }
+    },
+    "This Month": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mes"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mês"
+          }
+        }
+      }
+    },
+    "This NFC tag can't stop this profile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This NFC tag can't stop this profile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta etiqueta NFC no puede detener este perfil."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta tag NFC não pode parar este perfil."
           }
         }
       }
@@ -9945,6 +10615,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Não é possível escrever neste tipo de cartão."
+          }
+        }
+      }
+    },
+    "This Week": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta Semana"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta Semana"
           }
         }
       }
@@ -10225,6 +10918,29 @@
         }
       }
     },
+    "total": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "total"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "total"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "total"
+          }
+        }
+      }
+    },
     "Total Break Time": {
       "extractionState": "manual",
       "localizations": {
@@ -10294,6 +11010,29 @@
         }
       }
     },
+    "Translation for reference only. In case of any discrepancy, the original English text prevails.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translation for reference only. In case of any discrepancy, the original English text prevails."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traducción solo a título informativo. En caso de discrepancia, prevalece el texto original en inglés."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tradução apenas informativa. Em caso de divergência, prevalece o texto original em inglês."
+          }
+        }
+      }
+    },
     "Tu": {
       "extractionState": "manual",
       "localizations": {
@@ -10336,29 +11075,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Terça-feira"
-          }
-        }
-      }
-    },
-    "URL too long for this tag (%lld > %lld bytes)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "URL too long for this tag (%lld > %lld bytes)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "URL demasiado largo para esta etiqueta (%lld > %lld bytes)"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "URL demasiado longo para esta tag (%lld > %lld bytes)"
           }
         }
       }
@@ -10593,6 +11309,29 @@
         }
       }
     },
+    "URL too long for this tag (%lld > %lld bytes)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL too long for this tag (%lld > %lld bytes)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL demasiado largo para esta etiqueta (%lld > %lld bytes)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL demasiado longo para esta tag (%lld > %lld bytes)"
+          }
+        }
+      }
+    },
     "Use Apple's adult-content filter during sessions. You can still add extra domains to block.": {
       "extractionState": "manual",
       "localizations": {
@@ -10635,6 +11374,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Usar o ícone de app %@"
+          }
+        }
+      }
+    },
+    "v%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "v%@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "v%@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "v%@"
           }
         }
       }
@@ -10823,6 +11585,29 @@
         }
       }
     },
+    "We’re keeping your attention where you wanted it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We’re keeping your attention where you wanted it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estamos manteniendo tu atención donde la querías."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estamos a manter a tua atenção onde a querias."
+          }
+        }
+      }
+    },
     "Web Domains:": {
       "extractionState": "manual",
       "localizations": {
@@ -10915,29 +11700,6 @@
         }
       }
     },
-    "We’re keeping your attention where you wanted it.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "We’re keeping your attention where you wanted it."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estamos manteniendo tu atención donde la querías."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estamos a manter a tua atenção onde a querias."
-          }
-        }
-      }
-    },
     "When life gives you lemons, make lemonade": {
       "extractionState": "manual",
       "localizations": {
@@ -10984,29 +11746,6 @@
         }
       }
     },
-    "Write failed. Please try again.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Write failed. Please try again."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La escritura falló. Inténtalo de nuevo."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A escrita falhou. Tenta novamente."
-          }
-        }
-      }
-    },
     "Write failed: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -11026,6 +11765,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "A escrita falhou: %@"
+          }
+        }
+      }
+    },
+    "Write failed. Please try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write failed. Please try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La escritura falló. Inténtalo de nuevo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A escrita falhou. Tenta novamente."
           }
         }
       }
@@ -11374,82 +12136,25 @@
         }
       }
     },
-    "You've used the recovery code %lld times in the last 7 days.": {
+    "You'll need your Ctrus to both start and end the session.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You've used the recovery code %lld times in the last 7 days."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Já usaste o código de recuperação %lld vezes nos últimos 7 dias."
-          }
-        }
-      }
-    },
-    "Your Device ID has been copied.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your Device ID has been copied."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O teu ID do Dispositivo foi copiado."
-          }
-        }
-      }
-    },
-    "Your attention decides which grove you grow in": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your attention decides which grove you grow in"
+            "value": "You'll need your Ctrus to both start and end the session."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu atención decide en qué huerto creces"
+            "value": "Vas a necesitar tu Ctrus tanto para empezar la sesión como para terminarla."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "A tua atenção decide em que pomar cresces"
-          }
-        }
-      }
-    },
-    "Your opens do not reset during this session.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your opens do not reset during this session."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tus aperturas no se restablecen durante esta sesión."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As tuas aberturas não são repostas durante esta sessão."
+            "value": "Vais precisar do teu Ctrus tanto para começar a sessão como para acabar."
           }
         }
       }
@@ -11477,649 +12182,82 @@
         }
       }
     },
-    "access duration": {
+    "You've used the recovery code %lld times in the last 7 days.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "access duration"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "duración de acceso"
+            "value": "You've used the recovery code %lld times in the last 7 days."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "duração de acesso"
+            "value": "Já usaste o código de recuperação %lld vezes nos últimos 7 dias."
           }
         }
       }
     },
-    "open": {
+    "Your attention decides which grove you grow in": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "open"
+            "value": "Your attention decides which grove you grow in"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "apertura"
+            "value": "Tu atención decide en qué huerto creces"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "abertura"
+            "value": "A tua atenção decide em que pomar cresces"
           }
         }
       }
     },
-    "opens": {
+    "Your Device ID has been copied.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "opens"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "aperturas"
+            "value": "Your Device ID has been copied."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "aberturas"
+            "value": "O teu ID do Dispositivo foi copiado."
           }
         }
       }
     },
-    "read the code yourself": {
+    "Your opens do not reset during this session.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "read the code yourself"
+            "value": "Your opens do not reset during this session."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "lee el código tú mismo"
+            "value": "Tus aperturas no se restablecen durante esta sesión."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "lê o código tu mesmo"
-          }
-        }
-      }
-    },
-    "this app": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "this app"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "esta app"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "esta app"
-          }
-        }
-      }
-    },
-    "this category": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "this category"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "esta categoría"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "esta categoria"
-          }
-        }
-      }
-    },
-    "total": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "total"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "total"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "total"
-          }
-        }
-      }
-    },
-    "v%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "v%@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "v%@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "v%@"
-          }
-        }
-      }
-    },
-    "•": {},
-    "• %@": {},
-    "⚠️ Maximum of 50 domains reached (Apple's limit)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ Maximum of 50 domains reached (Apple's limit)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ Se alcanzó el límite máximo de 50 dominios (límite de Apple)"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ Limite máximo de 50 domínios atingido (limite da Apple)"
-          }
-        }
-      }
-    },
-    "✓ Successfully wrote profile to tag": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "✓ Successfully wrote profile to tag"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "✓ Perfil escrito correctamente en la etiqueta"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "✓ Perfil escrito na tag com sucesso"
-          }
-        }
-      }
-    },
-    "🇵🇹": {},
-    "Schedule": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schedule"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Horario"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Horário"
-          }
-        }
-      }
-    },
-    "Start Time": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Time"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hora de Inicio"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hora de Início"
-          }
-        }
-      }
-    },
-    "Set your schedule": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set your schedule"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configura tu horario"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configura o teu horário"
-          }
-        }
-      }
-    },
-    "Choose at least one day for the schedule.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose at least one day for the schedule."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige al menos un día para el horario."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe pelo menos um dia para o horário."
-          }
-        }
-      }
-    },
-    "Looking for Answers?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Looking for Answers?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Buscas Respuestas?"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À Procura de Respostas?"
-          }
-        }
-      }
-    },
-    "Choose the days of the week and start time this profile should turn on by itself.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose the days of the week and start time this profile should turn on by itself."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige los días de la semana y la hora a la que este perfil debe activarse solo."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe os dias da semana e a hora a que este perfil se deve ligar sozinho."
-          }
-        }
-      }
-    },
-    "Schedule + Ctrus NFC": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schedule + Ctrus NFC"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Horario + Ctrus NFC"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Horário + Ctrus NFC"
-          }
-        }
-      }
-    },
-    "Automatic Start": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatic Start"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicio Automático"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Início Automático"
-          }
-        }
-      }
-    },
-    "Start by pressing the session bubble in the app. You'll need your Ctrus to end it.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start by pressing the session bubble in the app. You'll need your Ctrus to end it."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia al pulsar la burbuja de la sesión en la app. Para terminarla vas a necesitar tu Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inicia ao pressionar a bolha da sessão na app. Para terminar vais precisar do teu Ctrus."
-          }
-        }
-      }
-    },
-    "You'll need your Ctrus to both start and end the session.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You'll need your Ctrus to both start and end the session."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vas a necesitar tu Ctrus tanto para empezar la sesión como para terminarla."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vais precisar do teu Ctrus tanto para começar a sessão como para acabar."
-          }
-        }
-      }
-    },
-    "Starting Soon!": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Starting Soon!"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¡Casi Empieza!"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quase a Começar!"
-          }
-        }
-      }
-    },
-    "%@ starts in 5 minutes.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ starts in 5 minutes."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ comienza en 5 minutos."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ começa dentro de 5 minutos."
-          }
-        }
-      }
-    },
-    "Couldn't Start": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't Start"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Se Pudo Iniciar"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não Foi Possível Iniciar"
-          }
-        }
-      }
-    },
-    "%@ didn't start because %@ is still active.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ didn't start because %@ is still active."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ no empezó porque %@ todavía está activo."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ não começou porque %@ ainda está ativo."
-          }
-        }
-      }
-    },
-    "%@ didn't start because another profile is still active.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ didn't start because another profile is still active."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ no empezó porque otro perfil todavía está activo."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ não começou porque outro perfil ainda está ativo."
-          }
-        }
-      }
-    },
-    "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Define la hora y en qué días de la semana quieres que este perfil empiece automáticamente. Vas a necesitar tu Ctrus para pararlo antes de tiempo."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Define a hora e em que dias da semana queres que este perfil comece automaticamente. Vais precisar do teu Ctrus para o parar antes do tempo."
-          }
-        }
-      }
-    },
-    "Indefinite": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indefinite"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indefinida"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indefinida"
-          }
-        }
-      }
-    },
-    "%lld hours": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld hours"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld horas"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld horas"
+            "value": "As tuas aberturas não são repostas durante esta sessão."
           }
         }
       }

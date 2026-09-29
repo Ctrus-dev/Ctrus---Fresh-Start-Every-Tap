@@ -11,6 +11,7 @@ struct SettingsView: View {
 
   @State private var showResetBlockingStateAlert = false
   @State private var showDebugView = false
+  @State private var showLicenseView = false
   @State private var unlockCode = ""
   @State private var isVerifyingUnlockCode = false
   @State private var showInvalidUnlockCodeAlert = false
@@ -223,6 +224,19 @@ struct SettingsView: View {
           }
 
           HStack {
+            Text("License")
+              .foregroundStyle(.primary)
+            Spacer()
+            Image(systemName: "chevron.right")
+              .foregroundColor(.secondary)
+              .font(.caption)
+          }
+          .contentShape(Rectangle())
+          .onTapGesture {
+            showLicenseView = true
+          }
+
+          HStack {
             Text("Screen Time Access")
               .foregroundStyle(.primary)
             Spacer()
@@ -293,6 +307,9 @@ struct SettingsView: View {
       }
       .sheet(isPresented: $showDebugView) {
         DebugView()
+      }
+      .sheet(isPresented: $showLicenseView) {
+        LicenseView()
       }
       .alert("Invalid Code", isPresented: $showInvalidUnlockCodeAlert) {
         Button("OK", role: .cancel) {}
