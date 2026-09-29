@@ -307,6 +307,10 @@ struct BlockedProfileScheduleFields: View {
       }
       .labelsHidden()
       .pickerStyle(.menu)
+      // A menu-style picker drawn outside a List/Form (the guided flow) uses
+      // the app's accent color for its value instead of the gray a Form row
+      // gives it automatically, so it's pinned to match Break Duration.
+      .tint(.secondary)
     }
     .disabled(disabled)
   }
