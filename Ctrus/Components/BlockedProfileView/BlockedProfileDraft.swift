@@ -32,16 +32,9 @@ final class BlockedProfileDraft: ObservableObject {
     didSet {
       enforceStrategyBreaksPolicy()
 
-      if useSchedule {
-        // The schedule only drives the automatic start; stopping always
-        // requires the Ctrus NFC, so there is no user-facing end time.
-        // DeviceActivityCenter still needs an interval end, so this just
-        // keeps the monitored window open for the rest of the day.
-        schedule.endHour = 23
-        schedule.endMinute = 59
-      } else {
-        // Leaving Schedule for another mode drops the old schedule instead
-        // of leaving it silently active in the background.
+      // Leaving Schedule for another mode drops the old schedule instead of
+      // leaving it silently active in the background.
+      if !useSchedule {
         schedule.days = []
       }
     }
@@ -73,8 +66,7 @@ final class BlockedProfileDraft: ObservableObject {
         days: [],
         startHour: 9,
         startMinute: 0,
-        endHour: 17,
-        endMinute: 0,
+        durationInHours: nil,
         updatedAt: Date()
       )
 

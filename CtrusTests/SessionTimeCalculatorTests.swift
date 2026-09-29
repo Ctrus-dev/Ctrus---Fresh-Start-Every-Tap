@@ -179,12 +179,84 @@ final class SessionTimeCalculatorTests: XCTestCase {
     XCTAssertEqual(session.remainingBreakAllowance(), 15 * 60, accuracy: 0.1)
   }
 
+  func testIndefiniteScheduledSessionCountsUp() {
+    let startTime = Date(timeIntervalSinceReferenceDate: 1_000)
+    let profile = makeProfile(
+      strategyId: ScheduleBlockingStrategy.id,
+      schedule: makeSchedule(durationInHours: nil)
+    )
+    let session = BlockedProfileSession(
+      tag: profile.id.uuidString,
+      blockedProfile: profile
+    )
+    session.startTime = startTime
+
+    let currentTime = startTime.addingTimeInterval(90 * 60)
+
+    XCTAssertNil(SessionTimeCalculator.expectedEndTime(for: session))
+    XCTAssertEqual(
+      SessionTimeCalculator.displayedTime(for: session, at: currentTime),
+      90 * 60,
+      accuracy: 0.1
+    )
+  }
+
+  func testScheduledSessionWithDurationCountsDown() {
+    let startTime = Date(timeIntervalSinceReferenceDate: 1_000)
+    let profile = makeProfile(
+      strategyId: ScheduleBlockingStrategy.id,
+      schedule: makeSchedule(durationInHours: 2)
+    )
+    let session = BlockedProfileSession(
+      tag: profile.id.uuidString,
+      blockedProfile: profile
+    )
+    session.startTime = startTime
+
+    let currentTime = startTime.addingTimeInterval(30 * 60)
+
+    XCTAssertEqual(
+      SessionTimeCalculator.expectedEndTime(for: session),
+      startTime.addingTimeInterval(2 * 60 * 60)
+    )
+    XCTAssertEqual(
+      SessionTimeCalculator.displayedTime(for: session, at: currentTime),
+      90 * 60,
+      accuracy: 0.1
+    )
+  }
+
+  func testScheduleEndComponentsFollowDuration() {
+    var schedule = makeSchedule(durationInHours: nil)
+    XCTAssertFalse(schedule.hasAutomaticEnd)
+    XCTAssertEqual(schedule.endComponents.hour, 23)
+    XCTAssertEqual(schedule.endComponents.minute, 59)
+
+    schedule.startHour = 22
+    schedule.startMinute = 30
+    schedule.durationInHours = 4
+
+    XCTAssertTrue(schedule.hasAutomaticEnd)
+    XCTAssertEqual(schedule.endComponents.hour, 2)
+    XCTAssertEqual(schedule.endComponents.minute, 30)
+  }
+
+  private func makeSchedule(durationInHours: Int?) -> BlockedProfileSchedule {
+    BlockedProfileSchedule(
+      days: [.monday],
+      startHour: 9,
+      startMinute: 0,
+      durationInHours: durationInHours
+    )
+  }
+
   private func makeProfile(
     strategyId: String,
     durationInMinutes: Int? = nil,
     enableBreaks: Bool = false,
     breakTimeInMinutes: Int = 15,
-    allowMultipleBreaks: Bool = false
+    allowMultipleBreaks: Bool = false,
+    schedule: BlockedProfileSchedule? = nil
   ) -> BlockedProfiles {
     let strategyData = durationInMinutes.flatMap {
       StrategyTimerData.toData(
@@ -198,7 +270,8 @@ final class SessionTimeCalculatorTests: XCTestCase {
       strategyData: strategyData,
       enableBreaks: enableBreaks,
       breakTimeInMinutes: breakTimeInMinutes,
-      allowMultipleBreaks: allowMultipleBreaks
+      allowMultipleBreaks: allowMultipleBreaks,
+      schedule: schedule
     )
   }
 }

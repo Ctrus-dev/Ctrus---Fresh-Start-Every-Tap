@@ -41,10 +41,12 @@ enum SessionTimeCalculator {
       return breakStartTime.addingTimeInterval(session.totalBreakAllowanceInSeconds)
     }
 
+    // Only a schedule with a fixed duration counts down. An indefinite one runs
+    // until the Ctrus is scanned, so it has no end to count towards and the
+    // clock counts up instead.
     if isScheduledSession(session), let schedule = session.blockedProfile.schedule {
-      let durationInSeconds = schedule.totalDurationInSeconds
-      guard durationInSeconds > 0 else { return nil }
-      return session.startTime.addingTimeInterval(TimeInterval(durationInSeconds))
+      guard let durationInSeconds = schedule.automaticEndDurationInSeconds else { return nil }
+      return session.startTime.addingTimeInterval(durationInSeconds)
     }
 
     if isTimerSession(session), let timerDuration = timerDurationInSeconds(for: session) {

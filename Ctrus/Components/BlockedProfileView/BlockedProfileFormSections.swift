@@ -259,6 +259,10 @@ struct BlockedProfileScheduleFields: View {
       displayedComponents: .hourAndMinute
     )
     .disabled(disabled)
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    durationPicker
   }
 
   private var weekdaySelector: some View {
@@ -280,6 +284,19 @@ struct BlockedProfileScheduleFields: View {
         .frame(maxWidth: .infinity)
       }
     }
+    // The chips fill the row edge to edge, so the list would otherwise inset
+    // the separator under them instead of lining it up with the rows below.
+    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+  }
+
+  private var durationPicker: some View {
+    Picker("Duration", selection: durationBinding) {
+      Text(BlockedProfileSchedule.durationText(forHours: nil)).tag(Int?.none)
+      ForEach(BlockedProfileSchedule.availableDurationsInHours, id: \.self) { hours in
+        Text(BlockedProfileSchedule.durationText(forHours: hours)).tag(Int?.some(hours))
+      }
+    }
+    .disabled(disabled)
   }
 
   private func toggle(_ day: Weekday) {
@@ -298,6 +315,13 @@ struct BlockedProfileScheduleFields: View {
         draft.schedule.startHour = components.hour ?? draft.schedule.startHour
         draft.schedule.startMinute = components.minute ?? draft.schedule.startMinute
       }
+    )
+  }
+
+  private var durationBinding: Binding<Int?> {
+    Binding(
+      get: { draft.schedule.durationInHours },
+      set: { draft.schedule.durationInHours = $0 }
     )
   }
 

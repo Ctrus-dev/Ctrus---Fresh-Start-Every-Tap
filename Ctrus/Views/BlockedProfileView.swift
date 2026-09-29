@@ -63,7 +63,7 @@ struct BlockedProfileView: View {
         // Show lock status when profile is active
         if isBlocking {
           Section {
-            HStack {
+            HStack(alignment: .top, spacing: 12) {
               Image(systemName: "lock.fill")
                 .font(.title2)
                 .foregroundColor(.orange)
@@ -71,7 +71,7 @@ struct BlockedProfileView: View {
                 .font(.subheadline)
                 .foregroundColor(.red)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 4)
           }
         }

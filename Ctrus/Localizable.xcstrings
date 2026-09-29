@@ -11894,29 +11894,6 @@
         }
       }
     },
-    "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Define la hora y en qué días de la semana quieres que este perfil empiece automáticamente. Para terminarlo vas a necesitar tu Ctrus."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Define a hora e em que dias da semana queres que este perfil comece automáticamente. Para terminar vais precisar do teu Ctrus."
-          }
-        }
-      }
-    },
     "Start by pressing the session bubble in the app. You'll need your Ctrus to end it.": {
       "extractionState": "manual",
       "localizations": {
@@ -12074,6 +12051,75 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ não começou porque outro perfil ainda está ativo."
+          }
+        }
+      }
+    },
+    "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define la hora y en qué días de la semana quieres que este perfil empiece automáticamente. Vas a necesitar tu Ctrus para pararlo antes de tiempo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define a hora e em que dias da semana queres que este perfil comece automaticamente. Vais precisar do teu Ctrus para o parar antes do tempo."
+          }
+        }
+      }
+    },
+    "Indefinite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinite"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida"
+          }
+        }
+      }
+    },
+    "%lld hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld hours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas"
           }
         }
       }

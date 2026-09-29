@@ -107,20 +107,44 @@ class ScheduleTimerActivity: TimerActivity {
   }
 
   func stop(for profile: SharedData.ProfileSnapshot) {
-    // Scheduled sessions only ever start automatically. Ending one always
-    // requires scanning the Ctrus NFC tag in the app, same as any other
-    // physically-unlocked profile, so the interval ending here does not
-    // touch restrictions or the active session.
-    log.info(
-      "Interval ended for scheduled profile \(profile.id.uuidString), leaving restrictions active until the Ctrus is scanned"
-    )
+    let profileId = profile.id.uuidString
+
+    // An indefinite schedule has no automatic end — it runs until the Ctrus is
+    // scanned in the app, so the interval closing here must not touch
+    // restrictions or the active session.
+    guard profile.schedule?.hasAutomaticEnd == true else {
+      log.info(
+        "Interval ended for scheduled profile \(profileId), schedule is indefinite so restrictions stay until the Ctrus is scanned"
+      )
+      return
+    }
+
+    guard let activeSession = SharedData.getActiveSharedSession() else {
+      log.info("Stop schedule timer activity for \(profileId), no active session found")
+      return
+    }
+
+    // Check to make sure the active session is the same as the profile before disabling restrictions
+    if activeSession.blockedProfileId != profile.id {
+      log.info(
+        "Stop schedule timer activity for \(profileId), active session profile does not match device activity profile"
+      )
+      return
+    }
+
+    // End restrictions
+    appBlocker.deactivateRestrictions()
+
+    // End the active scheduled session
+    SharedData.endActiveSharedSession()
   }
 
   func getScheduleInterval(from schedule: BlockedProfileSchedule) -> (
     intervalStart: DateComponents, intervalEnd: DateComponents
   ) {
+    let end = schedule.endComponents
     let intervalStart = DateComponents(hour: schedule.startHour, minute: schedule.startMinute)
-    let intervalEnd = DateComponents(hour: schedule.endHour, minute: schedule.endMinute)
+    let intervalEnd = DateComponents(hour: end.hour, minute: end.minute)
     return (intervalStart: intervalStart, intervalEnd: intervalEnd)
   }
 }

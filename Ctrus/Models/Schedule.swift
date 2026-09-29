@@ -35,12 +35,22 @@ enum Weekday: Int, CaseIterable, Codable, Equatable {
 }
 
 struct BlockedProfileSchedule: Codable, Equatable {
+  /// Hour counts a session can run for before it stops on its own.
+  static let availableDurationsInHours = [1, 2, 3, 4]
+
   var days: [Weekday]
 
   var startHour: Int
   var startMinute: Int
-  var endHour: Int
-  var endMinute: Int
+
+  // Superseded by `durationInHours`, which is what the monitored interval is
+  // built from now. Kept only so already-stored schedules keep decoding.
+  var endHour: Int = 23
+  var endMinute: Int = 59
+
+  /// `nil` runs until the Ctrus is scanned; otherwise the session stops on its
+  /// own after this many hours.
+  var durationInHours: Int?
 
   var updatedAt: Date = Date()
 
@@ -48,8 +58,33 @@ struct BlockedProfileSchedule: Codable, Equatable {
     return !days.isEmpty
   }
 
-  var totalDurationInSeconds: Int {
-    return (endHour - startHour) * 3600 + (endMinute - startMinute) * 60
+  var hasAutomaticEnd: Bool {
+    return durationInHours != nil
+  }
+
+  var automaticEndDurationInSeconds: TimeInterval? {
+    guard let durationInHours else { return nil }
+    return TimeInterval(durationInHours * 3600)
+  }
+
+  /// Wall clock end of the window DeviceActivity monitors. An indefinite
+  /// schedule still needs one, so it holds the window open until the end of the
+  /// day — nothing stops when it closes.
+  var endComponents: (hour: Int, minute: Int) {
+    guard let durationInHours else { return (23, 59) }
+
+    let minutesFromMidnight =
+      (startHour * 60 + startMinute + durationInHours * 60) % (24 * 60)
+    return (minutesFromMidnight / 60, minutesFromMidnight % 60)
+  }
+
+  static func durationText(forHours hours: Int?) -> String {
+    guard let hours else { return String(localized: "Indefinite") }
+    return hours == 1 ? String(localized: "1 hour") : String(localized: "\(hours) hours")
+  }
+
+  var durationText: String {
+    return Self.durationText(forHours: durationInHours)
   }
 
   var summaryText: String {
@@ -61,11 +96,9 @@ struct BlockedProfileSchedule: Codable, Equatable {
       .map { $0.shortLabel }
       .joined(separator: " ")
 
-    // There is no automatic end time to show here — stopping always
-    // requires the Ctrus NFC, so only the automatic start is a schedule row.
     let start = formattedTimeString(hour24: startHour, minute: startMinute)
 
-    return "\(daysSummary) · \(start)"
+    return "\(daysSummary) · \(start) · \(durationText)"
   }
 
   func isTodayScheduled(now: Date = Date(), calendar: Calendar = .current) -> Bool {

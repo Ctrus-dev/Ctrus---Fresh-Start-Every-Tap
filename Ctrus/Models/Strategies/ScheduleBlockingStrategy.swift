@@ -12,7 +12,7 @@ class ScheduleBlockingStrategy: BlockingStrategy {
   var name: String = String(localized: "Schedule + Ctrus NFC")
   var description: String = String(
     localized:
-      "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it."
+      "Set the time and days of the week this profile should start automatically. You'll need your Ctrus to end it before time is up."
   )
   var color: Color = .green
   var pickerCategory: BlockingStrategyPickerCategory = .mostPopular
