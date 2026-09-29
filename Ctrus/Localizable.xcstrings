@@ -10504,6 +10504,29 @@
         }
       }
     },
+    "This profile starts on its own at its scheduled time — it can't be started manually.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This profile starts on its own at its scheduled time — it can't be started manually."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este perfil empieza solo a la hora programada — no se puede iniciar manualmente."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este perfil começa sozinho à hora agendada — não pode ser iniciado manualmente."
+          }
+        }
+      }
+    },
     "This strategy already gives short opens for blocked apps and categories, so timed breaks are not needed for this profile.": {
       "extractionState": "manual",
       "localizations": {
@@ -11470,6 +11493,29 @@
         }
       }
     },
+    "View Insights for All Profiles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View Insights for All Profiles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver Estadísticas de Todos los Perfiles"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver Estatísticas de Todos os Perfis"
+          }
+        }
+      }
+    },
     "View your last 28 days of focus time in a heatmap calendar": {
       "extractionState": "manual",
       "localizations": {
@@ -12258,29 +12304,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "As tuas aberturas não são repostas durante esta sessão."
-          }
-        }
-      }
-    },
-    "This profile starts on its own at its scheduled time — it can't be started manually.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This profile starts on its own at its scheduled time — it can't be started manually."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este perfil empieza solo a la hora programada — no se puede iniciar manualmente."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este perfil começa sozinho à hora agendada — não pode ser iniciado manualmente."
           }
         }
       }
