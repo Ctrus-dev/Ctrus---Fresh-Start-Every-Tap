@@ -278,48 +278,48 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     // Curated citrus-themed messages shown on the block screen.
     let messages: [FunMessage] = [
       (
-        String(localized: "Life gave you lemons"),
-        String(localized: "And you want to turn them into doomscrolling"),
+        String(localized: "Life gave you lemons…"),
+        String(localized: "And you want to turn them into doomscrolling."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "100% juice, they say"),
-        String(localized: "Your focus is running at 0%"),
+        String(localized: "100% juice, they say…"),
+        String(localized: "Your focus is running at 0%."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Vitamin C doesn't work like this"),
-        String(localized: "A daily dose of \(title) won't do you any good"),
+        String(localized: "Vitamin C doesn't work like this!"),
+        String(localized: "A daily dose of \(title) won't do you any good."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "When life gives you lemons"),
+        String(localized: "When life gives you lemons…"),
         String(localized: "You really think this is the lemonade?"),
         String(localized: "Got it")
       ),
       (
-        String(localized: "The tree takes time to bear fruit"),
-        String(localized: "You keep coming back to \(title) whenever you want, that's the problem"),
+        String(localized: "The tree takes time to bear fruit…"),
+        String(localized: "You keep coming back to \(title) whenever you want, that's the problem."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Sweet on the outside"),
-        String(localized: "Bitter when you realize how many hours you've already spent here"),
+        String(localized: "Sweet on the outside…"),
+        String(localized: "Bitter when you realize how many hours you've already spent here."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Looks harmless on the outside"),
-        String(localized: "You know it's bitter on the inside"),
+        String(localized: "Looks harmless on the outside…"),
+        String(localized: "You know it's bitter on the inside."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Good things take time to ripen"),
-        String(localized: "\(title) isn't one of them"),
+        String(localized: "Good things take time to ripen!"),
+        String(localized: "\(title) isn't one of them."),
         String(localized: "Got it")
       ),
       (
-        String(localized: "Here we are again"),
-        String(localized: "This is getting repetitive, and not in a sweet way"),
+        String(localized: "Here we are again…"),
+        String(localized: "This is getting repetitive, and not in a sweet way."),
         String(localized: "Got it")
       ),
     ]
