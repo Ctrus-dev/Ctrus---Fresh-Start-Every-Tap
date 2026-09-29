@@ -9,8 +9,6 @@ struct SettingsView: View {
   @EnvironmentObject var requestAuthorizer: RequestAuthorizer
   @EnvironmentObject var strategyManager: StrategyManager
 
-  @State private var showResetBlockingStateAlert = false
-  @State private var showDebugView = false
   @State private var showLicenseView = false
   @State private var unlockCode = ""
   @State private var isVerifyingUnlockCode = false
@@ -176,27 +174,6 @@ struct SettingsView: View {
                 .foregroundColor(.secondary)
             }
           }
-
-          HStack {
-            Text("Debug Mode")
-              .foregroundColor(.primary)
-            Spacer()
-            Image(systemName: "chevron.right")
-              .foregroundColor(.secondary)
-              .font(.caption)
-          }
-          .onTapGesture {
-            showDebugView = true
-          }
-
-          if !strategyManager.isBlocking {
-            Button {
-              showResetBlockingStateAlert = true
-            } label: {
-              Text("Reset Blocking State")
-                .foregroundColor(themeManager.themeColor)
-            }
-          }
         }
 
         Section("Locked Out and Lost Your Ctrus?") {
@@ -294,19 +271,6 @@ struct SettingsView: View {
           }
           .accessibilityLabel("Close")
         }
-      }
-      .alert("Reset Blocking State", isPresented: $showResetBlockingStateAlert) {
-        Button("Cancel", role: .cancel) {}
-        Button("Reset", role: .destructive) {
-          strategyManager.resetBlockingState(context: context)
-        }
-      } message: {
-        Text(
-          "This will clear all app restrictions and remove any ghost schedules. Only use this if you're locked out and no profile is active."
-        )
-      }
-      .sheet(isPresented: $showDebugView) {
-        DebugView()
       }
       .sheet(isPresented: $showLicenseView) {
         LicenseView()
