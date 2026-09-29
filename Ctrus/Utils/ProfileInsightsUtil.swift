@@ -64,13 +64,21 @@ class ProfileInsightsUtil: ObservableObject {
     let breaksEnded: Int
   }
 
-  let profile: BlockedProfiles
+  let profiles: [BlockedProfiles]
   private var startDate: Date? = nil
   private var endDate: Date? = nil
 
-  init(profile: BlockedProfiles) {
-    self.profile = profile
-    self.metrics = Self.computeMetrics(for: profile)
+  /// Every session across all of `profiles` — the "Profiles" aggregate view
+  /// passes every created profile here instead of just one, and every
+  /// aggregation below reads through this instead of a single profile's
+  /// `sessions` relationship.
+  private var allSessions: [BlockedProfileSession] {
+    profiles.flatMap { $0.sessions }
+  }
+
+  init(profiles: [BlockedProfiles]) {
+    self.profiles = profiles
+    self.metrics = Self.computeMetrics(for: profiles)
   }
 
   func setDateRange(start: Date?, end: Date?) {
@@ -81,18 +89,18 @@ class ProfileInsightsUtil: ObservableObject {
 
   func refresh() {
     metrics = Self.computeMetrics(
-      for: profile,
+      for: profiles,
       from: startDate,
       to: endDate
     )
   }
 
   private static func computeMetrics(
-    for profile: BlockedProfiles,
+    for profiles: [BlockedProfiles],
     from startDate: Date? = nil,
     to endDate: Date? = nil
   ) -> ProfileInsightsMetrics {
-    let completed = profile.sessions.filter { session in
+    let completed = profiles.flatMap { $0.sessions }.filter { session in
       guard let end = session.endTime else { return false }
       if let startDate = startDate, session.startTime < startDate { return false }
       if let endDate = endDate, end > endDate { return false }
@@ -175,7 +183,7 @@ class ProfileInsightsUtil: ObservableObject {
     let startOfWindow = calendar.startOfDay(for: effectiveStart)
     let endOfWindow = calendar.startOfDay(for: effectiveEnd)
 
-    let completed = profile.sessions.filter { session in
+    let completed = allSessions.filter { session in
       guard let sessionEnd = session.endTime else { return false }
       return sessionEnd >= startOfWindow
         && sessionEnd <= calendar.date(byAdding: .day, value: 1, to: endOfWindow)!
@@ -217,7 +225,7 @@ class ProfileInsightsUtil: ObservableObject {
     let endOfWindowExclusive = calendar.date(
       byAdding: .day, value: 1, to: calendar.startOfDay(for: effectiveEnd))!
 
-    let completed = profile.sessions.filter { session in
+    let completed = allSessions.filter { session in
       guard let sessionEnd = session.endTime else { return false }
       return sessionEnd >= startOfWindow && sessionEnd < endOfWindowExclusive
     }
@@ -316,7 +324,7 @@ class ProfileInsightsUtil: ObservableObject {
     let startOfWindow = calendar.startOfDay(for: effectiveStart)
     let endOfWindow = calendar.startOfDay(for: effectiveEnd)
 
-    let sessionsWithBreaks = profile.sessions.filter { session in
+    let sessionsWithBreaks = allSessions.filter { session in
       guard let breakStart = session.breakStartTime else { return false }
       return breakStart >= startOfWindow
         && breakStart <= calendar.date(byAdding: .day, value: 1, to: endOfWindow)!
@@ -367,7 +375,7 @@ class ProfileInsightsUtil: ObservableObject {
     let endOfWindowExclusive = calendar.date(
       byAdding: .day, value: 1, to: calendar.startOfDay(for: effectiveEnd))!
 
-    let sessionsWithBreaks = profile.sessions.filter { session in
+    let sessionsWithBreaks = allSessions.filter { session in
       guard let breakStart = session.breakStartTime else { return false }
       return breakStart >= startOfWindow && breakStart < endOfWindowExclusive
     }
@@ -420,7 +428,7 @@ class ProfileInsightsUtil: ObservableObject {
     let endOfWindowExclusive = calendar.date(
       byAdding: .day, value: 1, to: calendar.startOfDay(for: effectiveEnd))!
 
-    let completedSessions = profile.sessions.filter { session in
+    let completedSessions = allSessions.filter { session in
       guard let sessionEnd = session.endTime else { return false }
       return sessionEnd >= startOfWindow && sessionEnd < endOfWindowExclusive
     }
@@ -462,7 +470,7 @@ class ProfileInsightsUtil: ObservableObject {
     let endOfWindowExclusive = calendar.date(
       byAdding: .day, value: 1, to: calendar.startOfDay(for: effectiveEnd))!
 
-    let sessionsWithBreaks = profile.sessions.filter { session in
+    let sessionsWithBreaks = allSessions.filter { session in
       guard let breakStart = session.breakStartTime else { return false }
       return breakStart >= startOfWindow && breakStart < endOfWindowExclusive
     }
@@ -504,7 +512,7 @@ class ProfileInsightsUtil: ObservableObject {
     let endOfWindowExclusive = calendar.date(
       byAdding: .day, value: 1, to: calendar.startOfDay(for: effectiveEnd))!
 
-    let sessionsWithCompletedBreaks = profile.sessions.filter { session in
+    let sessionsWithCompletedBreaks = allSessions.filter { session in
       guard let breakEnd = session.breakEndTime else { return false }
       return breakEnd >= startOfWindow && breakEnd < endOfWindowExclusive
     }

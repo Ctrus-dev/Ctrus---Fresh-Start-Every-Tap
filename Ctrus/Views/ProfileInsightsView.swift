@@ -61,19 +61,36 @@ struct ProfileInsightsView: View {
   @State private var initialViewMode: InsightsViewMode?
   @State private var initialSelectedDate: Date?
   @State private var hasAppliedInitialState = false
-  private let profileName: String
+  private let title: String
+
+  /// Designated init — pass every created profile plus a display title (e.g.
+  /// "Profiles") to get a combined view across all of them, same as any
+  /// single profile's insights.
+  init(
+    profiles: [BlockedProfiles],
+    title: String,
+    initialViewMode: InsightsViewMode? = nil,
+    initialSelectedDate: Date? = nil
+  ) {
+    _weeklyViewModel = StateObject(wrappedValue: WeeklyInsightsUtil(profiles: profiles))
+    _monthlyViewModel = StateObject(wrappedValue: MonthlyInsightsUtil(profiles: profiles))
+    _profileInsightsViewModel = StateObject(wrappedValue: ProfileInsightsUtil(profiles: profiles))
+    _initialViewMode = State(wrappedValue: initialViewMode)
+    _initialSelectedDate = State(wrappedValue: initialSelectedDate)
+    self.title = title
+  }
 
   init(
     profile: BlockedProfiles,
     initialViewMode: InsightsViewMode? = nil,
     initialSelectedDate: Date? = nil
   ) {
-    _weeklyViewModel = StateObject(wrappedValue: WeeklyInsightsUtil(profiles: [profile]))
-    _monthlyViewModel = StateObject(wrappedValue: MonthlyInsightsUtil(profiles: [profile]))
-    _profileInsightsViewModel = StateObject(wrappedValue: ProfileInsightsUtil(profile: profile))
-    _initialViewMode = State(wrappedValue: initialViewMode)
-    _initialSelectedDate = State(wrappedValue: initialSelectedDate)
-    self.profileName = profile.name
+    self.init(
+      profiles: [profile],
+      title: profile.name,
+      initialViewMode: initialViewMode,
+      initialSelectedDate: initialSelectedDate
+    )
   }
 
   private var weekSummary: WeeklySummary {
@@ -88,10 +105,13 @@ struct ProfileInsightsView: View {
   // not worth showing as a row.
   private static let minimumDisplayableDuration: TimeInterval = 60
 
+  private var profileIds: Set<UUID> {
+    Set(weeklyViewModel.profiles.map { $0.id })
+  }
+
   private var weekSessions: [BlockedProfileSession] {
     allSessions.filter { session in
-      guard let profileId = weeklyViewModel.profiles.first?.id,
-        session.blockedProfile.id == profileId,
+      guard profileIds.contains(session.blockedProfile.id),
         let endTime = session.endTime,
         session.duration >= Self.minimumDisplayableDuration
       else {
@@ -103,8 +123,7 @@ struct ProfileInsightsView: View {
 
   private var monthSessions: [BlockedProfileSession] {
     allSessions.filter { session in
-      guard let profileId = monthlyViewModel.profiles.first?.id,
-        session.blockedProfile.id == profileId,
+      guard profileIds.contains(session.blockedProfile.id),
         let endTime = session.endTime,
         session.duration >= Self.minimumDisplayableDuration
       else {
@@ -116,8 +135,7 @@ struct ProfileInsightsView: View {
 
   private var allProfileSessions: [BlockedProfileSession] {
     allSessions.filter { session in
-      guard let profileId = weeklyViewModel.profiles.first?.id else { return false }
-      return session.blockedProfile.id == profileId && session.endTime != nil
+      profileIds.contains(session.blockedProfile.id) && session.endTime != nil
         && session.duration >= Self.minimumDisplayableDuration
     }
   }
@@ -252,7 +270,7 @@ struct ProfileInsightsView: View {
           }
         }
       }
-      .navigationTitle("\(profileName) Insights")
+      .navigationTitle("\(title) Insights")
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {

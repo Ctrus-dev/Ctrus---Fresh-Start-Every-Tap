@@ -23,6 +23,7 @@ struct BlockedProfileListView: View {
   @State private var profileToEdit: BlockedProfiles?
   @State private var showErrorAlert = false
   @State private var editMode: EditMode = .inactive
+  @State private var showingAllProfilesInsights = false
 
   var body: some View {
     NavigationStack {
@@ -97,6 +98,12 @@ struct BlockedProfileListView: View {
             }
           }
           if editMode == .inactive && !profiles.isEmpty {
+            Button(action: { showingAllProfilesInsights = true }) {
+              Image(systemName: "chart.line.uptrend.xyaxis")
+            }
+            .accessibilityLabel("View Insights for All Profiles")
+          }
+          if editMode == .inactive && !profiles.isEmpty {
             Button(action: { editMode = .active }) {
               Image(systemName: "pencil")
             }
@@ -116,6 +123,9 @@ struct BlockedProfileListView: View {
       }
       .sheet(item: $profileToEdit) { profile in
         BlockedProfileView(profile: profile)
+      }
+      .sheet(isPresented: $showingAllProfilesInsights) {
+        ProfileInsightsView(profiles: profiles, title: String(localized: "Profiles"))
       }
       .alert(
         "Cannot Delete Active Profile",
