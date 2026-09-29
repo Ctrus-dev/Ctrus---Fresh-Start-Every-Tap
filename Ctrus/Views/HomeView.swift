@@ -20,6 +20,12 @@ struct HomeView: View {
     SortDescriptor(\BlockedProfiles.createdAt, order: .reverse),
   ]) private
     var profiles: [BlockedProfiles]
+
+  // Schedule-mode profiles only ever start on their own, so they're left out
+  // of the manual start picker rather than offered and then refused.
+  private var manuallyStartableProfiles: [BlockedProfiles] {
+    profiles.filter { $0.blockingStrategyId != ScheduleBlockingStrategy.id }
+  }
   @State private var isProfileListPresent = false
 
   // New profile view
@@ -194,7 +200,7 @@ struct HomeView: View {
     }
     .sheet(isPresented: $showStartProfilePicker) {
       StartProfilePickerView(
-        profiles: profiles,
+        profiles: manuallyStartableProfiles,
         isBlocking: isBlocking,
         activeSessionProfileId: activeSessionProfileId,
         startingProfileId: navigateToProfileId,

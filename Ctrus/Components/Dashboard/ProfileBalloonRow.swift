@@ -31,8 +31,15 @@ struct ProfileBalloonRow: View {
   private let baseBorderWidth: CGFloat = 3.5
   private let heldBorderWidth: CGFloat = 5
 
+  private var isScheduleMode: Bool {
+    blockingStrategy?.getIdentifier() == ScheduleBlockingStrategy.id
+  }
+
   private var canStart: Bool {
-    !isBlocking
+    // Schedule-mode profiles only ever start on their own, at the configured
+    // time — hold-to-start is disabled for them rather than starting
+    // something whose auto-stop can't track a manual start time.
+    !isBlocking && !isScheduleMode
   }
 
   private var showStopButton: Bool {

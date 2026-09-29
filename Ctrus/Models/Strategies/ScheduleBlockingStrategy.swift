@@ -18,7 +18,7 @@ class ScheduleBlockingStrategy: BlockingStrategy {
   var pickerCategory: BlockingStrategyPickerCategory = .mostPopular
 
   var usesNFC: Bool = true
-  var startsManually: Bool = true
+  var startsManually: Bool = false
 
   var tags: [BlockingStrategyTag] {
     [.automaticStart, .nfc]
@@ -39,19 +39,20 @@ class ScheduleBlockingStrategy: BlockingStrategy {
     profile: BlockedProfiles,
     forceStart: Bool?
   ) -> (any View)? {
-    self.appBlocker.activateRestrictions(for: BlockedProfiles.getSnapshot(for: profile))
-
-    let activeSession =
-      BlockedProfileSession
-      .createSession(
-        in: context,
-        withTag: ScheduleBlockingStrategy.id,
-        withProfile: profile,
-        forceStart: forceStart ?? false
-      )
-
-    self.onSessionCreation?(.started(activeSession))
-
+    // Schedule mode only ever starts automatically, through
+    // ScheduleTimerActivity — which never calls this function, it manipulates
+    // the shared session state directly from the background extension.
+    // Reaching this method at all means something tried to start it by hand
+    // (hold-to-start, the start picker, a future entry point); a manual start
+    // would run for whatever's left of the originally configured wall-clock
+    // window rather than the chosen duration, so it's refused outright
+    // instead of starting something the clock/auto-stop can't track
+    // correctly.
+    self.onErrorMessage?(
+      String(
+        localized:
+          "This profile starts on its own at its scheduled time — it can't be started manually.")
+    )
     return nil
   }
 

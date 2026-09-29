@@ -12261,6 +12261,29 @@
           }
         }
       }
+    },
+    "This profile starts on its own at its scheduled time — it can't be started manually.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This profile starts on its own at its scheduled time — it can't be started manually."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este perfil empieza solo a la hora programada — no se puede iniciar manualmente."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este perfil começa sozinho à hora agendada — não pode ser iniciado manualmente."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
