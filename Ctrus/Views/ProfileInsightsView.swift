@@ -11,6 +11,24 @@ private enum InsightsFilter: Equatable {
   case allSessions
 }
 
+/// iOS 26 added a native title+subtitle nav bar (both collapse together on
+/// scroll, same as a plain title). On older iOS there's no subtitle API, so
+/// this leaves the plain navigationTitle(profileTitle) already applied
+/// before it in the chain untouched — that's still the best single title.
+private struct InsightsTitleModifier: ViewModifier {
+  let profileTitle: String
+
+  func body(content: Content) -> some View {
+    if #available(iOS 26.0, *) {
+      content
+        .navigationTitle(String(localized: "Insights"))
+        .navigationSubtitle(profileTitle)
+    } else {
+      content
+    }
+  }
+}
+
 struct ProfileInsightsView: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var themeManager: ThemeManager
@@ -271,6 +289,7 @@ struct ProfileInsightsView: View {
         }
       }
       .navigationTitle(title)
+      .modifier(InsightsTitleModifier(profileTitle: title))
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
