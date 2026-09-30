@@ -222,6 +222,18 @@ struct ProfileInsightsView: View {
   var body: some View {
     NavigationStack {
       List {
+        Section {
+          Text("\(title) Insights")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .foregroundStyle(.primary)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 4, trailing: 20))
+
         if viewMode != .allSessions {
           Section {
             if viewMode == .week {
@@ -270,7 +282,8 @@ struct ProfileInsightsView: View {
           }
         }
       }
-      .navigationTitle("\(title) Insights")
+      .navigationTitle("Insights")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
