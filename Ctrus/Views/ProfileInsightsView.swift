@@ -219,24 +219,9 @@ struct ProfileInsightsView: View {
     return dayOrder.map { SessionDayGroup(day: $0, sessions: sessionsByDay[$0] ?? []) }
   }
 
-  private var header: some View {
-    Text("\(title) Insights")
-      .font(.largeTitle)
-      .fontWeight(.bold)
-      .foregroundStyle(.primary)
-      .frame(maxWidth: .infinity, alignment: .leading)
-  }
-
   var body: some View {
     NavigationStack {
       List {
-        Section {
-          header
-        }
-        .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 8, trailing: 0))
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-
         if viewMode != .allSessions {
           Section {
             if viewMode == .week {
@@ -285,7 +270,7 @@ struct ProfileInsightsView: View {
           }
         }
       }
-      .listSectionSpacing(.compact)
+      .navigationTitle(title)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
