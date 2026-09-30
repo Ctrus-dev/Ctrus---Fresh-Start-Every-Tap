@@ -467,7 +467,11 @@ class StrategyManager: ObservableObject {
 
   func setResetPeriodInWeeks(_ weeks: Int) {
     emergencyUnblocksResetPeriodInWeeks = weeks
-    lastEmergencyUnblocksResetDateTimestamp = Date().timeIntervalSinceReferenceDate
+    // Changing how long a cycle is must not move when the current cycle
+    // started — that discards however much of the wait was already done.
+    // Re-checking against the new period length instead correctly resets
+    // immediately if the shorter period means today already qualifies.
+    checkAndResetEmergencyUnblocks()
   }
 
   func getRemainingRecoveryUnlocks() -> Int {
