@@ -233,7 +233,7 @@ struct ProfileInsightsView: View {
         Section {
           header
         }
-        .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 4, trailing: 4))
+        .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 8, trailing: 0))
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
 
@@ -286,8 +286,6 @@ struct ProfileInsightsView: View {
         }
       }
       .listSectionSpacing(.compact)
-      .navigationTitle("Insights")
-      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
