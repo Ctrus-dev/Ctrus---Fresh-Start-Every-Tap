@@ -219,185 +219,191 @@ struct ProfileInsightsView: View {
     return dayOrder.map { SessionDayGroup(day: $0, sessions: sessionsByDay[$0] ?? []) }
   }
 
+  private var header: some View {
+    Text("\(title) Insights")
+      .font(.largeTitle)
+      .fontWeight(.bold)
+      .foregroundStyle(.primary)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(.horizontal, 20)
+      .padding(.top, 12)
+      .padding(.bottom, 4)
+  }
+
   var body: some View {
     NavigationStack {
-      List {
-        Section {
-          Text("\(title) Insights")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .foregroundStyle(.primary)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 4, trailing: 20))
+      VStack(spacing: 0) {
+        header
 
-        if viewMode != .allSessions {
-          Section {
-            if viewMode == .week {
-              WeeklySessionChart(
-                viewModel: weeklyViewModel, selectedDay: $selectedWeekDay, onDateSelected: nil
-              )
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.vertical, 8)
-              .listRowInsets(EdgeInsets(top: 12, leading: 4, bottom: 0, trailing: 4))
-              .listRowBackground(Color.clear)
-            } else {
-              MonthlySessionChart(
-                viewModel: monthlyViewModel, selectedDay: $selectedMonthDay, onDateSelected: nil
-              )
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.vertical, 8)
-              .listRowInsets(EdgeInsets(top: 12, leading: 4, bottom: 0, trailing: 4))
-              .listRowBackground(Color.clear)
-            }
-          }
-        }
-
-        if selectedDay == nil {
-          Section("Summary") {
-            InsightsSummaryRow(
-              icon: "clock.fill",
-              label: String(localized: "Total Focus Time"),
-              value: DateFormatters.formatDurationHoursMinutes(
-                profileInsightsViewModel.metrics.totalFocusTime)
-            )
-
-            InsightsSummaryRow(
-              icon: "cup.and.saucer.fill",
-              label: String(localized: "Total Break Time"),
-              value: DateFormatters.formatDurationHoursMinutes(
-                profileInsightsViewModel.metrics.totalBreakTime)
-            )
-          }
-        }
-
-        ForEach(groupedSessions) { group in
-          Section(DateFormatters.formatSessionDate(group.day)) {
-            ForEach(group.sessions) { session in
-              SessionRow(session: session)
-            }
-          }
-        }
-      }
-      .navigationTitle("Insights")
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem(placement: .topBarLeading) {
-          Button {
-            dismiss()
-          } label: {
-            Image(systemName: "xmark")
-          }
-          .accessibilityLabel("Close")
-        }
-
-        ToolbarItem(placement: .topBarTrailing) {
-          Menu {
-            // Week options
-            Button {
-              selectedFilter = .thisWeek
-              clearDaySelection()
-              weeklyViewModel.setWeek(for: Date())
-            } label: {
-              Label(
-                "This Week",
-                systemImage: selectedFilter == .thisWeek
-                  ? "checkmark" : "calendar.day.timeline.left")
-            }
-
-            Button {
-              selectedFilter = .lastWeek
-              clearDaySelection()
-              if let lastWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())
-              {
-                weeklyViewModel.setWeek(for: lastWeek)
-              }
-            } label: {
-              Label(
-                "Last Week",
-                systemImage: selectedFilter == .lastWeek
-                  ? "checkmark" : "calendar.day.timeline.right")
-            }
-
-            Divider()
-
-            // Month options
-            Button {
-              selectedFilter = .thisMonth
-              clearDaySelection()
-              monthlyViewModel.setMonth(for: Date())
-            } label: {
-              Label(
-                "This Month", systemImage: selectedFilter == .thisMonth ? "checkmark" : "calendar")
-            }
-
-            Button {
-              selectedFilter = .lastMonth
-              clearDaySelection()
-              if let lastMonth = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
-                monthlyViewModel.setMonth(for: lastMonth)
-              }
-            } label: {
-              Label(
-                "Last Month", systemImage: selectedFilter == .lastMonth ? "checkmark" : "arrow.left"
-              )
-            }
-
-            Divider()
-
-            // Specific date picker
-            Button {
+        List {
+          if viewMode != .allSessions {
+            Section {
               if viewMode == .week {
-                showingWeekPicker = true
-              } else if viewMode == .month {
-                showingMonthPicker = true
+                WeeklySessionChart(
+                  viewModel: weeklyViewModel, selectedDay: $selectedWeekDay, onDateSelected: nil
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 8)
+                .listRowInsets(EdgeInsets(top: 12, leading: 4, bottom: 0, trailing: 4))
+                .listRowBackground(Color.clear)
+              } else {
+                MonthlySessionChart(
+                  viewModel: monthlyViewModel, selectedDay: $selectedMonthDay, onDateSelected: nil
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 8)
+                .listRowInsets(EdgeInsets(top: 12, leading: 4, bottom: 0, trailing: 4))
+                .listRowBackground(Color.clear)
               }
-            } label: {
-              Label(
-                viewMode == .week ? "Select Week..." : "Select Month...",
-                systemImage: isSpecificFilter ? "checkmark" : "calendar.view.day"
+            }
+          }
+
+          if selectedDay == nil {
+            Section("Summary") {
+              InsightsSummaryRow(
+                icon: "clock.fill",
+                label: String(localized: "Total Focus Time"),
+                value: DateFormatters.formatDurationHoursMinutes(
+                  profileInsightsViewModel.metrics.totalFocusTime)
+              )
+
+              InsightsSummaryRow(
+                icon: "cup.and.saucer.fill",
+                label: String(localized: "Total Break Time"),
+                value: DateFormatters.formatDurationHoursMinutes(
+                  profileInsightsViewModel.metrics.totalBreakTime)
               )
             }
+          }
 
-            Divider()
-
-            // All sessions option
-            Button {
-              selectedFilter = .allSessions
-              clearDaySelection()
-            } label: {
-              Label(
-                "All Sessions",
-                systemImage: selectedFilter == .allSessions ? "checkmark" : "list.bullet")
+          ForEach(groupedSessions) { group in
+            Section(DateFormatters.formatSessionDate(group.day)) {
+              ForEach(group.sessions) { session in
+                SessionRow(session: session)
+              }
             }
-          } label: {
-            HStack(spacing: 4) {
-              Image(systemName: filterMenuIcon)
-              Text(filterMenuTitle)
-                .font(.subheadline.weight(.medium))
-            }
-            .foregroundStyle(.primary)
           }
         }
-      }
-      .sheet(isPresented: $showingWeekPicker) {
-        InsightsWeekPickerView(selectedDate: weeklyViewModel.selectedDate) { date in
-          selectedFilter = .specificWeek
-          weeklyViewModel.setWeek(for: date)
-          clearDaySelection()
+        .navigationTitle("Insights")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .topBarLeading) {
+            Button {
+              dismiss()
+            } label: {
+              Image(systemName: "xmark")
+            }
+            .accessibilityLabel("Close")
+          }
+
+          ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+              // Week options
+              Button {
+                selectedFilter = .thisWeek
+                clearDaySelection()
+                weeklyViewModel.setWeek(for: Date())
+              } label: {
+                Label(
+                  "This Week",
+                  systemImage: selectedFilter == .thisWeek
+                    ? "checkmark" : "calendar.day.timeline.left")
+              }
+
+              Button {
+                selectedFilter = .lastWeek
+                clearDaySelection()
+                if let lastWeek = Calendar.current.date(
+                  byAdding: .weekOfYear, value: -1, to: Date())
+                {
+                  weeklyViewModel.setWeek(for: lastWeek)
+                }
+              } label: {
+                Label(
+                  "Last Week",
+                  systemImage: selectedFilter == .lastWeek
+                    ? "checkmark" : "calendar.day.timeline.right")
+              }
+
+              Divider()
+
+              // Month options
+              Button {
+                selectedFilter = .thisMonth
+                clearDaySelection()
+                monthlyViewModel.setMonth(for: Date())
+              } label: {
+                Label(
+                  "This Month",
+                  systemImage: selectedFilter == .thisMonth ? "checkmark" : "calendar")
+              }
+
+              Button {
+                selectedFilter = .lastMonth
+                clearDaySelection()
+                if let lastMonth = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+                  monthlyViewModel.setMonth(for: lastMonth)
+                }
+              } label: {
+                Label(
+                  "Last Month",
+                  systemImage: selectedFilter == .lastMonth ? "checkmark" : "arrow.left"
+                )
+              }
+
+              Divider()
+
+              // Specific date picker
+              Button {
+                if viewMode == .week {
+                  showingWeekPicker = true
+                } else if viewMode == .month {
+                  showingMonthPicker = true
+                }
+              } label: {
+                Label(
+                  viewMode == .week ? "Select Week..." : "Select Month...",
+                  systemImage: isSpecificFilter ? "checkmark" : "calendar.view.day"
+                )
+              }
+
+              Divider()
+
+              // All sessions option
+              Button {
+                selectedFilter = .allSessions
+                clearDaySelection()
+              } label: {
+                Label(
+                  "All Sessions",
+                  systemImage: selectedFilter == .allSessions ? "checkmark" : "list.bullet")
+              }
+            } label: {
+              HStack(spacing: 4) {
+                Image(systemName: filterMenuIcon)
+                Text(filterMenuTitle)
+                  .font(.subheadline.weight(.medium))
+              }
+              .foregroundStyle(.primary)
+            }
+          }
         }
-        .presentationDetents([.medium, .large])
-      }
-      .sheet(isPresented: $showingMonthPicker) {
-        InsightsMonthPickerView(selectedDate: monthlyViewModel.selectedDate) { date in
-          selectedFilter = .specificMonth
-          monthlyViewModel.setMonth(for: date)
-          clearDaySelection()
+        .sheet(isPresented: $showingWeekPicker) {
+          InsightsWeekPickerView(selectedDate: weeklyViewModel.selectedDate) { date in
+            selectedFilter = .specificWeek
+            weeklyViewModel.setWeek(for: date)
+            clearDaySelection()
+          }
+          .presentationDetents([.medium, .large])
         }
-        .presentationDetents([.medium, .large])
+        .sheet(isPresented: $showingMonthPicker) {
+          InsightsMonthPickerView(selectedDate: monthlyViewModel.selectedDate) { date in
+            selectedFilter = .specificMonth
+            monthlyViewModel.setMonth(for: date)
+            clearDaySelection()
+          }
+          .presentationDetents([.medium, .large])
+        }
       }
     }
     .task {
