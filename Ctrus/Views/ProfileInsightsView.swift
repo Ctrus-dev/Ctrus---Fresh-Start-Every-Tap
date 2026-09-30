@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UIKit
 
 private enum InsightsFilter: Equatable {
   case thisWeek
@@ -24,10 +25,56 @@ private struct InsightsTitleModifier: ViewModifier {
       content
         .navigationTitle(String(localized: "Insights"))
         .navigationSubtitle(profileTitle)
+        .background(SubtitleFontStyler())
     } else {
       content
         .navigationTitle(String(localized: "Insights"))
     }
+  }
+}
+
+/// SwiftUI has no styling modifier for the subtitle iOS 26 added
+/// (.navigationSubtitle only sets the text) — the default renders quite
+/// small, so this reaches into the hosting UIViewController's own
+/// navigationItem appearance to bump just the subtitle's font, scoped to
+/// this one screen rather than the app-wide UINavigationBar.appearance()
+/// proxy.
+@available(iOS 26.0, *)
+private struct SubtitleFontStyler: UIViewRepresentable {
+  func makeUIView(context: Context) -> UIView {
+    UIView(frame: .zero)
+  }
+
+  func updateUIView(_ uiView: UIView, context: Context) {
+    DispatchQueue.main.async {
+      guard let viewController = uiView.owningViewController else { return }
+      let item = viewController.navigationItem
+
+      let base =
+        (item.standardAppearance ?? viewController.navigationController?.navigationBar
+          .standardAppearance)?
+        .copy() as? UINavigationBarAppearance ?? UINavigationBarAppearance()
+
+      base.subtitleTextAttributes = [.font: UIFont.preferredFont(forTextStyle: .subheadline)]
+      base.largeSubtitleTextAttributes = [.font: UIFont.preferredFont(forTextStyle: .title3)]
+
+      item.standardAppearance = base
+      item.scrollEdgeAppearance = base
+      item.compactAppearance = base
+    }
+  }
+}
+
+extension UIView {
+  fileprivate var owningViewController: UIViewController? {
+    var responder: UIResponder? = self
+    while let current = responder {
+      if let viewController = current as? UIViewController {
+        return viewController
+      }
+      responder = current.next
+    }
+    return nil
   }
 }
 
