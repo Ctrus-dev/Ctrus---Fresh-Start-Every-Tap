@@ -302,12 +302,18 @@ private struct ProfileSummaryNextScheduleLine: View {
   var forcedLight: Bool = false
 
   var body: some View {
-    if let message = schedule.nextStartMessage(includePrefix: false) {
-      Text(message)
-        .font(.caption2)
-        .lineLimit(1)
-        .minimumScaleFactor(0.82)
-        .foregroundStyle(forcedLight ? Color.fixedLightSecondaryText : Color.secondary)
+    // This reads whatever "now" is at render time, with nothing else here
+    // ticking — without its own timer it would keep showing "Today at 10pm"
+    // long after 10pm had passed, until some unrelated state change happened
+    // to redraw this row.
+    TimelineView(.periodic(from: .now, by: 30)) { context in
+      if let message = schedule.nextStartMessage(now: context.date, includePrefix: false) {
+        Text(message)
+          .font(.caption2)
+          .lineLimit(1)
+          .minimumScaleFactor(0.82)
+          .foregroundStyle(forcedLight ? Color.fixedLightSecondaryText : Color.secondary)
+      }
     }
   }
 }
