@@ -223,7 +223,11 @@ struct ProfileBalloonRow: View {
           profile: profile,
           isActive: false,
           metadata: .appsAndDomains,
-          showsStatusLine: true,
+          // While a session is actively counting down, the next-schedule
+          // line ("Tomorrow at 22:00") is irrelevant noise next to the live
+          // timer — it only makes sense once the session has ended, back in
+          // `inactiveRow`.
+          showsStatusLine: false,
           layout: .dashboard,
           statusMode: .scheduleOnly,
           forcedLight: true
