@@ -12307,6 +12307,29 @@
           }
         }
       }
+    },
+    "You've used up all your emergency unblocks, and you only have one more unlock code left until it resets. We'd recommend not blocking apps you might urgently need.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've used up all your emergency unblocks, and you only have one more unlock code left until it resets. We'd recommend not blocking apps you might urgently need."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya usaste todos tus desbloqueos de emergencia, y solo te queda un código de desbloqueo más hasta que se reinicie. Te recomendamos no bloquear apps que puedas necesitar con urgencia."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Já gastaste todos os desbloqueios de emergência, e só te resta mais um código de desbloqueio até resetar. Aconselhamos a não bloqueares aplicações que possas precisar com urgência."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

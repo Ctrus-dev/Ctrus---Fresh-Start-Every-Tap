@@ -15,6 +15,7 @@ struct SettingsView: View {
   @State private var showInvalidUnlockCodeAlert = false
   @State private var showUnlockNetworkErrorAlert = false
   @State private var showDeviceIDCopiedConfirmation = false
+  @State private var showLastRecoveryCodeWarning = false
 
   @AppStorage("useLeftHandedLayout") private var useLeftHandedLayout = false
 
@@ -290,6 +291,13 @@ struct SettingsView: View {
       } message: {
         Text("Your Device ID has been copied.")
       }
+      .alert("Warning!", isPresented: $showLastRecoveryCodeWarning) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text(
+          "You've used up all your emergency unblocks, and you only have one more unlock code left until it resets. We'd recommend not blocking apps you might urgently need."
+        )
+      }
     }
   }
 
@@ -303,6 +311,11 @@ struct SettingsView: View {
       switch result {
       case .valid:
         unlockCode = ""
+        if strategyManager.getRemainingEmergencyUnblocks() == 0
+          && strategyManager.getRemainingRecoveryUnlocks() == 1
+        {
+          showLastRecoveryCodeWarning = true
+        }
       case .invalid:
         showInvalidUnlockCodeAlert = true
       case .networkError:
