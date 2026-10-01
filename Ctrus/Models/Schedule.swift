@@ -108,18 +108,26 @@ struct BlockedProfileSchedule: Codable, Equatable {
     return days.contains(today)
   }
 
-  func olderThan15Minutes(now: Date = Date()) -> Bool {
-    return now.timeIntervalSince(updatedAt) > 15 * 60
+  // DeviceActivityCenter can fire `intervalDidStart` the instant monitoring
+  // is (re-)registered if "now" already falls inside today's configured
+  // window — which happens on every schedule edit, since saving re-registers
+  // it. This is just a settle window to swallow that one spurious immediate
+  // fire; it isn't meant to delay a start that's genuinely still ahead, so it
+  // stays short rather than a generous buffer.
+  static let registrationSettleSeconds: TimeInterval = 60
+
+  func isPastRegistrationSettleWindow(now: Date = Date()) -> Bool {
+    return now.timeIntervalSince(updatedAt) > Self.registrationSettleSeconds
   }
 
   func nextStartDate(
     now: Date = Date(),
     calendar: Calendar = .current,
-    bufferMinutes: Int = 15
+    bufferSeconds: TimeInterval = BlockedProfileSchedule.registrationSettleSeconds
   ) -> Date? {
     guard isActive else { return nil }
 
-    let bufferTime = now.addingTimeInterval(TimeInterval(bufferMinutes * 60))
+    let bufferTime = now.addingTimeInterval(bufferSeconds)
 
     for daysAhead in 0..<7 {
       guard let candidateDate = calendar.date(byAdding: .day, value: daysAhead, to: bufferTime)

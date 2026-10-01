@@ -43,7 +43,7 @@ class ScheduleTimerActivity: TimerActivity {
       return
     }
 
-    if !schedule.olderThan15Minutes() {
+    if !schedule.isPastRegistrationSettleWindow() {
       log.info("Start schedule timer activity for \(profileId), schedule is too new")
       return
     }
