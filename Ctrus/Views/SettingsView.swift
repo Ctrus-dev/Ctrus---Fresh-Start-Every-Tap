@@ -291,14 +291,18 @@ struct SettingsView: View {
       } message: {
         Text("Your Device ID has been copied.")
       }
-      .alert("Warning!", isPresented: $showLastRecoveryCodeWarning) {
-        Button("OK", role: .cancel) {}
-      } message: {
-        Text(
-          "You've used up all your emergency unblocks, and you only have one more unlock code left until it resets. We'd recommend not blocking apps you might urgently need."
-        )
+    }
+    // A plain `.alert` can't restyle its title or buttons, so this one last
+    // warning (title in red, a themed pill instead of the system's full-width
+    // button) is a custom overlay rather than a system alert.
+    .overlay {
+      if showLastRecoveryCodeWarning {
+        LastRecoveryCodeWarningCard(themeColor: themeManager.themeColor) {
+          showLastRecoveryCodeWarning = false
+        }
       }
     }
+    .animation(.easeOut(duration: 0.2), value: showLastRecoveryCodeWarning)
   }
 
   private func submitUnlockCode() {
@@ -322,6 +326,49 @@ struct SettingsView: View {
         showUnlockNetworkErrorAlert = true
       }
     }
+  }
+}
+
+private struct LastRecoveryCodeWarningCard: View {
+  let themeColor: Color
+  let onDismiss: () -> Void
+
+  var body: some View {
+    ZStack {
+      Color.black.opacity(0.4)
+        .ignoresSafeArea()
+
+      VStack(spacing: 14) {
+        Text("Warning!")
+          .font(.headline)
+          .fontWeight(.bold)
+          .foregroundStyle(.red)
+
+        Text(
+          "You've used up all your emergency unblocks, and you only have one more unlock code left until it resets. We'd recommend not blocking apps you might urgently need."
+        )
+        .font(.subheadline)
+        .multilineTextAlignment(.center)
+        .foregroundStyle(.primary)
+
+        Button(action: onDismiss) {
+          Text("OK")
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 28)
+            .padding(.vertical, 8)
+            .background(themeColor, in: Capsule())
+        }
+        .padding(.top, 4)
+      }
+      .padding(24)
+      .frame(maxWidth: 270)
+      .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+      .shadow(color: .black.opacity(0.2), radius: 20, y: 8)
+    }
+    .transition(.opacity.combined(with: .scale(scale: 1.05)))
+    .zIndex(1)
   }
 }
 
