@@ -2,6 +2,7 @@ import DeviceActivity
 import FamilyControls
 import ManagedSettings
 import SwiftUI
+import UIKit
 import UserNotifications
 
 class DeviceActivityCenterUtil {
@@ -64,10 +65,34 @@ class DeviceActivityCenterUtil {
     let days = schedule.days
     let center = UNUserNotificationCenter.current()
 
+    // Saving a profile normally dismisses its sheet right away, which can
+    // background the app before this authorization round-trip and the
+    // `add` calls below finish — silently dropping the reminder with no
+    // visible error. A background task keeps the app alive long enough to
+    // actually finish registering them.
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "ScheduleReminders") {
+      UIApplication.shared.endBackgroundTask(backgroundTask)
+      backgroundTask = .invalid
+    }
+
+    func endBackgroundTaskIfNeeded() {
+      guard backgroundTask != .invalid else { return }
+      UIApplication.shared.endBackgroundTask(backgroundTask)
+      backgroundTask = .invalid
+    }
+
     center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
-      guard granted else { return }
+      guard granted else {
+        endBackgroundTaskIfNeeded()
+        return
+      }
+
+      let group = DispatchGroup()
 
       for day in days {
+        group.enter()
+
         let content = UNMutableNotificationContent()
         content.title = String(localized: "Starting Soon!")
         content.body = String(localized: "\(profileName) starts in 5 minutes.")
@@ -88,7 +113,12 @@ class DeviceActivityCenterUtil {
           if let error {
             print("Failed to schedule start reminder: \(error.localizedDescription)")
           }
+          group.leave()
         }
+      }
+
+      group.notify(queue: .main) {
+        endBackgroundTaskIfNeeded()
       }
     }
   }
