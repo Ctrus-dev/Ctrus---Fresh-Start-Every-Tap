@@ -18,14 +18,17 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
   // Apple documents `ShieldConfiguration.backgroundColor` as "a color for a shield to
   // use in the background BLUR effect" — it's always mixed into a frosted-glass
-  // material, never painted as a flat fill. The "*Light" materials turned out to be
-  // dominated by their own near-white base regardless of how saturated/dark a color
-  // we fed them (tried both systemThickMaterialLight and systemThinMaterialLight —
-  // both read as pale/washed). "*Dark" materials let the actual hue through much more,
-  // at the cost of darkening it, so `.systemThinMaterialDark` (below) + boosting
-  // saturation/brightness here to compensate for that darkening should land closer to
-  // the true theme color. Re-tune these two factors against a real device if it's
-  // still off.
+  // material, never painted as a flat fill; there is no way to turn the blur off.
+  // The "*Light" materials turned out to be dominated by their own near-white base
+  // regardless of how saturated/dark a color we fed them (tried both
+  // systemThickMaterialLight and systemThinMaterialLight — both read as pale/washed).
+  // "*Dark" materials let the actual hue through much more, at the cost of darkening
+  // it. Boosting saturation/brightness here already pushes every theme color to fully
+  // saturated, full brightness before it even reaches the blur — there's no more
+  // vividness to add on our end, so `.systemUltraThinMaterialDark` (the most
+  // transparent of the Dark materials, letting the most of that color through rather
+  // than mixing it with the material's own darker base) is the remaining lever. Still
+  // not a flat fill; re-check against a real device if it's still too dark.
   private static let shieldColorSaturationBoost: CGFloat = 1.2
   private static let shieldColorBrightnessBoost: CGFloat = 1.5
 
@@ -95,11 +98,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     return ShieldConfiguration(
       // `nil` here doesn't mean "no blur" — the system falls back to its own adaptive
       // material, which is what made this look dark brown in Dark Mode and pale cream
-      // in Light Mode regardless of backgroundColor. `.systemThinMaterialDark` is a
+      // in Light Mode regardless of backgroundColor. `.systemUltraThinMaterialDark` is a
       // *non-adaptive* material (always renders as its dark variant, regardless of the
       // system's own Light/Dark Mode setting), so the shield looks the same in both —
       // see the comment on `fixedBrandColor` above for why it's specifically "Dark".
-      backgroundBlurStyle: .systemThinMaterialDark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: brandColor,
       icon: emojiIcon,
       title: ShieldConfiguration.Label(
@@ -163,7 +166,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: "\n\n")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .systemThinMaterialDark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
@@ -198,7 +201,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: " ")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .systemThinMaterialDark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
