@@ -25,13 +25,10 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   // "*Dark" materials let the actual hue through much more, at the cost of darkening
   // it. Boosting saturation/brightness here already pushes every theme color to fully
   // saturated, full brightness before it even reaches the blur — there's no more
-  // vividness to add on our end. Measured against a real device: hue survives almost
-  // perfectly (31.6° rendered vs 31.4° target for Orange), but systemUltraThinMaterialDark
-  // — already the most transparent of the "system material" family — still cuts
-  // saturation to ~71% and brightness to ~63% of the (already maxed) input. `.dark` is
-  // the legacy pre-iOS-13 blur style, a simpler blur+tint rather than that multi-layer
-  // material system, and is the next thing worth trying. Still not a flat fill — there
-  // is no public API for that; re-check against a real device if it's still too dark.
+  // vividness to add on our end, so `.systemUltraThinMaterialDark` (the most
+  // transparent of the Dark materials, letting the most of that color through rather
+  // than mixing it with the material's own darker base) is the remaining lever. Still
+  // not a flat fill; re-check against a real device if it's still too dark.
   private static let shieldColorSaturationBoost: CGFloat = 1.2
   private static let shieldColorBrightnessBoost: CGFloat = 1.5
 
@@ -101,11 +98,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     return ShieldConfiguration(
       // `nil` here doesn't mean "no blur" — the system falls back to its own adaptive
       // material, which is what made this look dark brown in Dark Mode and pale cream
-      // in Light Mode regardless of backgroundColor. `.dark` is a
-      // *non-adaptive* style (always renders dark, regardless of the system's own
-      // Light/Dark Mode setting), so the shield looks the same in both —
+      // in Light Mode regardless of backgroundColor. `.systemUltraThinMaterialDark` is a
+      // *non-adaptive* material (always renders as its dark variant, regardless of the
+      // system's own Light/Dark Mode setting), so the shield looks the same in both —
       // see the comment on `fixedBrandColor` above for why it's specifically "Dark".
-      backgroundBlurStyle: .dark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: brandColor,
       icon: emojiIcon,
       title: ShieldConfiguration.Label(
@@ -169,7 +166,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: "\n\n")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
@@ -204,7 +201,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       .joined(separator: " ")
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
+      backgroundBlurStyle: .systemUltraThinMaterialDark,
       backgroundColor: Self.fixedBrandColor(ThemeManager.shared.themeColor),
       icon: makeEmojiIcon(Self.lockEmoji, size: 96),
       title: ShieldConfiguration.Label(
