@@ -30,25 +30,31 @@ class AlertsManager: ObservableObject {
         ))
     }
 
-    updatedAlerts.append(
-      contentsOf:
-        profiles
-        .filter { $0.scheduleIsOutOfSync }
-        .map { profile in
-          HomeAlert(
-            type: .scheduleOutOfSync(profileId: profile.id),
-            title: String(localized: "Schedule needs repair"),
-            message: String(localized: "\(profile.name)'s schedule is not running."),
-            detailMessage:
-              String(
-                localized:
-                  "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This usually can happen when you combine Ctrus with other blocking apps, recommended to turn those apps off."
-              ),
-            primaryActionTitle: String(localized: "Fix Schedule"),
-            iconName: "calendar.badge.exclamationmark"
-          )
-        }
-    )
+    // Without Screen Time access, DeviceActivityCenter can't monitor anything —
+    // every schedule would show as out of sync, on top of the access alert
+    // above. Fixing a schedule when there's no access to fix it with would
+    // just fail anyway, so hold off until access is back.
+    if authorizationStatus == .approved {
+      updatedAlerts.append(
+        contentsOf:
+          profiles
+          .filter { $0.scheduleIsOutOfSync }
+          .map { profile in
+            HomeAlert(
+              type: .scheduleOutOfSync(profileId: profile.id),
+              title: String(localized: "Schedule needs repair"),
+              message: String(localized: "\(profile.name)'s schedule is not running."),
+              detailMessage:
+                String(
+                  localized:
+                    "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This usually can happen when you combine Ctrus with other blocking apps, recommended to turn those apps off."
+                ),
+              primaryActionTitle: String(localized: "Fix Schedule"),
+              iconName: "calendar.badge.exclamationmark"
+            )
+          }
+      )
+    }
 
     alerts = updatedAlerts
     clearSelectedAlertIfResolved()
