@@ -47,7 +47,7 @@ class AlertsManager: ObservableObject {
               detailMessage:
                 String(
                   localized:
-                    "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This usually can happen when you combine Ctrus with other blocking apps, recommended to turn those apps off."
+                    "\(profile.name)'s schedule is saved, but iOS is no longer monitoring it. This can happen when you combine Ctrus with other blocking apps (turning those off is recommended), or after turning Screen Time access off and back on."
                 ),
               primaryActionTitle: String(localized: "Fix Schedule"),
               iconName: "calendar.badge.exclamationmark"
