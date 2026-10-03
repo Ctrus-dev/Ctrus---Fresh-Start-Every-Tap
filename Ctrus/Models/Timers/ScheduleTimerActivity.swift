@@ -1,4 +1,5 @@
 import DeviceActivity
+import FamilyControls
 import OSLog
 import UserNotifications
 
@@ -45,6 +46,18 @@ class ScheduleTimerActivity: TimerActivity {
 
     if !schedule.isPastRegistrationSettleWindow() {
       log.info("Start schedule timer activity for \(profileId), schedule is too new")
+      return
+    }
+
+    // Without Screen Time access, applying restrictions below is a silent
+    // no-op — nothing actually gets blocked. Bail out before creating a
+    // session so the clock doesn't start counting on a block that never
+    // happened (and so this profile doesn't occupy the "active profile"
+    // slot and make every other profile's widget read "Unavailable").
+    guard AuthorizationCenter.shared.authorizationStatus == .approved else {
+      log.info(
+        "Start schedule timer activity for \(profileId), Screen Time access is not authorized")
+      notifyBlockedByMissingAccess(for: profile)
       return
     }
 
@@ -102,6 +115,28 @@ class ScheduleTimerActivity: TimerActivity {
     UNUserNotificationCenter.current().add(request) { error in
       if let error {
         log.error("Failed to schedule skipped-start notification: \(error.localizedDescription)")
+      }
+    }
+  }
+
+  private func notifyBlockedByMissingAccess(for profile: SharedData.ProfileSnapshot) {
+    let content = UNMutableNotificationContent()
+    content.title = String(localized: "Couldn't Start")
+    content.body = String(
+      localized:
+        "\(profile.name) didn't start because Screen Time access is turned off. Turn it back on in Ctrus to resume blocking."
+    )
+    content.sound = .default
+
+    let request = UNNotificationRequest(
+      identifier: "ScheduleMissingAccess:\(profile.id.uuidString):\(Date().timeIntervalSince1970)",
+      content: content,
+      trigger: nil
+    )
+
+    UNUserNotificationCenter.current().add(request) { error in
+      if let error {
+        log.error("Failed to schedule missing-access notification: \(error.localizedDescription)")
       }
     }
   }

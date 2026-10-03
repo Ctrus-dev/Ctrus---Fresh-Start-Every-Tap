@@ -12330,6 +12330,29 @@
           }
         }
       }
+    },
+    "%@ didn't start because Screen Time access is turned off. Turn it back on in Ctrus to resume blocking.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ didn't start because Screen Time access is turned off. Turn it back on in Ctrus to resume blocking."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no se inició porque el acceso a Tiempo de Uso está desactivado. Vuelve a activarlo en Ctrus para reanudar el bloqueo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não começou porque o acesso ao Tempo de Ecrã está desativado. Reativa-o no Ctrus para retomar o bloqueio."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
