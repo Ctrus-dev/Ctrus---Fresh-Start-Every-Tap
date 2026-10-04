@@ -201,6 +201,16 @@ struct SettingsView: View {
               .foregroundStyle(.secondary)
           }
 
+          Link(destination: URL(string: "https://privacy.ctrus.pt")!) {
+            HStack {
+              Text("Privacy Policy")
+                .foregroundColor(.primary)
+              Spacer()
+              Image(systemName: "arrow.up.right.square")
+                .foregroundColor(.secondary)
+            }
+          }
+
           HStack {
             Text("License")
               .foregroundStyle(.primary)
