@@ -1,5 +1,4 @@
 import DeviceActivity
-import FamilyControls
 import OSLog
 import UserNotifications
 
@@ -54,7 +53,15 @@ class ScheduleTimerActivity: TimerActivity {
     // session so the clock doesn't start counting on a block that never
     // happened (and so this profile doesn't occupy the "active profile"
     // slot and make every other profile's widget read "Unavailable").
-    guard AuthorizationCenter.shared.authorizationStatus == .approved else {
+    //
+    // This checks SharedData.lastKnownAuthorizationApproved rather than
+    // asking AuthorizationCenter directly — read live from inside this
+    // extension process (which the system just woke up solely to handle
+    // this one interval event), that query isn't reliable and can read as
+    // not approved even when access genuinely is on. The main app, which
+    // runs far more often and in a normal foreground context, keeps this
+    // flag up to date instead.
+    guard SharedData.lastKnownAuthorizationApproved else {
       log.info(
         "Start schedule timer activity for \(profileId), Screen Time access is not authorized")
       notifyBlockedByMissingAccess(for: profile)

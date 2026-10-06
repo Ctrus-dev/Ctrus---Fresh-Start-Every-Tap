@@ -8,6 +8,7 @@ class RequestAuthorizer: ObservableObject {
 
   func refreshAuthorizationStatus() {
     let isApproved = getAuthorizationStatus() == .approved
+    SharedData.lastKnownAuthorizationApproved = isApproved
 
     Task { @MainActor in
       self.isAuthorized = isApproved
@@ -20,12 +21,14 @@ class RequestAuthorizer: ObservableObject {
         try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
         print("Individual authorization successful")
 
+        SharedData.lastKnownAuthorizationApproved = true
         // Dispatch the update to the main thread
         await MainActor.run {
           self.isAuthorized = true
         }
       } catch {
         print("Error requesting authorization: \(error)")
+        SharedData.lastKnownAuthorizationApproved = false
         await MainActor.run {
           self.isAuthorized = false
         }

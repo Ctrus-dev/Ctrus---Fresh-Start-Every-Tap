@@ -11,6 +11,7 @@ enum SharedData {
     case profileSnapshots
     case activeScheduleSession
     case completedScheduleSessions
+    case lastKnownAuthorizationApproved
   }
 
   // MARK: – Serializable snapshot of a profile (no sessions)
@@ -82,6 +83,21 @@ enum SharedData {
         suite.removeObject(forKey: Key.profileSnapshots.rawValue)
       }
     }
+  }
+
+  // MARK: – Last known Screen Time authorization status
+  //
+  // AuthorizationCenter.shared.authorizationStatus, read directly from a
+  // DeviceActivityMonitor extension process that the system just woke up
+  // to handle a single interval event, isn't reliable — it can read as not
+  // approved even when access genuinely is on, because that process hasn't
+  // had time to sync with the system's authorization state. The main app
+  // runs far more often and in a normal foreground context, so it writes
+  // its own status here (RequestAuthorizer) every time it checks, and the
+  // extension trusts that instead of checking live itself.
+  static var lastKnownAuthorizationApproved: Bool {
+    get { suite.bool(forKey: Key.lastKnownAuthorizationApproved.rawValue) }
+    set { suite.set(newValue, forKey: Key.lastKnownAuthorizationApproved.rawValue) }
   }
 
   static func snapshot(for profileID: String) -> ProfileSnapshot? {
