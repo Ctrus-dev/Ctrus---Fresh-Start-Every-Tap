@@ -853,6 +853,14 @@ class StrategyManager: ObservableObject {
             DeviceActivityCenterUtil.removeScheduleTimerActivities(for: profile)
           } else {
             print("Profile '\(profile.name)' has schedule - activity is valid ✅")
+
+            // This only confirms the DeviceActivityCenter registration
+            // itself is intact — the "starts in 5 minutes" local
+            // notification is a separate registration that can get wiped
+            // independently (e.g. by reinstalling the app) with nothing
+            // else around to notice or fix it. Re-registering both here is
+            // idempotent, so it's safe to do on every launch.
+            DeviceActivityCenterUtil.scheduleTimerActivity(for: profile)
           }
         } else {
           // Profile truly doesn't exist in database
