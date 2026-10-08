@@ -14,6 +14,14 @@ struct DomainPicker: View {
 
   private let maxDomains = 50
 
+  // Blocking these would risk locking someone out of Ctrus's own recovery
+  // flow (getting an unlock code, reading the privacy policy). Only
+  // relevant for Block Domains; allowing them through during a session is
+  // harmless.
+  private static let protectedDomains: Set<String> = [
+    "ctrus.pt", "recover.ctrus.pt", "privacy.ctrus.pt",
+  ]
+
   private var message: String {
     return allowMode
       ? String(
@@ -129,6 +137,12 @@ struct DomainPicker: View {
       return
     }
 
+    guard allowMode || !isProtectedDomain(trimmedDomain) else {
+      showError(
+        String(localized: "ctrus.pt can't be blocked — you'd risk locking yourself out."))
+      return
+    }
+
     domains.append(trimmedDomain)
     newDomain = ""
   }
@@ -140,6 +154,10 @@ struct DomainPicker: View {
   private func showError(_ message: String) {
     errorMessage = message
     showingError = true
+  }
+
+  private func isProtectedDomain(_ domain: String) -> Bool {
+    Self.protectedDomains.contains(domain) || domain.hasSuffix(".ctrus.pt")
   }
 
   private func isValidDomain(_ domain: String) -> Bool {

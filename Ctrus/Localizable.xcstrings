@@ -12376,6 +12376,29 @@
           }
         }
       }
+    },
+    "ctrus.pt can't be blocked — you'd risk locking yourself out.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ctrus.pt can't be blocked — you'd risk locking yourself out."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No puedes bloquear ctrus.pt — te arriesgarías a quedarte bloqueado."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não podes bloquear o ctrus.pt — arriscas-te a ficar bloqueado."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
