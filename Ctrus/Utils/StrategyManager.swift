@@ -610,8 +610,9 @@ class StrategyManager: ObservableObject {
     // Remove the break timer activity
     DeviceActivityCenterUtil.removeBreakTimerActivity(for: session.blockedProfile)
 
-    // Cancel all notifications that were scheduled during break
-    timersUtil.cancelAllNotifications()
+    // Only the break's own reminder — wiping every pending notification here
+    // also took out the repeating "starts in 5 minutes" schedule reminders.
+    timersUtil.cancelNotification(identifier: breakReminderIdentifier(for: session.blockedProfile))
 
     // Refresh widgets when break ends
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
@@ -821,9 +822,14 @@ class StrategyManager: ObservableObject {
         title: String(localized: "Break almost over!"),
         message: String(
           localized: "Hope you enjoyed your break, starting \(profileName) in 1 minute."),
-        seconds: breakNotificationTimeInSeconds
+        seconds: breakNotificationTimeInSeconds,
+        identifier: breakReminderIdentifier(for: profile)
       )
     }
+  }
+
+  private func breakReminderIdentifier(for profile: BlockedProfiles) -> String {
+    "BreakEndReminder:\(profile.id.uuidString)"
   }
 
   func cleanUpGhostSchedules(context: ModelContext) {
