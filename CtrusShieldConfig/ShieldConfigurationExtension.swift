@@ -42,8 +42,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       return softUnblockConfiguration
     }
 
-    return createCustomShieldConfiguration(
-      for: .app, title: application.localizedDisplayName ?? String(localized: "App"))
+    return themedStockConfiguration()
   }
 
   override func configuration(shielding application: Application, in category: ActivityCategory)
@@ -53,59 +52,34 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       return softUnblockConfiguration
     }
 
-    return createCustomShieldConfiguration(
-      for: .app, title: application.localizedDisplayName ?? String(localized: "App"))
+    return themedStockConfiguration()
   }
 
   override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
-    return createCustomShieldConfiguration(
-      for: .website, title: webDomain.domain ?? String(localized: "Website"))
+    themedStockConfiguration()
   }
 
   override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory)
     -> ShieldConfiguration
   {
-    return createCustomShieldConfiguration(
-      for: .website, title: webDomain.domain ?? String(localized: "Website"))
+    themedStockConfiguration()
   }
 
-  private func createCustomShieldConfiguration(for type: BlockedContentType, title: String)
-    -> ShieldConfiguration
-  {
-    // Get user's selected theme color
+  // Only the icon and the button take the theme color; everything else is left nil
+  // in the hope that the system fills in its own background, localized title, subtitle
+  // and "OK" label, the same as the stock shield.
+  private func themedStockConfiguration() -> ShieldConfiguration {
     let brandColor = Self.fixedBrandColor(ThemeManager.shared.themeColor)
-
-    // Get random fun message
-    let randomMessage = getFunBlockMessage(for: type, title: title)
-
-    // Emoji “icon” (rendered to an image so it works with ShieldConfiguration.icon)
-    let emojiIcon = makeEmojiIcon(Self.lockEmoji, size: 96)
-
     return ShieldConfiguration(
-      // `nil` here doesn't mean "no blur" — the system falls back to its own adaptive
-      // material, which is what made this look dark brown in Dark Mode and pale cream
-      // in Light Mode regardless of backgroundColor. `.dark` is a
-      // *non-adaptive* style (always renders dark, regardless of the system's own
-      // Light/Dark Mode setting), so the shield looks the same in both —
-      // see the comment on `fixedBrandColor` above for why it's specifically "Dark".
-      backgroundBlurStyle: .dark,
-      backgroundColor: brandColor,
-      icon: emojiIcon,
-      title: ShieldConfiguration.Label(
-        text: randomMessage.title,
-        color: .white
-      ),
-      subtitle: ShieldConfiguration.Label(
-        text: randomMessage.subtitle,
-        color: UIColor.white.withAlphaComponent(0.88)
-      ),
-      primaryButtonLabel: ShieldConfiguration.Label(
-        text: randomMessage.buttonText,
-        color: .black
-      ),
-      primaryButtonBackgroundColor: .white,
-      secondaryButtonLabel: nil
+      icon: makeBlockedIcon(color: brandColor),
+      primaryButtonBackgroundColor: brandColor
     )
+  }
+
+  private func makeBlockedIcon(color: UIColor) -> UIImage? {
+    let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 64, weight: .regular)
+    return UIImage(systemName: "nosign", withConfiguration: symbolConfiguration)?
+      .withTintColor(color, renderingMode: .alwaysOriginal)
   }
 
   private func softUnblockConfiguration(
