@@ -7411,25 +7411,25 @@
         }
       }
     },
-    "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop.": {
+    "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
+            "value": "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantén presionado tu perfil para iniciar una sesión. Tócalo mientras está activo para mostrar Pausa, Emergencia y Detener."
+            "value": "Mantén pulsado tu perfil para dar inicio a la sesión. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantém pressionado o teu perfil para iniciar uma sessão. Toca nele enquanto está ativo para revelar Pausa, Emergência e Parar."
+            "value": "Prime o teu perfil sem soltar para dares início à sessão. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
           }
         }
       }

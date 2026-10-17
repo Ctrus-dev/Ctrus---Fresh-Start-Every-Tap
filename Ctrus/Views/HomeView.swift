@@ -341,7 +341,7 @@ struct HomeView: View {
 
   private var sessionHintText: some View {
     Text(
-      "Press and hold your profile to start a session. Tap it while it's active to reveal Break, Emergency and Stop."
+      "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options."
     )
       .font(.subheadline)
       // This screen's background stays a fixed light pastel regardless of
