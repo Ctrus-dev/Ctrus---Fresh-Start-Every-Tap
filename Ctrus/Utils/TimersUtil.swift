@@ -208,9 +208,18 @@ class TimersUtil {
       withIdentifiers: [identifier])
   }
 
+  // Spares the repeating "starts in 5 minutes" schedule reminders — they
+  // belong to the schedule, not to the session being started or ended, and
+  // nothing re-registers them until the app is next launched.
   func cancelAllNotifications() {
-    UNUserNotificationCenter.current()
-      .removeAllPendingNotificationRequests()
+    let center = UNUserNotificationCenter.current()
+    center.getPendingNotificationRequests { requests in
+      let identifiers =
+        requests
+        .map(\.identifier)
+        .filter { !DeviceActivityCenterUtil.isScheduleStartReminder(identifier: $0) }
+      center.removePendingNotificationRequests(withIdentifiers: identifiers)
+    }
   }
 
   func cancelAll() {

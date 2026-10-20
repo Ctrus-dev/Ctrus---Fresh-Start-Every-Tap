@@ -127,8 +127,14 @@ class DeviceActivityCenterUtil {
     reminderIdentifier(forProfileId: profile.id, day: day)
   }
 
+  private static let reminderIdentifierPrefix = "ScheduleStartReminder:"
+
+  static func isScheduleStartReminder(identifier: String) -> Bool {
+    identifier.hasPrefix(reminderIdentifierPrefix)
+  }
+
   private static func reminderIdentifier(forProfileId profileId: UUID, day: Weekday) -> String {
-    "ScheduleStartReminder:\(profileId.uuidString):\(day.rawValue)"
+    "\(reminderIdentifierPrefix)\(profileId.uuidString):\(day.rawValue)"
   }
 
   private static func reminderComponents(
