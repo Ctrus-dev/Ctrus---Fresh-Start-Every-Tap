@@ -346,15 +346,19 @@ class DeviceActivityCenterUtil {
   private static func getTimeIntervalStartAndEnd(from durationInSeconds: TimeInterval) -> (
     intervalStart: DateComponents, intervalEnd: DateComponents
   ) {
-    let intervalStart = DateComponents(hour: 0, minute: 0, second: 0)
-
+    // Full dates rather than just a time of day, so a timer that crosses
+    // midnight ends when it should instead of being cut short at 23:59:59.
+    // The start sits in the past to keep the interval above DeviceActivity's
+    // 15 minute minimum, which a short timer started just after midnight
+    // would otherwise fall under.
+    let calendar = Calendar.current
     let now = Date()
-    let safeDuration = max(1, durationInSeconds)
-    let endDate = min(
-      now.addingTimeInterval(safeDuration),
-      Calendar.current.startOfDay(for: now).addingTimeInterval((24 * 60 * 60) - 1)
+    let endDate = now.addingTimeInterval(max(1, durationInSeconds))
+    let startDate = min(calendar.startOfDay(for: now), endDate.addingTimeInterval(-15 * 60))
+    let components: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+    return (
+      intervalStart: calendar.dateComponents(components, from: startDate),
+      intervalEnd: calendar.dateComponents(components, from: endDate)
     )
-    let intervalEnd = Calendar.current.dateComponents([.hour, .minute, .second], from: endDate)
-    return (intervalStart: intervalStart, intervalEnd: intervalEnd)
   }
 }
