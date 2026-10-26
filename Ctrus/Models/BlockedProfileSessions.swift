@@ -164,6 +164,12 @@ class BlockedProfileSession {
     self.endTime = endTime
 
     SharedData.flushActiveSession()
+
+    ScheduleReminderUtil.sync(
+      forProfileId: blockedProfile.id,
+      profileName: blockedProfile.name,
+      schedule: blockedProfile.schedule
+    )
   }
 
   func toSnapshot() -> SharedData.SessionSnapshot {
@@ -207,6 +213,7 @@ class BlockedProfileSession {
     )
 
     SharedData.createActiveSharedSession(for: newSession.toSnapshot())
+    ScheduleReminderUtil.cancel(forProfileId: profile.id)
 
     context.insert(newSession)
     return newSession

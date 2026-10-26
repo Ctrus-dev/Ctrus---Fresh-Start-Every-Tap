@@ -75,6 +75,7 @@ class ScheduleTimerActivity: TimerActivity {
         log.info(
           "Start schedule timer activity for \(profileId), existing session profile matches device activity profile, continuing active session"
         )
+        ScheduleReminderUtil.cancel(forProfileId: profile.id)
         return
       }
 
@@ -94,6 +95,8 @@ class ScheduleTimerActivity: TimerActivity {
 
     // Start restrictions
     appBlocker.activateRestrictions(for: profile)
+
+    ScheduleReminderUtil.cancel(forProfileId: profile.id)
   }
 
   private func notifyBlockedBySkippedStart(
@@ -179,6 +182,9 @@ class ScheduleTimerActivity: TimerActivity {
 
     // End the active scheduled session
     SharedData.endActiveSharedSession()
+
+    ScheduleReminderUtil.sync(
+      forProfileId: profile.id, profileName: profile.name, schedule: profile.schedule)
   }
 
   func getScheduleInterval(from schedule: BlockedProfileSchedule) -> (

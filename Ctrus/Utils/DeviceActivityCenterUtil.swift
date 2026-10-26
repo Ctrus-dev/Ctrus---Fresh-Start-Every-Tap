@@ -46,12 +46,8 @@ class DeviceActivityCenterUtil {
 
   // MARK: - Schedule start reminders
 
-  private static let scheduleReminderMinutesBefore = 5
-
   static func cancelUpcomingSessionReminders(for profile: BlockedProfiles) {
-    let identifiers = Weekday.allCases.map { reminderIdentifier(for: profile, day: $0) }
-    UNUserNotificationCenter.current().removePendingNotificationRequests(
-      withIdentifiers: identifiers)
+    ScheduleReminderUtil.cancel(forProfileId: profile.id)
   }
 
   private static func scheduleUpcomingSessionReminders(
@@ -62,8 +58,6 @@ class DeviceActivityCenterUtil {
 
     let profileId = profile.id
     let profileName = profile.name
-    let days = schedule.days
-    let center = UNUserNotificationCenter.current()
 
     // Saving a profile normally dismisses its sheet right away, which can
     // background the app before this authorization round-trip and the
@@ -82,83 +76,25 @@ class DeviceActivityCenterUtil {
       backgroundTask = .invalid
     }
 
-    center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) {
+      granted, _ in
       guard granted else {
         endBackgroundTaskIfNeeded()
         return
       }
 
-      let group = DispatchGroup()
-
-      for day in days {
-        group.enter()
-
-        let content = UNMutableNotificationContent()
-        content.title = String(localized: "Starting Soon!")
-        content.body = String(localized: "\(profileName) starts in 5 minutes.")
-        content.sound = .default
-
-        let trigger = UNCalendarNotificationTrigger(
-          dateMatching: reminderComponents(for: day, schedule: schedule),
-          repeats: true
-        )
-
-        let request = UNNotificationRequest(
-          identifier: reminderIdentifier(forProfileId: profileId, day: day),
-          content: content,
-          trigger: trigger
-        )
-
-        center.add(request) { error in
-          if let error {
-            print("Failed to schedule start reminder: \(error.localizedDescription)")
-          }
-          group.leave()
-        }
-      }
-
-      group.notify(queue: .main) {
+      ScheduleReminderUtil.sync(
+        forProfileId: profileId,
+        profileName: profileName,
+        schedule: schedule
+      ) {
         endBackgroundTaskIfNeeded()
       }
     }
   }
 
-  private static func reminderIdentifier(for profile: BlockedProfiles, day: Weekday) -> String {
-    reminderIdentifier(forProfileId: profile.id, day: day)
-  }
-
-  private static let reminderIdentifierPrefix = "ScheduleStartReminder:"
-
   static func isScheduleStartReminder(identifier: String) -> Bool {
-    identifier.hasPrefix(reminderIdentifierPrefix)
-  }
-
-  private static func reminderIdentifier(forProfileId profileId: UUID, day: Weekday) -> String {
-    "\(reminderIdentifierPrefix)\(profileId.uuidString):\(day.rawValue)"
-  }
-
-  private static func reminderComponents(
-    for day: Weekday,
-    schedule: BlockedProfileSchedule
-  ) -> DateComponents {
-    let totalStartMinutes = schedule.startHour * 60 + schedule.startMinute
-    var reminderMinutes = totalStartMinutes - scheduleReminderMinutesBefore
-    var weekdayRawValue = day.rawValue
-
-    // Roll back to the previous day when the reminder falls before midnight
-    if reminderMinutes < 0 {
-      reminderMinutes += 24 * 60
-      weekdayRawValue =
-        weekdayRawValue == Weekday.sunday.rawValue
-        ? Weekday.saturday.rawValue
-        : weekdayRawValue - 1
-    }
-
-    var components = DateComponents()
-    components.weekday = weekdayRawValue
-    components.hour = reminderMinutes / 60
-    components.minute = reminderMinutes % 60
-    return components
+    ScheduleReminderUtil.isScheduleStartReminder(identifier: identifier)
   }
 
   static func startBreakTimerActivity(for profile: BlockedProfiles) {
