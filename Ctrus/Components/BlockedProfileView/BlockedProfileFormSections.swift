@@ -224,10 +224,85 @@ struct BlockedProfileStrictUnlocksFields: View {
   var disabled: Bool
 
   var body: some View {
-    BlockedProfilePhysicalUnblockSelector(
-      physicalUnblockItems: $draft.physicalUnblockItems,
-      disabled: disabled
-    )
+    if draft.isChildMode {
+      ChildModeProfileTagFields(draft: draft, disabled: disabled)
+    } else {
+      BlockedProfilePhysicalUnblockSelector(
+        physicalUnblockItems: $draft.physicalUnblockItems,
+        disabled: disabled
+      )
+    }
+  }
+}
+
+/// Child mode's Ctrus step: the parents' Ctrus is always there and can't be
+/// changed here; the child's own Ctrus is optional.
+struct ChildModeProfileTagFields: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
+  var disabled: Bool
+
+  @State private var tagReader = TagReader()
+
+  var body: some View {
+    HStack {
+      Label("Parents' Ctrus", systemImage: "wave.3.right")
+      Spacer()
+      Image(systemName: "checkmark.circle.fill")
+        .foregroundStyle(themeManager.themeColor)
+    }
+
+    if draft.childTag != nil {
+      HStack {
+        Label("Child's Ctrus", systemImage: "wave.3.right")
+        Spacer()
+        Button {
+          draft.childTag = nil
+          draft.childTagCanStop = false
+        } label: {
+          Image(systemName: "trash")
+        }
+        .buttonStyle(.borderless)
+        .foregroundStyle(.red)
+        .disabled(disabled)
+        .accessibilityLabel(String(localized: "Remove"))
+      }
+
+      Toggle(
+        String(localized: "The child's Ctrus can also end the session"),
+        isOn: $draft.childTagCanStop
+      )
+      .tint(themeManager.themeColor)
+      .disabled(disabled)
+    } else {
+      Button {
+        tagReader.read(prompt: String(localized: "Add the child's Ctrus")) { result in
+          // A parents' Ctrus is already the master key; it isn't the child's.
+          guard !ChildModeStore.isParentTag(uid: result.id) else { return }
+          draft.childTag = ChildTag(
+            uid: ChildModeStore.normalizedUID(result.id), url: result.url)
+        }
+      } label: {
+        Label("Add the child's Ctrus", systemImage: "plus")
+      }
+      .foregroundStyle(themeManager.themeColor)
+      .disabled(disabled)
+    }
+  }
+}
+
+/// The fixed note every child mode profile shows.
+struct ChildModeSessionLimitNote: View {
+  var body: some View {
+    Label {
+      Text("In child mode, sessions end on their own after 24 hours.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    } icon: {
+      Image(systemName: "clock")
+        .foregroundStyle(.secondary)
+    }
   }
 }
 
@@ -262,11 +337,56 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    durationPicker
+    if draft.isChildMode {
+      endModePicker
+
+      ProfileFieldDivider(isVisible: showsSeparators)
+    }
+
+    if draft.isChildMode && draft.scheduleEndMode == .fixedTime {
+      DatePicker(
+        String(localized: "At a set time"),
+        selection: endTimeBinding,
+        displayedComponents: .hourAndMinute
+      )
+      .disabled(disabled)
+    } else {
+      durationPicker
+    }
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
     skipSessionsBlock
+  }
+
+  private var endModePicker: some View {
+    HStack {
+      Text("How it ends")
+
+      Spacer()
+
+      Picker("How it ends", selection: $draft.scheduleEndMode) {
+        Text("Only with the parents' Ctrus").tag(ScheduleEndMode.parentTag)
+        Text("At a set time").tag(ScheduleEndMode.fixedTime)
+      }
+      .labelsHidden()
+      .pickerStyle(.menu)
+      .tint(.secondary)
+    }
+    .disabled(disabled)
+  }
+
+  private var endTimeBinding: Binding<Date> {
+    Binding(
+      get: { dateFrom(hour: draft.scheduleEndTime.hour, minute: draft.scheduleEndTime.minute) },
+      set: { newValue in
+        let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+        draft.scheduleEndTime = ScheduleEndTime(
+          hour: components.hour ?? draft.scheduleEndTime.hour,
+          minute: components.minute ?? draft.scheduleEndTime.minute
+        )
+      }
+    )
   }
 
   private var skipSessionsBlock: some View {

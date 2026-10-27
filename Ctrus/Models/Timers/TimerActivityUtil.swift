@@ -53,6 +53,8 @@ class TimerActivityUtil {
       return PauseTimerActivity()
     case SoftUnblockGrantTimerActivity.id:
       return SoftUnblockGrantTimerActivity()
+    case ChildSessionLimitActivity.id:
+      return ChildSessionLimitActivity()
     default:
       return nil
     }

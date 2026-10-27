@@ -19,6 +19,14 @@ struct SettingsView: View {
 
   @AppStorage("useLeftHandedLayout") private var useLeftHandedLayout = false
 
+  // Child mode
+  @State private var isChildMode = ChildModeStore.isChildMode
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
+  @State private var showChildModeSettings = false
+  @State private var showChildModeSetup = false
+  @State private var childModeMessage: String? = nil
+  @State private var tagReader = TagReader()
+
   private var appVersion: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
       ?? "1.0"
@@ -127,6 +135,35 @@ struct SettingsView: View {
     }
   }
 
+  // Child mode replaces the recover.ctrus.pt code: only the parents end a
+  // session from here, with their code or their Ctrus.
+  @ViewBuilder
+  private var parentUnlockSectionContent: some View {
+    Button {
+      parentConfirmationRequest = ParentConfirmationRequest(
+        reason: String(localized: "To end the active session")
+      ) {
+        strategyManager.endSessionConfirmedByParents(context: context)
+      }
+    } label: {
+      Text("Unblock with the parent code")
+    }
+    .disabled(!strategyManager.isBlocking)
+
+    Button {
+      tagReader.read(prompt: String(localized: "Tap the parents' Ctrus")) { result in
+        guard ChildModeStore.isParentTag(uid: result.id) else {
+          childModeMessage = String(localized: "This isn't a parents' Ctrus.")
+          return
+        }
+        strategyManager.endSessionConfirmedByParents(context: context)
+      }
+    } label: {
+      Text("Use the parents' Ctrus")
+    }
+    .disabled(!strategyManager.isBlocking)
+  }
+
   var body: some View {
     NavigationStack {
       Form {
@@ -178,7 +215,31 @@ struct SettingsView: View {
         }
 
         Section("Locked Out and Lost Your Ctrus?") {
-          recoverySectionContent
+          if isChildMode {
+            parentUnlockSectionContent
+          } else {
+            recoverySectionContent
+          }
+        }
+
+        Section(String(localized: "Child mode")) {
+          if isChildMode {
+            Button {
+              parentConfirmationRequest = ParentConfirmationRequest(
+                reason: String(localized: "To open the child mode settings")
+              ) {
+                showChildModeSettings = true
+              }
+            } label: {
+              Label("Child mode", systemImage: "figure.and.child.holdinghands")
+            }
+          } else {
+            Button {
+              showChildModeSetup = true
+            } label: {
+              Label("Turn on child mode", systemImage: "figure.and.child.holdinghands")
+            }
+          }
         }
 
         Section("Accessibility") {
@@ -272,6 +333,38 @@ struct SettingsView: View {
 
       }
       .navigationTitle("Settings")
+      .parentConfirmation($parentConfirmationRequest)
+      .sheet(isPresented: $showChildModeSettings) {
+        ChildModeSettingsView {
+          isChildMode = false
+        }
+      }
+      .sheet(isPresented: $showChildModeSetup) {
+        ChildModeSetupView(
+          onCancel: {
+            // Nothing half-made is kept if setup is left before the end.
+            if !ChildModeStore.isChildMode {
+              ParentCredentials.clearAll()
+            }
+            showChildModeSetup = false
+          },
+          onFinished: {
+            isChildMode = true
+            showChildModeSetup = false
+          }
+        )
+      }
+      .alert(
+        String(localized: "Whoops"),
+        isPresented: Binding(
+          get: { childModeMessage != nil },
+          set: { if !$0 { childModeMessage = nil } }
+        )
+      ) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text(childModeMessage ?? "")
+      }
       .onAppear {
         strategyManager.checkAndResetRecoveryUnlocks()
       }

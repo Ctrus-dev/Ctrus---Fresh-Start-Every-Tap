@@ -163,6 +163,7 @@ class BlockedProfileSession {
     SharedData.setEndTime(date: endTime)
     self.endTime = endTime
 
+    ChildSessionLimit.end()
     SharedData.flushActiveSession()
 
     ScheduleReminderUtil.sync(
@@ -215,6 +216,11 @@ class BlockedProfileSession {
 
     SharedData.createActiveSharedSession(for: newSession.toSnapshot())
     ScheduleReminderUtil.cancel(forProfileId: profile.id)
+    ChildSessionLimit.begin(
+      sessionId: newSession.id,
+      profile: BlockedProfiles.getSnapshot(for: profile),
+      startedAt: newSession.startTime
+    )
 
     context.insert(newSession)
     return newSession

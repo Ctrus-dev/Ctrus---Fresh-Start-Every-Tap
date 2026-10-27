@@ -8,6 +8,13 @@ class RequestAuthorizer: ObservableObject {
 
   func refreshAuthorizationStatus() {
     let isApproved = getAuthorizationStatus() == .approved
+
+    // Logged once, when it goes from approved to not — not on every launch
+    // while it stays off.
+    if SharedData.lastKnownAuthorizationApproved && !isApproved {
+      ChildModeStore.logTamper(.permissionRevoked)
+    }
+
     SharedData.lastKnownAuthorizationApproved = isApproved
 
     Task { @MainActor in

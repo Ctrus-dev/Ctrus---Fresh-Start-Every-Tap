@@ -110,6 +110,10 @@ class ScheduleTimerActivity: TimerActivity {
     // Start restrictions
     appBlocker.activateRestrictions(for: profile)
 
+    if let session = SharedData.getActiveSharedSession() {
+      ChildSessionLimit.begin(sessionId: session.id, profile: profile, startedAt: session.startTime)
+    }
+
     ScheduleReminderUtil.cancel(forProfileId: profile.id)
   }
 
@@ -167,6 +171,13 @@ class ScheduleTimerActivity: TimerActivity {
 
   func stop(for profile: SharedData.ProfileSnapshot) {
     let profileId = profile.id.uuidString
+
+    // Child mode ends sessions through ChildSessionLimit, which checks the
+    // real time passed instead of trusting this wall-clock interval.
+    guard !ChildModeStore.isChildMode else {
+      log.info("Interval ended for scheduled profile \(profileId), child mode ends it on its own")
+      return
+    }
 
     // An indefinite schedule has no automatic end — it runs until the Ctrus is
     // scanned in the app, so the interval closing here must not touch
