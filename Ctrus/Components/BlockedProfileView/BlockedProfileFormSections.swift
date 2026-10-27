@@ -312,6 +312,9 @@ struct ChildModeSessionLimitNote: View {
       Image(systemName: "clock")
         .foregroundStyle(.secondary)
     }
+    // A list lines the separator up with a label's text, not its icon; this
+    // starts it at the row's edge like the other rows.
+    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
   }
 }
 
