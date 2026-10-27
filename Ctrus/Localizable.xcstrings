@@ -2450,29 +2450,6 @@
         }
       }
     },
-    "You've used this month's 3 unblocks. They come back on %@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You've used this month's 3 unblocks. They come back on %@."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ya usaste los 3 desbloqueos de este mes. Vuelven el %@."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Já usaste os 3 desbloqueios deste mês. Voltam dia %@."
-          }
-        }
-      }
-    },
     "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
       "extractionState": "manual",
       "localizations": {

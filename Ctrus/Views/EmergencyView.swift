@@ -10,7 +10,6 @@ struct EmergencyView: View {
   private var hasRemaining: Bool { strategyManager.getRemainingEmergencyUnblocks() > 0 }
 
   @State private var isPerformingEmergencyUnblock: Bool = false
-  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
 
   private var isChildMode: Bool { ChildModeStore.isChildMode }
 
@@ -26,7 +25,6 @@ struct EmergencyView: View {
     .onAppear {
       strategyManager.checkAndResetEmergencyUnblocks()
     }
-    .parentConfirmation($parentConfirmationRequest)
   }
 
   private var header: some View {
@@ -139,9 +137,7 @@ struct EmergencyView: View {
       }
       .frame(height: 56)
 
-      if !hasRemaining && isChildMode {
-        childModeExhaustedContent
-      } else if !hasRemaining {
+      if !hasRemaining {
         Text("No emergency unblocks remaining. You're out of luck.")
           .font(.footnote)
           .foregroundColor(.red)
@@ -156,43 +152,6 @@ struct EmergencyView: View {
       RoundedRectangle(cornerRadius: 16, style: .continuous)
         .fill(.thinMaterial)
     )
-  }
-
-  // With the unblocks used up, child mode still leaves the parents a way in.
-  @ViewBuilder
-  private var childModeExhaustedContent: some View {
-    if let nextResetDate = strategyManager.getNextResetDate() {
-      Text(
-        "You've used this month's 3 unblocks. They come back on \(nextResetDate.formatted(.dateTime.day().month()))."
-      )
-      .font(.footnote)
-      .foregroundColor(.red)
-    }
-
-    ActionButton(
-      title: String(localized: "Use the parents' Ctrus"),
-      backgroundColor: .gray,
-      iconName: "wave.3.right"
-    ) {
-      requestParentConfirmation()
-    }
-
-    ActionButton(
-      title: String(localized: "Parent code"),
-      backgroundColor: .gray,
-      iconName: "lock.fill"
-    ) {
-      requestParentConfirmation()
-    }
-  }
-
-  private func requestParentConfirmation() {
-    parentConfirmationRequest = ParentConfirmationRequest(
-      reason: String(localized: "To end the active session")
-    ) {
-      strategyManager.endSessionConfirmedByParents(context: context)
-      dismiss()
-    }
   }
 
   private func performEmergencyUnblock() {
