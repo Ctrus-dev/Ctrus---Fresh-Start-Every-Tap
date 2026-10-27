@@ -311,7 +311,10 @@ private struct NewRecoveryKeyView: View {
 // MARK: - Attempt log
 
 struct TamperLogView: View {
-  private let entries = ChildModeStore.tamperLog.reversed()
+  @EnvironmentObject private var themeManager: ThemeManager
+
+  @State private var entries = Array(ChildModeStore.tamperLog.reversed())
+  @State private var showClearAlert = false
 
   var body: some View {
     List {
@@ -319,7 +322,7 @@ struct TamperLogView: View {
         Text("Nothing recorded yet.")
           .foregroundStyle(.secondary)
       } else {
-        ForEach(Array(entries)) { entry in
+        ForEach(entries) { entry in
           VStack(alignment: .leading, spacing: 3) {
             Text(entry.title)
             Text(entry.at, format: .dateTime.day().month().year().hour().minute())
@@ -331,6 +334,26 @@ struct TamperLogView: View {
     }
     .navigationTitle(String(localized: "Attempt log"))
     .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      if !entries.isEmpty {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button(String(localized: "Clear")) {
+            showClearAlert = true
+          }
+          .tint(themeManager.themeColor)
+        }
+      }
+    }
+    .alert(String(localized: "Clear the attempt log?"), isPresented: $showClearAlert) {
+      Button(String(localized: "Clear"), role: .destructive) {
+        ChildModeStore.tamperLog = []
+        ChildModeStore.tamperLogUnseen = false
+        entries = []
+      }
+      Button("Cancel", role: .cancel) {}
+    } message: {
+      Text("Every entry is deleted. This can't be undone.")
+    }
     .onAppear {
       ChildModeStore.tamperLogUnseen = false
     }
