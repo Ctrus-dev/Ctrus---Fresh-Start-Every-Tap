@@ -1085,13 +1085,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modo infantil"
+            "value": "Modo Infantil"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modo criança"
+            "value": "Modo Criança"
           }
         }
       }
@@ -1441,25 +1441,25 @@
         }
       }
     },
-    "In child mode, sessions end on their own after 24 hours.": {
+    "In Child Mode, sessions end on their own after 24 hours.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "In child mode, sessions end on their own after 24 hours."
+            "value": "In Child Mode, sessions end on their own after 24 hours."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En modo infantil, las sesiones terminan solas a las 24 horas."
+            "value": "En Modo Infantil, las sesiones terminan solas a las 24 horas."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "No modo criança, as sessões acabam sozinhas ao fim de 24 horas."
+            "value": "No Modo Criança, as sessões acabam sozinhas ao fim de 24 horas."
           }
         }
       }
@@ -1499,13 +1499,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modo normal"
+            "value": "Modo Normal"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modo normal"
+            "value": "Modo Normal"
           }
         }
       }
@@ -1887,13 +1887,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cambiar al modo normal"
+            "value": "Cambiar al Modo Normal"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Passar para o modo normal"
+            "value": "Passar para o Modo Normal"
           }
         }
       }
@@ -2220,25 +2220,25 @@
         }
       }
     },
-    "To open the child mode settings": {
+    "To open the Child Mode settings": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "To open the child mode settings"
+            "value": "To open the Child Mode settings"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para abrir los ajustes del modo infantil"
+            "value": "Para abrir los ajustes del Modo Infantil"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para abrir as definições do modo criança"
+            "value": "Para abrir as definições do Modo Criança"
           }
         }
       }
@@ -2324,13 +2324,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activar modo infantil"
+            "value": "Activar Modo Infantil"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ativar modo criança"
+            "value": "Ativar Modo Criança"
           }
         }
       }
@@ -2423,6 +2423,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Já usaste os 3 desbloqueios deste mês. Voltam dia %@."
+          }
+        }
+      }
+    },
+    "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu perfil empieza solo a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O teu perfil começa sozinho à hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
           }
         }
       }
@@ -8968,6 +8991,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prime o teu perfil sem soltar para dares início à sessão. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
+          }
+        }
+      }
+    },
+    "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén pulsado tu perfil para dar inicio a la sesión, o espera a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prime o teu perfil sem soltar para dares início à sessão, ou espera pela hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
           }
         }
       }

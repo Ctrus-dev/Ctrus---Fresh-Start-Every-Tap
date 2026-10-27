@@ -431,10 +431,35 @@ struct HomeView: View {
     .padding(.top, 1)
   }
 
-  private var sessionHintText: some View {
-    Text(
-      "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options."
+  // Schedule-mode profiles can't be held to start — they start on their own —
+  // so the hint says so when there are any.
+  private var sessionHint: String {
+    let scheduleCount = profiles.filter {
+      $0.blockingStrategyId == ScheduleBlockingStrategy.id
+    }.count
+
+    if scheduleCount == profiles.count {
+      return String(
+        localized:
+          "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+      )
+    }
+
+    if scheduleCount > 0 {
+      return String(
+        localized:
+          "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+      )
+    }
+
+    return String(
+      localized:
+        "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options."
     )
+  }
+
+  private var sessionHintText: some View {
+    Text(sessionHint)
       .font(.subheadline)
       // This screen's background stays a fixed light pastel regardless of
       // the system's Light/Dark setting, so `.secondary` (which adapts to

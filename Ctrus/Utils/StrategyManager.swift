@@ -740,6 +740,14 @@ class StrategyManager: ObservableObject {
 
     // Process any completed scheduled sessions
     let completedScheduleSessions = SharedData.getCompletedSessionsForSchedular()
+
+    // A session that ended on its own while the app was closed (a schedule's
+    // fixed duration, child mode's limit) never reaches handleSessionEnded,
+    // but it still counts as having been through a whole session.
+    if !completedScheduleSessions.isEmpty {
+      hasCompletedFirstSession = true
+    }
+
     for completedScheduleSession in completedScheduleSessions {
       BlockedProfileSession.upsertSessionFromSnapshot(
         in: context,

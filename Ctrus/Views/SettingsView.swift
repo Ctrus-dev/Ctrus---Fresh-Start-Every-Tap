@@ -226,7 +226,7 @@ struct SettingsView: View {
           if isChildMode {
             Button {
               parentConfirmationRequest = ParentConfirmationRequest(
-                reason: String(localized: "To open the child mode settings")
+                reason: String(localized: "To open the Child Mode settings")
               ) {
                 showChildModeSettings = true
               }

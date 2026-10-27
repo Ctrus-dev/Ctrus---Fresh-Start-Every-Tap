@@ -295,7 +295,7 @@ struct ChildModeProfileTagFields: View {
 struct ChildModeSessionLimitNote: View {
   var body: some View {
     Label {
-      Text("In child mode, sessions end on their own after 24 hours.")
+      Text("In Child Mode, sessions end on their own after 24 hours.")
         .font(.caption)
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
