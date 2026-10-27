@@ -148,6 +148,7 @@ struct SettingsView: View {
     } label: {
       Text("Unblock with the parent code")
     }
+    .tint(themeManager.themeColor)
     .disabled(!strategyManager.isBlocking)
 
     Button {
@@ -161,6 +162,7 @@ struct SettingsView: View {
     } label: {
       Text("Use the parents' Ctrus")
     }
+    .tint(themeManager.themeColor)
     .disabled(!strategyManager.isBlocking)
   }
 
