@@ -115,6 +115,17 @@ struct HomeView: View {
     return !isBlocking
   }
 
+  // Right after picking normal mode, until the first profile exists.
+  private var canGoBackToModeChoice: Bool {
+    canReturnToModeChoice && profiles.isEmpty
+  }
+
+  private func goBackToModeChoice() {
+    canReturnToModeChoice = false
+    hasChosenAppMode = false
+    showIntroScreen = true
+  }
+
   var body: some View {
     ZStack {
       themeManager.pastelBackground
@@ -178,19 +189,23 @@ struct HomeView: View {
     .onAppear {
       onAppearApp()
     }
-    // Simultaneous, so the page's own scrolling doesn't swallow the swipe.
-    .simultaneousGesture(
-      DragGesture(minimumDistance: 20)
-        .onEnded { value in
-          guard canReturnToModeChoice, profiles.isEmpty,
-            value.startLocation.x < 40, value.translation.width > 80
-          else { return }
-
-          canReturnToModeChoice = false
-          hasChosenAppMode = false
-          showIntroScreen = true
-        }
-    )
+    // A thin strip on the left edge, above the scroll view — a gesture on
+    // the page itself never sees the drag, as the scroll view takes it first.
+    .overlay(alignment: .leading) {
+      if canGoBackToModeChoice {
+        Color.clear
+          .frame(width: 24)
+          .contentShape(Rectangle())
+          .gesture(
+            DragGesture(minimumDistance: 10)
+              .onEnded { value in
+                if value.translation.width > 60 {
+                  goBackToModeChoice()
+                }
+              }
+          )
+      }
+    }
     .sheet(isPresented: $isProfileListPresent) {
       BlockedProfileListView()
     }
@@ -311,6 +326,18 @@ struct HomeView: View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 30) {
         HStack(alignment: .center) {
+          if canGoBackToModeChoice {
+            Button(action: goBackToModeChoice) {
+              Image(systemName: "chevron.left")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(Color.fixedLightPrimaryText)
+                .frame(width: 44, height: 44)
+                .modifier(CircleGlassBackground())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Back")
+          }
+
           HomeAlertsView(
             alerts: alertsManager.alerts,
             onAlertTapped: { alert in
@@ -642,4 +669,16 @@ struct HomeView: View {
         forKey: "showIntroScreen"
       )
     }
+}
+
+// The round glass bubble the system gives toolbar buttons, for a button that
+// sits outside a toolbar.
+private struct CircleGlassBackground: ViewModifier {
+  func body(content: Content) -> some View {
+    if #available(iOS 26.0, *) {
+      content.glassEffect(.regular.interactive(), in: Circle())
+    } else {
+      content.background(.ultraThinMaterial, in: Circle())
+    }
+  }
 }
