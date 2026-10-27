@@ -339,6 +339,11 @@ struct BlockedProfileScheduleFields: View {
 
     durationPicker
 
+    // Child mode caps every session at 24 hours, so it says so right here.
+    if draft.isChildMode {
+      ChildModeSessionLimitNote()
+    }
+
     ProfileFieldDivider(isVisible: showsSeparators)
 
     skipSessionsBlock
@@ -393,13 +398,7 @@ struct BlockedProfileScheduleFields: View {
       Spacer()
 
       Picker("Duration", selection: durationBinding) {
-        // Child mode caps every session at 24 hours, so say so right here.
-        Text(
-          draft.isChildMode
-            ? String(localized: "Indefinite (max. 24h)")
-            : BlockedProfileSchedule.durationText(forHours: nil)
-        )
-        .tag(Int?.none)
+        Text(BlockedProfileSchedule.durationText(forHours: nil)).tag(Int?.none)
         ForEach(BlockedProfileSchedule.availableDurationsInHours, id: \.self) { hours in
           Text(BlockedProfileSchedule.durationText(forHours: hours)).tag(Int?.some(hours))
         }
