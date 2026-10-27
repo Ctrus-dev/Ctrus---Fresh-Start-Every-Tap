@@ -6,17 +6,20 @@ struct Welcome: View {
 
   var body: some View {
     VStack(spacing: 14) {
-      Text("First Steps")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.fixedLightPrimaryText)
+      // Same gap as the welcome screen's title and subtitle.
+      VStack(spacing: 8) {
+        Text("First Steps")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.fixedLightPrimaryText)
 
-      Text("Let's get you started by creating your first profile")
-        .font(.subheadline)
-        .foregroundColor(.fixedLightSecondaryText)
-        .multilineTextAlignment(.center)
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 8)
+        Text("Let's get you started by creating your first profile")
+          .font(.subheadline)
+          .foregroundColor(.fixedLightSecondaryText)
+          .multilineTextAlignment(.center)
+          .fixedSize(horizontal: false, vertical: true)
+          .padding(.horizontal, 8)
+      }
 
       ShimmerLauncherButton(
         title: String(localized: "Create Profile"),
