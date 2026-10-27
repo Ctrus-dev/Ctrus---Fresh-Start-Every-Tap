@@ -77,6 +77,9 @@ struct HomeView: View {
   @AppStorage("showIntroScreen") private var showIntroScreen = true
   @AppStorage("pendingChildModeSetup") private var pendingChildModeSetup = false
   @AppStorage("hasChosenAppMode") private var hasChosenAppMode = false
+  // Right after picking normal mode, until the first profile exists, a swipe
+  // in from the left takes a mistaken choice back to the mode screen.
+  @AppStorage("canReturnToModeChoice") private var canReturnToModeChoice = false
 
   // Small how-to caption under the profile list, shown until the person
   // completes their very first session.
@@ -154,6 +157,7 @@ struct HomeView: View {
     }
     .onChange(of: profiles) { oldValue, newValue in
       if !newValue.isEmpty {
+        canReturnToModeChoice = false
         loadApp()
       }
       refreshAlerts()
@@ -174,6 +178,19 @@ struct HomeView: View {
     .onAppear {
       onAppearApp()
     }
+    // Simultaneous, so the page's own scrolling doesn't swallow the swipe.
+    .simultaneousGesture(
+      DragGesture(minimumDistance: 20)
+        .onEnded { value in
+          guard canReturnToModeChoice, profiles.isEmpty,
+            value.startLocation.x < 40, value.translation.width > 80
+          else { return }
+
+          canReturnToModeChoice = false
+          hasChosenAppMode = false
+          showIntroScreen = true
+        }
+    )
     .sheet(isPresented: $isProfileListPresent) {
       BlockedProfileListView()
     }
