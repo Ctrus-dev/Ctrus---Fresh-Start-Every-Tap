@@ -77,6 +77,8 @@ struct ParentConfirmationView: View {
         }
       }
     }
+    // Links and toolbar buttons in the theme colour, not the system blue.
+    .tint(themeManager.themeColor)
     .onAppear(perform: refreshLock)
     .onReceive(lockTimer) { _ in
       if lockRemaining > 0 { refreshLock() }
