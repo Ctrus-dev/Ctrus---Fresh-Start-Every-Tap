@@ -108,7 +108,8 @@ struct BlockedProfileView: View {
 
         BlockedProfileStrictSafeguardsSection(draft: draft, disabled: isBlocking)
 
-        if draft.isChildMode {
+        // A schedule already shows this under its duration.
+        if draft.isChildMode && !draft.useSchedule {
           Section {
             ChildModeSessionLimitNote()
           }
