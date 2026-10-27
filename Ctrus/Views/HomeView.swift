@@ -77,9 +77,6 @@ struct HomeView: View {
   @AppStorage("showIntroScreen") private var showIntroScreen = true
   @AppStorage("pendingChildModeSetup") private var pendingChildModeSetup = false
   @AppStorage("hasChosenAppMode") private var hasChosenAppMode = false
-  // Right after picking normal mode, until the first profile exists, a swipe
-  // in from the left takes a mistaken choice back to the mode screen.
-  @AppStorage("canReturnToModeChoice") private var canReturnToModeChoice = false
 
   // Small how-to caption under the profile list, shown until the person
   // completes their very first session.
@@ -115,13 +112,13 @@ struct HomeView: View {
     return !isBlocking
   }
 
-  // Right after picking normal mode, until the first profile exists.
+  // A mistaken pick of normal mode can be undone until the first profile
+  // exists; after that, child mode is turned on from Settings.
   private var canGoBackToModeChoice: Bool {
-    canReturnToModeChoice && profiles.isEmpty
+    !ChildModeStore.isChildMode && profiles.isEmpty && requestAuthorizer.isAuthorized
   }
 
   private func goBackToModeChoice() {
-    canReturnToModeChoice = false
     hasChosenAppMode = false
     showIntroScreen = true
   }
@@ -168,7 +165,6 @@ struct HomeView: View {
     }
     .onChange(of: profiles) { oldValue, newValue in
       if !newValue.isEmpty {
-        canReturnToModeChoice = false
         loadApp()
       }
       refreshAlerts()

@@ -9,7 +9,6 @@ struct IntroView: View {
   // where it left off instead of going back to the mode choice.
   @AppStorage("pendingChildModeSetup") private var pendingChildModeSetup = false
   @AppStorage("hasChosenAppMode") private var hasChosenAppMode = false
-  @AppStorage("canReturnToModeChoice") private var canReturnToModeChoice = false
 
   let onRequestAuthorization: () -> Void
   let onFinished: () -> Void
@@ -34,7 +33,6 @@ struct IntroView: View {
         if mode == .child {
           pendingChildModeSetup = true
         } else {
-          canReturnToModeChoice = true
           onFinished()
         }
       }
