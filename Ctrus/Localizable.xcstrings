@@ -1004,6 +1004,29 @@
         }
       }
     },
+    "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén pulsado tu perfil para dar inicio a la sesión, o espera a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prime o teu perfil sem soltar para dares início à sessão, ou espera pela hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
+          }
+        }
+      }
+    },
     "Resume schedule": {
       "extractionState": "manual",
       "localizations": {
@@ -1250,6 +1273,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quando quiseres, encontras esta opção no menu ⋯ do perfil."
+          }
+        }
+      }
+    },
+    "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your profile starts on its own at its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu perfil empieza solo a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O teu perfil começa sozinho à hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
           }
         }
       }
