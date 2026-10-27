@@ -76,6 +76,7 @@ struct HomeView: View {
   // Intro sheet
   @AppStorage("showIntroScreen") private var showIntroScreen = true
   @AppStorage("pendingChildModeSetup") private var pendingChildModeSetup = false
+  @AppStorage("hasChosenAppMode") private var hasChosenAppMode = false
 
   // Small how-to caption under the profile list, shown until the person
   // completes their very first session.
@@ -143,9 +144,10 @@ struct HomeView: View {
       }
     }
     .onChange(of: requestAuthorizer.isAuthorized) { _, newValue in
-      // Child mode still has its own setup to go through after access is
-      // granted; the intro closes itself when that's done.
-      if newValue && !pendingChildModeSetup {
+      // Granting access only gets a new install to the mode choice; the
+      // intro closes itself once a mode has been picked (and, for child
+      // mode, set up).
+      if newValue && hasChosenAppMode && !pendingChildModeSetup {
         showIntroScreen = false
       }
       refreshAlerts()

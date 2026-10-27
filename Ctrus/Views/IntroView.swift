@@ -1,5 +1,7 @@
 import SwiftUI
 
+// First launch: Screen Time access, then the choice of mode, then — for
+// child mode — its own setup.
 struct IntroView: View {
   @EnvironmentObject private var requestAuthorizer: RequestAuthorizer
 
@@ -12,18 +14,11 @@ struct IntroView: View {
   let onFinished: () -> Void
 
   var body: some View {
-    if !hasChosenAppMode {
-      ModeChoiceIntroScreen { mode in
-        pendingChildModeSetup = mode == .child
-        hasChosenAppMode = true
-
-        // Coming back to pick normal mode after access was already granted:
-        // there's nothing left to set up.
-        if mode == .normal && requestAuthorizer.isAuthorized {
-          onFinished()
-        }
-      }
-    } else if pendingChildModeSetup && requestAuthorizer.isAuthorized {
+    if !requestAuthorizer.isAuthorized {
+      AnimatedIntroContainer(
+        onRequestAuthorization: onRequestAuthorization
+      )
+    } else if pendingChildModeSetup {
       ChildModeSetupView(
         onCancel: backToModeChoice,
         onFinished: {
@@ -32,19 +27,15 @@ struct IntroView: View {
         }
       )
     } else {
-      AnimatedIntroContainer(
-        onRequestAuthorization: onRequestAuthorization
-      )
-      // Swiping in from the left edge goes back, like a navigation stack.
-      .gesture(
-        DragGesture(minimumDistance: 20)
-          .onEnded { value in
-            if value.startLocation.x < 40 && value.translation.width > 80 {
-              backToModeChoice()
-            }
-          }
-      )
-      .accessibilityAction(.escape, backToModeChoice)
+      ModeChoiceIntroScreen { mode in
+        hasChosenAppMode = true
+
+        if mode == .child {
+          pendingChildModeSetup = true
+        } else {
+          onFinished()
+        }
+      }
     }
   }
 
