@@ -1004,29 +1004,6 @@
         }
       }
     },
-    "At a set time": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "At a set time"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A una hora fija"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A uma hora certa"
-          }
-        }
-      }
-    },
     "Attempt log": {
       "extractionState": "manual",
       "localizations": {
@@ -1395,29 +1372,6 @@
         }
       }
     },
-    "How it ends": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How it ends"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cómo termina"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como acaba"
-          }
-        }
-      }
-    },
     "I forgot the code": {
       "extractionState": "manual",
       "localizations": {
@@ -1552,29 +1506,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ainda não há nada registado."
-          }
-        }
-      }
-    },
-    "Only with the parents' Ctrus": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only with the parents' Ctrus"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Solo con el Ctrus de los padres"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Só com o Ctrus dos pais"
           }
         }
       }

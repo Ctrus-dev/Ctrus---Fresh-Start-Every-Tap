@@ -22,16 +22,6 @@ struct ChildTag: Codable, Equatable, Hashable {
   var url: String?
 }
 
-enum ScheduleEndMode: String, Codable {
-  case parentTag
-  case fixedTime
-}
-
-struct ScheduleEndTime: Codable, Equatable, Hashable {
-  var hour: Int
-  var minute: Int
-}
-
 struct TamperLogEntry: Codable, Equatable, Identifiable {
   enum Kind: String, Codable {
     case permissionRevoked

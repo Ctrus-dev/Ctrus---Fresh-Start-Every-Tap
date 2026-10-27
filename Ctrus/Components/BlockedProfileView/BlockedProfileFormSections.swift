@@ -337,56 +337,11 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    if draft.isChildMode {
-      endModePicker
-
-      ProfileFieldDivider(isVisible: showsSeparators)
-    }
-
-    if draft.isChildMode && draft.scheduleEndMode == .fixedTime {
-      DatePicker(
-        String(localized: "At a set time"),
-        selection: endTimeBinding,
-        displayedComponents: .hourAndMinute
-      )
-      .disabled(disabled)
-    } else {
-      durationPicker
-    }
+    durationPicker
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
     skipSessionsBlock
-  }
-
-  private var endModePicker: some View {
-    HStack {
-      Text("How it ends")
-
-      Spacer()
-
-      Picker("How it ends", selection: $draft.scheduleEndMode) {
-        Text("Only with the parents' Ctrus").tag(ScheduleEndMode.parentTag)
-        Text("At a set time").tag(ScheduleEndMode.fixedTime)
-      }
-      .labelsHidden()
-      .pickerStyle(.menu)
-      .tint(.secondary)
-    }
-    .disabled(disabled)
-  }
-
-  private var endTimeBinding: Binding<Date> {
-    Binding(
-      get: { dateFrom(hour: draft.scheduleEndTime.hour, minute: draft.scheduleEndTime.minute) },
-      set: { newValue in
-        let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
-        draft.scheduleEndTime = ScheduleEndTime(
-          hour: components.hour ?? draft.scheduleEndTime.hour,
-          minute: components.minute ?? draft.scheduleEndTime.minute
-        )
-      }
-    )
   }
 
   private var skipSessionsBlock: some View {

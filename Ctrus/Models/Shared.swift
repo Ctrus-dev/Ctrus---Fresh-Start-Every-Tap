@@ -53,8 +53,6 @@ enum SharedData {
 
     var childTag: ChildTag? = nil
     var childTagCanStop: Bool? = nil
-    var scheduleEndMode: ScheduleEndMode? = nil
-    var scheduleEndTime: ScheduleEndTime? = nil
 
     var disableBackgroundStops: Bool?
     var enableEmergencyUnblock: Bool?

@@ -30,8 +30,6 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var allowSkip: Bool
   @Published var childTag: ChildTag?
   @Published var childTagCanStop: Bool
-  @Published var scheduleEndMode: ScheduleEndMode
-  @Published var scheduleEndTime: ScheduleEndTime
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -89,8 +87,6 @@ final class BlockedProfileDraft: ObservableObject {
     allowSkip = profile?.allowSkip ?? ChildModeStore.isChildMode
     childTag = profile?.childTag
     childTagCanStop = profile?.childTagCanStop ?? false
-    scheduleEndMode = profile?.scheduleEndMode ?? .parentTag
-    scheduleEndTime = profile?.scheduleEndTime ?? ScheduleEndTime(hour: 7, minute: 0)
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -120,9 +116,6 @@ final class BlockedProfileDraft: ObservableObject {
     isChildMode || !physicalUnblockItems.isEmpty
   }
 
-  private var scheduleEndTimeToSave: ScheduleEndTime? {
-    scheduleEndMode == .fixedTime ? scheduleEndTime : nil
-  }
 
   var selectedStrategyAllowsTimedBreaks: Bool {
     return selectedStrategy?.allowsTimedBreaks ?? true
@@ -171,8 +164,6 @@ final class BlockedProfileDraft: ObservableObject {
         allowSkip: allowSkip,
         childTag: .some(childTag),
         childTagCanStop: childTag != nil && childTagCanStop,
-        scheduleEndMode: scheduleEndMode,
-        scheduleEndTime: .some(scheduleEndTimeToSave),
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -204,8 +195,6 @@ final class BlockedProfileDraft: ObservableObject {
       allowSkip: allowSkip,
       childTag: childTag,
       childTagCanStop: childTag != nil && childTagCanStop,
-      scheduleEndMode: scheduleEndMode,
-      scheduleEndTime: scheduleEndTimeToSave,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )

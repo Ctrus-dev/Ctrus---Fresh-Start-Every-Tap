@@ -47,8 +47,6 @@ class BlockedProfiles {
   // Child mode only
   var childTag: ChildTag? = nil
   var childTagCanStop: Bool = false
-  var scheduleEndMode: ScheduleEndMode = ScheduleEndMode.parentTag
-  var scheduleEndTime: ScheduleEndTime? = nil
 
   var disableBackgroundStops: Bool = false
 
@@ -251,8 +249,6 @@ class BlockedProfiles {
     allowSkip: Bool? = nil,
     childTag: ChildTag?? = nil,
     childTagCanStop: Bool? = nil,
-    scheduleEndMode: ScheduleEndMode? = nil,
-    scheduleEndTime: ScheduleEndTime?? = nil,
     disableBackgroundStops: Bool? = nil,
     enableEmergencyUnblock: Bool? = nil
   ) throws -> BlockedProfiles {
@@ -355,14 +351,6 @@ class BlockedProfiles {
       profile.childTagCanStop = newChildTagCanStop
     }
 
-    if let newScheduleEndMode = scheduleEndMode {
-      profile.scheduleEndMode = newScheduleEndMode
-    }
-
-    if let scheduleEndTime {
-      profile.scheduleEndTime = scheduleEndTime
-    }
-
     if let newDisableBackgroundStops = disableBackgroundStops {
       profile.disableBackgroundStops = newDisableBackgroundStops
     }
@@ -449,8 +437,6 @@ class BlockedProfiles {
       skipUntil: profile.skipUntil,
       childTag: profile.childTag,
       childTagCanStop: profile.childTagCanStop,
-      scheduleEndMode: profile.scheduleEndMode,
-      scheduleEndTime: profile.scheduleEndTime,
       disableBackgroundStops: profile.disableBackgroundStops,
       enableEmergencyUnblock: profile.enableEmergencyUnblock
     )
@@ -536,8 +522,6 @@ class BlockedProfiles {
     allowSkip: Bool = false,
     childTag: ChildTag? = nil,
     childTagCanStop: Bool = false,
-    scheduleEndMode: ScheduleEndMode = .parentTag,
-    scheduleEndTime: ScheduleEndTime? = nil,
     disableBackgroundStops: Bool = false,
     enableEmergencyUnblock: Bool = true
   ) throws -> BlockedProfiles {
@@ -573,8 +557,6 @@ class BlockedProfiles {
     profile.allowSkip = allowSkip
     profile.childTag = childTag
     profile.childTagCanStop = childTagCanStop
-    profile.scheduleEndMode = scheduleEndMode
-    profile.scheduleEndTime = scheduleEndTime
 
     // Create the snapshot so extensions can read it immediately
     updateSnapshot(for: profile)
@@ -616,8 +598,6 @@ class BlockedProfiles {
     cloned.allowSkip = source.allowSkip
     cloned.childTag = source.childTag
     cloned.childTagCanStop = source.childTagCanStop
-    cloned.scheduleEndMode = source.scheduleEndMode
-    cloned.scheduleEndTime = source.scheduleEndTime
 
     context.insert(cloned)
     try context.save()

@@ -6,7 +6,7 @@ import UserNotifications
 private let log = Logger(subsystem: "com.Ctrus.monitor", category: "ChildSessionLimit")
 
 // Child mode's automatic end: every session stops after 24 hours at most, or
-// sooner for a schedule's fixed duration or end time. The system wakes us
+// sooner for a schedule's fixed duration. The system wakes us
 // through DeviceActivity, which follows the phone's date — so before ending
 // anything, the real time since the session started is checked with
 // TrustedClock, and if it hasn't actually passed the end is set again for
@@ -126,15 +126,7 @@ enum ChildSessionLimit {
       return Plan(limit: limit, makesWayForNextSession: false)
     }
 
-    if profile.scheduleEndMode == .fixedTime, let endTime = profile.scheduleEndTime {
-      if let endDate = calendar.nextDate(
-        after: startedAt,
-        matching: DateComponents(hour: endTime.hour, minute: endTime.minute),
-        matchingPolicy: .nextTime
-      ) {
-        limit = min(limit, endDate.timeIntervalSince(startedAt))
-      }
-    } else if let duration = schedule.automaticEndDurationInSeconds {
+    if let duration = schedule.automaticEndDurationInSeconds {
       limit = min(limit, duration)
     }
 

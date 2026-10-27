@@ -111,8 +111,6 @@ enum ChildModeSwitcher {
       for profile in profiles {
         profile.childTag = nil
         profile.childTagCanStop = false
-        profile.scheduleEndMode = .parentTag
-        profile.scheduleEndTime = nil
         BlockedProfiles.updateSnapshot(for: profile)
       }
       try? context.save()
