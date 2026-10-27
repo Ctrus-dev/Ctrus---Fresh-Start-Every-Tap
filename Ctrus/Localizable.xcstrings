@@ -1004,29 +1004,6 @@
         }
       }
     },
-    "Next session skipped": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Next session skipped"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Próxima sesión saltada"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Próxima sessão saltada"
-          }
-        }
-      }
-    },
     "Resume schedule": {
       "extractionState": "manual",
       "localizations": {
@@ -1115,29 +1092,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Saltar com o Ctrus"
-          }
-        }
-      }
-    },
-    "Skipped until %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skipped until %@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saltado hasta el %@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saltado até %@"
           }
         }
       }
@@ -1231,29 +1185,6 @@
         }
       }
     },
-    "Some days it doesn't suit? You can skip a session without changing the schedule.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Some days it doesn't suit? You can skip a session without changing the schedule."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Hay días que no te viene bien? Puedes saltarte una sesión sin cambiar el horario."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Há dias em que não dá jeito? Podes saltar uma sessão sem mexer no horário."
-          }
-        }
-      }
-    },
     "There are no sessions on those days.": {
       "extractionState": "manual",
       "localizations": {
@@ -1296,29 +1227,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este Ctrus não é deste perfil."
-          }
-        }
-      }
-    },
-    "Today's session skipped": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Today's session skipped"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sesión de hoy saltada"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sessão de hoje saltada"
           }
         }
       }

@@ -28,23 +28,24 @@ struct SkipUntilView: View {
   }
 
   var body: some View {
-    VStack(spacing: 20) {
-      HStack {
-        Text("Skip until…")
-          .font(.title2).bold()
-
-        Spacer()
-
-        Button {
-          dismiss()
-        } label: {
-          Image(systemName: "xmark")
-            .font(.headline)
-            .foregroundStyle(.secondary)
+    NavigationStack {
+      content
+        .toolbar {
+          ToolbarItem(placement: .topBarLeading) {
+            Button(action: { dismiss() }) {
+              Image(systemName: "xmark")
+            }
+            .accessibilityLabel("Close")
+          }
         }
-        .accessibilityLabel("Close")
-      }
-      .padding(.top, 16)
+    }
+  }
+
+  private var content: some View {
+    VStack(spacing: 20) {
+      Text("Skip until…")
+        .font(.title2).bold()
+        .frame(maxWidth: .infinity, alignment: .leading)
 
       SingleDayCalendar(
         selectedDay: $selectedDay,
@@ -70,8 +71,11 @@ struct SkipUntilView: View {
         guard let selectedDay else { return }
         onSkip(selectedDay)
       }
+
+      Spacer(minLength: 0)
     }
-    .padding(24)
+    .padding(.horizontal, 24)
+    .padding(.bottom, 24)
     .alert(
       String(localized: "Whoops"),
       isPresented: Binding(

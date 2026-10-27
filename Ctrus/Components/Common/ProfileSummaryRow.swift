@@ -130,10 +130,6 @@ struct ProfileSummaryContent: View {
           }
         }
 
-        if layout == .dashboard {
-          ProfileSummarySkipLine(profile: profile, forcedLight: forcedLight)
-        }
-
         if metadata.isVisible {
           ProfileSummaryMetadataLine(profile: profile, metadata: metadata, forcedLight: forcedLight)
         }
@@ -301,39 +297,6 @@ private struct ProfileSummaryStatusLine: View {
         enableStrictMode: profile.enableStrictMode,
         forcedLight: forcedLight
       )
-    }
-  }
-}
-
-private struct ProfileSummarySkipLine: View {
-  let profile: BlockedProfiles
-  var forcedLight: Bool = false
-
-  private var message: String? {
-    guard profile.canSkipSessions else { return nil }
-    let skip = profile.scheduleSkip
-
-    if skip.isSkipUntilActive(), let skipUntil = skip.skipUntil {
-      return String(localized: "Skipped until \(ScheduleSkipUtil.shortDayText(for: skipUntil))")
-    }
-
-    if skip.isNextOccurrenceSkipActive(), let skipNextOccurrence = skip.skipNextOccurrence {
-      return Calendar.current.isDateInToday(skipNextOccurrence)
-        ? String(localized: "Today's session skipped")
-        : String(localized: "Next session skipped")
-    }
-
-    return nil
-  }
-
-  var body: some View {
-    if let message {
-      Text(message)
-        .font(.caption2)
-        .fontWeight(.semibold)
-        .lineLimit(1)
-        .minimumScaleFactor(0.82)
-        .foregroundStyle(forcedLight ? Color.fixedLightSecondaryText : Color.secondary)
     }
   }
 }

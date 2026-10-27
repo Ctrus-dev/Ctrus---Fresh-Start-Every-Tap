@@ -271,11 +271,6 @@ struct BlockedProfileScheduleFields: View {
 
   private var skipSessionsBlock: some View {
     VStack(alignment: .leading, spacing: 10) {
-      Text("Some days it doesn't suit? You can skip a session without changing the schedule.")
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .fixedSize(horizontal: false, vertical: true)
-
       Toggle(String(localized: "Allow skipping sessions"), isOn: $draft.allowSkip)
         .tint(themeManager.themeColor)
         .disabled(disabled)
