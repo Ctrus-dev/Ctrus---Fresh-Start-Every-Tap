@@ -3,16 +3,27 @@ import SwiftUI
 struct HomeAlertsView: View {
   let alerts: [HomeAlert]
   let onAlertTapped: (HomeAlert) -> Void
+  // Child mode's attempt log, shown after the other alerts as one more pill.
+  var tamperEntry: TamperLogEntry? = nil
+  var onTamperTapped: () -> Void = {}
 
   var body: some View {
-    if !alerts.isEmpty {
+    if !alerts.isEmpty || tamperEntry != nil {
       ScrollView(.horizontal, showsIndicators: false) {
         HStack(spacing: 8) {
           ForEach(alerts) { alert in
             Button {
               onAlertTapped(alert)
             } label: {
-              HomeAlertCard(alert: alert)
+              HomeAlertPill(iconName: alert.iconName, title: alert.title)
+                .accessibilityHint(alert.message)
+            }
+            .buttonStyle(.plain)
+          }
+
+          if let tamperEntry {
+            Button(action: onTamperTapped) {
+              HomeAlertPill(iconName: "exclamationmark.shield.fill", title: tamperEntry.title)
             }
             .buttonStyle(.plain)
           }
@@ -22,16 +33,17 @@ struct HomeAlertsView: View {
   }
 }
 
-private struct HomeAlertCard: View {
-  let alert: HomeAlert
+private struct HomeAlertPill: View {
+  let iconName: String
+  let title: String
 
   var body: some View {
     HStack(spacing: 6) {
-      Image(systemName: alert.iconName)
+      Image(systemName: iconName)
         .font(.system(size: 13, weight: .semibold))
         .foregroundStyle(.white)
 
-      Text(alert.title)
+      Text(title)
         .font(.footnote)
         .fontWeight(.semibold)
         .foregroundStyle(.white)
@@ -43,8 +55,7 @@ private struct HomeAlertCard: View {
       Color.red.opacity(0.85),
       in: Capsule()
     )
-    .accessibilityLabel(alert.title)
-    .accessibilityHint(alert.message)
+    .accessibilityLabel(title)
   }
 }
 

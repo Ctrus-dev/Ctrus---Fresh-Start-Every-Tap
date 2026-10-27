@@ -50,7 +50,7 @@ struct HomeView: View {
   @State private var skipUntilErrorMessage: String? = nil
   @State private var toastMessage: String? = nil
   @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
-  @State private var lastUnseenTamperDate: Date? = nil
+  @State private var unseenTamperEntry: TamperLogEntry? = nil
   @State private var showTamperLog = false
 
   // Navigate to profile
@@ -333,7 +333,9 @@ struct HomeView: View {
             alerts: alertsManager.alerts,
             onAlertTapped: { alert in
               presentAlert(alert)
-            }
+            },
+            tamperEntry: visibleTamperEntry,
+            onTamperTapped: openTamperLog
           )
 
           Spacer()
@@ -341,11 +343,6 @@ struct HomeView: View {
         .padding(.leading, 16)
         .padding(.trailing, 16)
         .padding(.top, 16)
-
-        if let lastUnseenTamperDate {
-          tamperBanner(since: lastUnseenTamperDate)
-            .padding(.horizontal, 16)
-        }
 
         RotatingModel3DView(themeColor: themeManager.themeColor)
           .frame(maxWidth: .infinity, alignment: .center)
@@ -569,7 +566,7 @@ struct HomeView: View {
   // was closed: an automatic end that's already due, or a moved date.
   private func checkChildMode() {
     guard ChildModeStore.isChildMode else {
-      lastUnseenTamperDate = nil
+      unseenTamperEntry = nil
       return
     }
     ChildModeStore.checkForClockChange()
@@ -578,38 +575,26 @@ struct HomeView: View {
   }
 
   private func refreshTamperBanner() {
-    lastUnseenTamperDate =
+    unseenTamperEntry =
       ChildModeStore.isChildMode && ChildModeStore.tamperLogUnseen
-      ? ChildModeStore.tamperLog.last?.at : nil
+      ? ChildModeStore.tamperLog.last : nil
   }
 
-  private func tamperBanner(since date: Date) -> some View {
-    let when = RelativeDateTimeFormatter().localizedString(for: date, relativeTo: Date())
-
-    return Button {
-      parentConfirmationRequest = ParentConfirmationRequest(
-        reason: String(localized: "To see the attempt log")
-      ) {
-        showTamperLog = true
-      }
-    } label: {
-      HStack(spacing: 10) {
-        Image(systemName: "exclamationmark.shield.fill")
-          .foregroundStyle(.red)
-        Text("Protection was turned off \(when). See log.")
-          .font(.subheadline)
-          .foregroundStyle(Color.fixedLightPrimaryText)
-          .multilineTextAlignment(.leading)
-        Spacer(minLength: 0)
-      }
-      .padding(14)
-      .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-      .overlay(
-        RoundedRectangle(cornerRadius: 16, style: .continuous)
-          .strokeBorder(Color.red.opacity(0.6), lineWidth: 1.5)
-      )
+  // Missing Screen Time access comes first; what else was logged shows once
+  // access is back.
+  private var visibleTamperEntry: TamperLogEntry? {
+    guard !alertsManager.alerts.contains(where: { $0.type == .screenTimeAccess }) else {
+      return nil
     }
-    .buttonStyle(.plain)
+    return unseenTamperEntry
+  }
+
+  private func openTamperLog() {
+    parentConfirmationRequest = ParentConfirmationRequest(
+      reason: String(localized: "To see the attempt log")
+    ) {
+      showTamperLog = true
+    }
   }
 
   private func onAppearApp() {

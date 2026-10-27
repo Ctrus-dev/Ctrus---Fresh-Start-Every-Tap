@@ -1648,29 +1648,6 @@
         }
       }
     },
-    "Protection was turned off %@. See log.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protection was turned off %@. See log."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La protección se desactivó %@. Ver registro."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A proteção foi desligada %@. Ver registo."
-          }
-        }
-      }
-    },
     "Remove": {
       "extractionState": "manual",
       "localizations": {
