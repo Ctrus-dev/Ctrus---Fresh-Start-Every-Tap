@@ -246,7 +246,7 @@ struct ChildModeProfileTagFields: View {
 
   var body: some View {
     HStack {
-      Label("Parents' Ctrus", systemImage: "wave.3.right")
+      themedLabel("Parents' Ctrus")
       Spacer()
       Image(systemName: "checkmark.circle.fill")
         .foregroundStyle(themeManager.themeColor)
@@ -254,7 +254,7 @@ struct ChildModeProfileTagFields: View {
 
     if draft.childTag != nil {
       HStack {
-        Label("Child's Ctrus", systemImage: "wave.3.right")
+        themedLabel("Child's Ctrus")
         Spacer()
         Button {
           draft.childTag = nil
@@ -287,6 +287,15 @@ struct ChildModeProfileTagFields: View {
       }
       .foregroundStyle(themeManager.themeColor)
       .disabled(disabled)
+    }
+  }
+
+  private func themedLabel(_ title: LocalizedStringKey) -> some View {
+    Label {
+      Text(title)
+    } icon: {
+      Image(systemName: "wave.3.right")
+        .foregroundStyle(themeManager.themeColor)
     }
   }
 }

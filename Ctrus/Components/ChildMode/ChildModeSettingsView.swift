@@ -91,6 +91,9 @@ struct ChildModeSettingsView: View {
         )
       }
     }
+    // Row icons, links and buttons take the theme colour, like the rest of
+    // the app.
+    .tint(themeManager.themeColor)
     .onAppear {
       if startsOnLog {
         path = [.log]
