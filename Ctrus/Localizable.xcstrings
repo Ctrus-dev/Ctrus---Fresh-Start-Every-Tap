@@ -1487,6 +1487,29 @@
         }
       }
     },
+    "It confirms changes and ends sessions when the parents' Ctrus isn't at hand.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It confirms changes and ends sessions when the parents' Ctrus isn't at hand."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sirve para confirmar cambios y terminar sesiones cuando el Ctrus de los padres no está a mano."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serve para confirmar alterações e acabar sessões quando o Ctrus dos pais não está à mão."
+          }
+        }
+      }
+    },
     "Normal Mode": {
       "extractionState": "manual",
       "localizations": {
@@ -2082,6 +2105,29 @@
         }
       }
     },
+    "The parents' Ctrus ends any session, on every profile. You can add up to 3.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The parents' Ctrus ends any session, on every profile. You can add up to 3."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El Ctrus de los padres termina cualquier sesión, en todos los perfiles. Puedes añadir hasta 3."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus dos pais acaba qualquer sessão, em todos os perfis. Podes adicionar até 3."
+          }
+        }
+      }
+    },
     "There are no sessions on those days.": {
       "extractionState": "manual",
       "localizations": {
@@ -2331,6 +2377,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ativar Modo Criança"
+          }
+        }
+      }
+    },
+    "Type the same code to make sure it's right.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type the same code to make sure it's right."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe el mismo código para confirmar que es correcto."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreve o mesmo código para confirmares que está certo."
           }
         }
       }
