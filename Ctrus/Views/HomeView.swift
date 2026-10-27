@@ -323,14 +323,9 @@ struct HomeView: View {
       VStack(alignment: .leading, spacing: 30) {
         HStack(alignment: .center) {
           if canGoBackToModeChoice {
-            Button(action: goBackToModeChoice) {
-              Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.fixedLightPrimaryText)
-                .frame(width: 44, height: 44)
-                .modifier(CircleGlassBackground())
-            }
-            .buttonStyle(.plain)
+            RoundedButton(
+              "", action: goBackToModeChoice, iconName: "chevron.left", forcedLight: true
+            )
             .accessibilityLabel("Back")
           }
 
@@ -665,16 +660,4 @@ struct HomeView: View {
         forKey: "showIntroScreen"
       )
     }
-}
-
-// The round glass bubble the system gives toolbar buttons, for a button that
-// sits outside a toolbar.
-private struct CircleGlassBackground: ViewModifier {
-  func body(content: Content) -> some View {
-    if #available(iOS 26.0, *) {
-      content.glassEffect(.regular.interactive(), in: Circle())
-    } else {
-      content.background(.ultraThinMaterial, in: Circle())
-    }
-  }
 }

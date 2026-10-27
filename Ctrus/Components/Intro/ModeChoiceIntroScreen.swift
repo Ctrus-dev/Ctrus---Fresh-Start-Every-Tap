@@ -16,19 +16,21 @@ struct ModeChoiceIntroScreen: View {
         .opacity(showContent ? 1 : 0)
 
       VStack(spacing: 14) {
-        modeButton(
+        IntroCard(
           title: String(localized: "Normal mode"),
           subtitle: String(localized: "For your own phone."),
-          iconName: "person.fill",
-          mode: .normal
-        )
+          iconName: "person.fill"
+        ) {
+          onChoose(.normal)
+        }
 
-        modeButton(
+        IntroCard(
           title: String(localized: "Child mode"),
           subtitle: String(localized: "For your child's phone."),
-          iconName: "figure.and.child.holdinghands",
-          mode: .child
-        )
+          iconName: "figure.and.child.holdinghands"
+        ) {
+          onChoose(.child)
+        }
       }
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 16)
@@ -46,49 +48,6 @@ struct ModeChoiceIntroScreen: View {
         showContent = true
       }
     }
-  }
-
-  private func modeButton(
-    title: String,
-    subtitle: String,
-    iconName: String,
-    mode: AppMode
-  ) -> some View {
-    Button {
-      onChoose(mode)
-    } label: {
-      HStack(spacing: 14) {
-        Image(systemName: iconName)
-          .font(.title3)
-          .foregroundStyle(themeManager.themeColor)
-          .frame(width: 32)
-
-        VStack(alignment: .leading, spacing: 3) {
-          Text(title)
-            .font(.headline)
-            .foregroundColor(.fixedLightPrimaryText)
-
-          Text(subtitle)
-            .font(.subheadline)
-            .foregroundColor(.fixedLightSecondaryText)
-            .multilineTextAlignment(.leading)
-            .fixedSize(horizontal: false, vertical: true)
-        }
-
-        Spacer()
-
-        Image(systemName: "chevron.right")
-          .foregroundColor(.fixedLightSecondaryText)
-      }
-      .padding(16)
-      .background(Color.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-      .overlay(
-        RoundedRectangle(cornerRadius: 20, style: .continuous)
-          // Same border as the profile cards on the home screen.
-          .strokeBorder(themeManager.themeColor, lineWidth: 3.5)
-      )
-    }
-    .buttonStyle(.plain)
   }
 }
 
