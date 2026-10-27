@@ -30,6 +30,8 @@ struct SkipUntilView: View {
   var body: some View {
     NavigationStack {
       content
+        .navigationTitle(String(localized: "Skip until…"))
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
           ToolbarItem(placement: .topBarLeading) {
             Button(action: { dismiss() }) {
@@ -43,10 +45,6 @@ struct SkipUntilView: View {
 
   private var content: some View {
     VStack(spacing: 20) {
-      Text("Skip until…")
-        .font(.title2).bold()
-        .frame(maxWidth: .infinity, alignment: .leading)
-
       SingleDayCalendar(
         selectedDay: $selectedDay,
         availableRange: availableRange,
