@@ -1326,25 +1326,25 @@
         }
       }
     },
-    "For your child's phone. Only you can end sessions.": {
+    "For your child's phone.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "For your child's phone. Only you can end sessions."
+            "value": "For your child's phone."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para el móvil de tu hijo. Solo tú terminas las sesiones."
+            "value": "Para el móvil de tu hijo."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para o telemóvel do teu filho. Só tu acabas as sessões."
+            "value": "Para o telemóvel do teu filho."
           }
         }
       }

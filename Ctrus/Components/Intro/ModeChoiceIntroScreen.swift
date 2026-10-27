@@ -16,11 +16,6 @@ struct ModeChoiceIntroScreen: View {
         .opacity(showContent ? 1 : 0)
 
       VStack(spacing: 14) {
-        Text("Welcome to Ctrus")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.fixedLightPrimaryText)
-
         modeButton(
           title: String(localized: "Normal mode"),
           subtitle: String(localized: "For your own phone."),
@@ -30,7 +25,7 @@ struct ModeChoiceIntroScreen: View {
 
         modeButton(
           title: String(localized: "Child mode"),
-          subtitle: String(localized: "For your child's phone. Only you can end sessions."),
+          subtitle: String(localized: "For your child's phone."),
           iconName: "figure.and.child.holdinghands",
           mode: .child
         )
@@ -89,7 +84,8 @@ struct ModeChoiceIntroScreen: View {
       .background(Color.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
       .overlay(
         RoundedRectangle(cornerRadius: 20, style: .continuous)
-          .strokeBorder(themeManager.themeColor, lineWidth: 2)
+          // Same border as the profile cards on the home screen.
+          .strokeBorder(themeManager.themeColor, lineWidth: 3.5)
       )
     }
     .buttonStyle(.plain)

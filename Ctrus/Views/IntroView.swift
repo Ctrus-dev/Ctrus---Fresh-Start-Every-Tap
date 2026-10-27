@@ -35,18 +35,16 @@ struct IntroView: View {
       AnimatedIntroContainer(
         onRequestAuthorization: onRequestAuthorization
       )
-      .overlay(alignment: .topLeading) {
-        Button(action: backToModeChoice) {
-          Image(systemName: "chevron.left")
-            .font(.headline)
-            .foregroundStyle(Color.fixedLightPrimaryText)
-            .frame(width: 44, height: 44)
-            .background(Color.white.opacity(0.7), in: Circle())
-        }
-        .padding(.leading, 16)
-        .padding(.top, 8)
-        .accessibilityLabel("Back")
-      }
+      // Swiping in from the left edge goes back, like a navigation stack.
+      .gesture(
+        DragGesture(minimumDistance: 20)
+          .onEnded { value in
+            if value.startLocation.x < 40 && value.translation.width > 80 {
+              backToModeChoice()
+            }
+          }
+      )
+      .accessibilityAction(.escape, backToModeChoice)
     }
   }
 

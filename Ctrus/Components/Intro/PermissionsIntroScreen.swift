@@ -24,17 +24,20 @@ struct PermissionsIntroScreen: View {
         .opacity(showContent ? 1 : 0)
 
       VStack(spacing: 14) {
-        Text("Welcome to Ctrus")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.fixedLightPrimaryText)
+        // Same gap as the app's other title and description pairs.
+        VStack(spacing: 8) {
+          Text("Welcome to Ctrus")
+            .font(.title)
+            .fontWeight(.bold)
+            .foregroundColor(.fixedLightPrimaryText)
 
-        Text("We need Screen Time Access to get started")
-          .font(.subheadline)
-          .foregroundColor(.fixedLightSecondaryText)
-          .multilineTextAlignment(.center)
-          .fixedSize(horizontal: false, vertical: true)
-          .padding(.horizontal, 8)
+          Text("We need Screen Time Access to get started")
+            .font(.subheadline)
+            .foregroundColor(.fixedLightSecondaryText)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, 8)
+        }
 
         // Passcode warning message
         // Disabled: was cutting into the "Allow Screen Time Access" button on
