@@ -50,7 +50,6 @@ struct TamperLogEntry: Codable, Equatable, Identifiable {
 enum ChildModeStore {
   private static let suite = UserDefaults(suiteName: "group.mo.dev.Ctrus")!
 
-  static let maxParentTags = 3
   static let maxTamperLogEntries = 50
 
   private enum Key: String {

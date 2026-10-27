@@ -203,15 +203,13 @@ private struct ParentTagsView: View {
         Text("Changes apply to every profile straight away.")
       }
 
-      if parentTags.count < ChildModeStore.maxParentTags {
-        Section {
-          Button {
-            addTag()
-          } label: {
-            Label("Add another parents' Ctrus", systemImage: "plus")
-          }
-          .foregroundStyle(themeManager.themeColor)
+      Section {
+        Button {
+          addTag()
+        } label: {
+          Label("Add another parents' Ctrus", systemImage: "plus")
         }
+        .foregroundStyle(themeManager.themeColor)
       }
     }
     .navigationTitle(String(localized: "Parents' Ctrus"))
@@ -224,7 +222,7 @@ private struct ParentTagsView: View {
       guard !parentTags.contains(where: { $0.uid == uid }) else { return }
 
       let usedNumbers = Set(parentTags.map(\.label))
-      let number = (1...ChildModeStore.maxParentTags).first {
+      let number = (1...(parentTags.count + 1)).first {
         !usedNumbers.contains(String(localized: "Parents' Ctrus \($0)"))
       } ?? parentTags.count + 1
 

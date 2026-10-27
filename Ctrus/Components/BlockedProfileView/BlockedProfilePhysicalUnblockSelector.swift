@@ -208,7 +208,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
 
   private func defaultName(for type: PhysicalUnblockItem.PhysicalUnblockType) -> String {
     let nextIndex = physicalUnblockItems.filter { $0.type == type }.count + 1
-    return "\(type.displayName) \(nextIndex)"
+    return String(localized: "Ctrus \(nextIndex)")
   }
 
   private func shortCodeValue(_ codeValue: String) -> String {

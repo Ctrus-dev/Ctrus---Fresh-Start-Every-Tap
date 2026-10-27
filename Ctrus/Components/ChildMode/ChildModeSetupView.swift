@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Child mode setup, laid out like the guided profile creation: the parent
-/// code (typed twice), the parents' Ctrus (1 to 3), then the recovery key,
+/// code (typed twice), the parents' Ctrus (at least one), then the recovery key,
 /// shown once.
 struct ChildModeSetupView: View {
   @EnvironmentObject private var themeManager: ThemeManager
@@ -111,7 +111,7 @@ struct ChildModeSetupView: View {
       return String(localized: "Type the same code to make sure it's right.")
     case .parentTags:
       return String(
-        localized: "The parents' Ctrus ends any session, on every profile. You can add up to 3.")
+        localized: "The parents' Ctrus ends any session, on every profile.")
     case .recoveryKey:
       return String(
         localized:
@@ -152,9 +152,7 @@ struct ChildModeSetupView: View {
           parentTagRow(tag)
         }
 
-        if parentTags.count < ChildModeStore.maxParentTags {
-          addTagButton
-        }
+        addTagButton
       }
 
     case .recoveryKey:
@@ -336,7 +334,7 @@ struct ChildModeSetupView: View {
   private func nextLabel() -> String {
     let used = Set(parentTags.map(\.label))
     let number =
-      (1...ChildModeStore.maxParentTags).first {
+      (1...(parentTags.count + 1)).first {
         !used.contains(String(localized: "Parents' Ctrus \($0)"))
       } ?? parentTags.count + 1
     return String(localized: "Parents' Ctrus \(number)")

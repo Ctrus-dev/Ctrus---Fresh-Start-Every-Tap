@@ -1165,6 +1165,29 @@
         }
       }
     },
+    "Ctrus %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        }
+      }
+    },
     "Ctrus permission turned off": {
       "extractionState": "manual",
       "localizations": {
@@ -2105,25 +2128,25 @@
         }
       }
     },
-    "The parents' Ctrus ends any session, on every profile. You can add up to 3.": {
+    "The parents' Ctrus ends any session, on every profile.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The parents' Ctrus ends any session, on every profile. You can add up to 3."
+            "value": "The parents' Ctrus ends any session, on every profile."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El Ctrus de los padres termina cualquier sesión, en todos los perfiles. Puedes añadir hasta 3."
+            "value": "El Ctrus de los padres termina cualquier sesión, en todos los perfiles."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O Ctrus dos pais acaba qualquer sessão, em todos os perfis. Podes adicionar até 3."
+            "value": "O Ctrus dos pais acaba qualquer sessão, em todos os perfis."
           }
         }
       }
