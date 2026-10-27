@@ -377,6 +377,7 @@ struct BlockedProfileScheduleSection: View {
 
 struct BlockedProfileBreaksFields: View {
   @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
   var disabled: Bool
   var showsSeparators: Bool = false
 
@@ -427,6 +428,7 @@ struct BlockedProfileBreaksFields: View {
       Text("10 minutes").tag(10)
       Text("15 minutes").tag(15)
     }
+    .tint(themeManager.themeColor)
     .disabled(disabled)
   }
 }
