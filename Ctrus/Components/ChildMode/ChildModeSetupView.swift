@@ -63,7 +63,6 @@ struct ChildModeSetupView: View {
         }
       }
     }
-    .tint(themeManager.themeColor)
     .interactiveDismissDisabled()
   }
 
