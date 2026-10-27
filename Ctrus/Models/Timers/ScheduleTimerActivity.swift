@@ -48,6 +48,20 @@ class ScheduleTimerActivity: TimerActivity {
       return
     }
 
+    // A skipped occurrence leaves everything as it is — a session that's
+    // already running carries on, and nothing new is started or blocked.
+    // Reminders are synced so this day's comes back for its next occurrence.
+    if profile.scheduleSkip.skips(occurrenceStartingAt: Date()) {
+      log.info("Start schedule timer activity for \(profileId), this occurrence is skipped")
+      ScheduleReminderUtil.sync(
+        forProfileId: profile.id,
+        profileName: profile.name,
+        schedule: schedule,
+        skip: profile.scheduleSkip
+      )
+      return
+    }
+
     // Without Screen Time access, applying restrictions below is a silent
     // no-op — nothing actually gets blocked. Bail out before creating a
     // session so the clock doesn't start counting on a block that never
@@ -184,7 +198,11 @@ class ScheduleTimerActivity: TimerActivity {
     SharedData.endActiveSharedSession()
 
     ScheduleReminderUtil.sync(
-      forProfileId: profile.id, profileName: profile.name, schedule: profile.schedule)
+      forProfileId: profile.id,
+      profileName: profile.name,
+      schedule: profile.schedule,
+      skip: profile.scheduleSkip
+    )
   }
 
   func getScheduleInterval(from schedule: BlockedProfileSchedule) -> (

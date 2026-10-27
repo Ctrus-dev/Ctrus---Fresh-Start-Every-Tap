@@ -123,13 +123,16 @@ struct BlockedProfileSchedule: Codable, Equatable {
   func nextStartDate(
     now: Date = Date(),
     calendar: Calendar = .current,
-    bufferSeconds: TimeInterval = BlockedProfileSchedule.registrationSettleSeconds
+    bufferSeconds: TimeInterval = BlockedProfileSchedule.registrationSettleSeconds,
+    skip: ScheduleSkip = ScheduleSkip()
   ) -> Date? {
     guard isActive else { return nil }
 
     let bufferTime = now.addingTimeInterval(bufferSeconds)
 
-    for daysAhead in 0..<7 {
+    // A week is enough to reach every scheduled day; the extra weeks are for
+    // looking past a skip, which can run up to 30 days ahead.
+    for daysAhead in 0..<42 {
       guard let candidateDate = calendar.date(byAdding: .day, value: daysAhead, to: bufferTime)
       else {
         continue
@@ -153,7 +156,9 @@ struct BlockedProfileSchedule: Codable, Equatable {
         continue
       }
 
-      if scheduleStartTime >= bufferTime {
+      if scheduleStartTime >= bufferTime
+        && !skip.skips(occurrenceStartingAt: scheduleStartTime, calendar: calendar)
+      {
         return scheduleStartTime
       }
     }
@@ -164,9 +169,12 @@ struct BlockedProfileSchedule: Codable, Equatable {
   func nextStartMessage(
     now: Date = Date(),
     calendar: Calendar = .current,
-    includePrefix: Bool = true
+    includePrefix: Bool = true,
+    skip: ScheduleSkip = ScheduleSkip()
   ) -> String? {
-    guard let nextStart = nextStartDate(now: now, calendar: calendar) else { return nil }
+    guard let nextStart = nextStartDate(now: now, calendar: calendar, skip: skip) else {
+      return nil
+    }
 
     let timeFormatter = DateFormatter()
     timeFormatter.locale = Locale.autoupdatingCurrent
@@ -197,5 +205,119 @@ struct BlockedProfileSchedule: Codable, Equatable {
     formatter.locale = Locale.autoupdatingCurrent
     formatter.setLocalizedDateFormatFromTemplate("jm")
     return formatter.string(from: date)
+  }
+}
+
+extension BlockedProfileSchedule {
+  /// Starts of the occurrences that haven't begun yet, from `now` up to the
+  /// end of `lastDay`.
+  func upcomingOccurrenceStarts(
+    from now: Date = Date(),
+    throughEndOf lastDay: Date,
+    calendar: Calendar = .current
+  ) -> [Date] {
+    guard isActive else { return [] }
+
+    var starts: [Date] = []
+    var day = calendar.startOfDay(for: now)
+    let lastDayStart = calendar.startOfDay(for: lastDay)
+
+    while day <= lastDayStart {
+      if let weekday = Weekday(rawValue: calendar.component(.weekday, from: day)),
+        days.contains(weekday),
+        let start = calendar.date(
+          bySettingHour: startHour, minute: startMinute, second: 0, of: day),
+        start > now
+      {
+        starts.append(start)
+      }
+
+      guard let nextDay = calendar.date(byAdding: .day, value: 1, to: day) else { break }
+      day = nextDay
+    }
+
+    return starts
+  }
+
+  /// The first occurrence of `weekday` whose 5-minute reminder is still
+  /// ahead — the one a repeating reminder for that day would fire for next.
+  func nextOccurrenceStart(
+    on weekday: Weekday,
+    remindingMinutesBefore minutesBefore: Int,
+    after now: Date = Date(),
+    calendar: Calendar = .current
+  ) -> Date? {
+    let today = calendar.startOfDay(for: now)
+
+    for daysAhead in 0...7 {
+      guard let day = calendar.date(byAdding: .day, value: daysAhead, to: today),
+        calendar.component(.weekday, from: day) == weekday.rawValue,
+        let start = calendar.date(
+          bySettingHour: startHour, minute: startMinute, second: 0, of: day)
+      else {
+        continue
+      }
+
+      if start.addingTimeInterval(TimeInterval(-minutesBefore * 60)) > now {
+        return start
+      }
+    }
+
+    return nil
+  }
+}
+
+/// Occurrences of a schedule the person chose to skip, without touching the
+/// schedule itself.
+struct ScheduleSkip: Equatable {
+  /// Start of the one occurrence to skip.
+  var skipNextOccurrence: Date?
+  /// Every occurrence up to and including this day is skipped.
+  var skipUntil: Date?
+
+  func skips(occurrenceStartingAt start: Date, calendar: Calendar = .current) -> Bool {
+    if let skipNextOccurrence, calendar.isDate(skipNextOccurrence, inSameDayAs: start) {
+      return true
+    }
+
+    if let skipUntil,
+      calendar.startOfDay(for: start) <= calendar.startOfDay(for: skipUntil)
+    {
+      return true
+    }
+
+    return false
+  }
+
+  // The single skip is kept until that whole day is over rather than just
+  // past its start time — the monitor can fire a little late, and must still
+  // find it there when it does.
+  func isNextOccurrenceSkipActive(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+    guard let skipNextOccurrence,
+      let dayAfter = calendar.date(
+        byAdding: .day, value: 1, to: calendar.startOfDay(for: skipNextOccurrence))
+    else {
+      return false
+    }
+
+    return now < dayAfter
+  }
+
+  func isSkipUntilActive(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+    guard let skipUntil else { return false }
+    return calendar.startOfDay(for: now) <= calendar.startOfDay(for: skipUntil)
+  }
+
+  func isActive(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+    isNextOccurrenceSkipActive(now: now, calendar: calendar)
+      || isSkipUntilActive(now: now, calendar: calendar)
+  }
+
+  func clearingExpired(now: Date = Date(), calendar: Calendar = .current) -> ScheduleSkip {
+    ScheduleSkip(
+      skipNextOccurrence: isNextOccurrenceSkipActive(now: now, calendar: calendar)
+        ? skipNextOccurrence : nil,
+      skipUntil: isSkipUntilActive(now: now, calendar: calendar) ? skipUntil : nil
+    )
   }
 }

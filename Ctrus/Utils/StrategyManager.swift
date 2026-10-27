@@ -41,13 +41,18 @@ class StrategyManager: ObservableObject {
   @AppStorage("emergencyUnblocksRemaining") private var emergencyUnblocksRemaining: Int = 3
   @AppStorage("emergencyUnblocksResetPeriodInWeeks") private
     var emergencyUnblocksResetPeriodInWeeks: Int = 4
-  @AppStorage("lastEmergencyUnblocksResetDate") private var lastEmergencyUnblocksResetDateTimestamp:
-    Double = 0
+  // Real time counted towards the current cycle by TrustedClock — the
+  // phone's date can be moved forward, so it isn't used to tell when the
+  // unblocks come back.
+  @AppStorage("emergencyCycleElapsed") private var emergencyCycleElapsed: Double = 0
 
   @AppStorage("recoveryUnlocksRemaining") private var recoveryUnlocksRemaining: Int = 2
   @AppStorage("recoveryUnlocksResetPeriodInWeeks") private
     var recoveryUnlocksResetPeriodInWeeks: Int = 4
-  @AppStorage("lastRecoveryUnlockDate") private var lastRecoveryUnlockDateTimestamp: Double = 0
+  // Same as the emergency cycle: real time counted by TrustedClock rather
+  // than the phone's date, but only from the first unlock of the cycle.
+  @AppStorage("recoveryCycleElapsed") private var recoveryCycleElapsed: Double = 0
+  @AppStorage("isRecoveryCycleRunning") private var isRecoveryCycleRunning = false
 
   // Drives the how-to caption under the profile list on Home — dismissed
   // for good the first time a session actually ends, however it ends
@@ -423,42 +428,25 @@ class StrategyManager: ObservableObject {
 
   func resetEmergencyUnblocks() {
     emergencyUnblocksRemaining = 3
-    lastEmergencyUnblocksResetDateTimestamp = Date().timeIntervalSinceReferenceDate
+    emergencyCycleElapsed = 0
   }
 
   func checkAndResetEmergencyUnblocks() {
-    // Initialize the last reset date if it hasn't been set
-    if lastEmergencyUnblocksResetDateTimestamp == 0 {
-      lastEmergencyUnblocksResetDateTimestamp = Date().timeIntervalSinceReferenceDate
-      return
-    }
+    emergencyCycleElapsed += TrustedClock.emergencyCycle.trustedElapsed()
 
-    let lastResetDate = Date(
-      timeIntervalSinceReferenceDate: lastEmergencyUnblocksResetDateTimestamp)
-    let weeksInSeconds: TimeInterval = TimeInterval(
-      emergencyUnblocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
-    let elapsedTime = Date().timeIntervalSince(lastResetDate)
-
-    // Check if the reset period has elapsed
-    if elapsedTime >= weeksInSeconds {
+    if emergencyCycleElapsed >= emergencyCyclePeriodInSeconds {
       emergencyUnblocksRemaining = 3
-      lastEmergencyUnblocksResetDateTimestamp = Date().timeIntervalSinceReferenceDate
+      emergencyCycleElapsed = 0
     }
   }
 
   func getNextResetDate() -> Date? {
-    guard lastEmergencyUnblocksResetDateTimestamp > 0 else {
-      return nil
-    }
+    let remainingTime = max(0, emergencyCyclePeriodInSeconds - emergencyCycleElapsed)
+    return Date().addingTimeInterval(remainingTime)
+  }
 
-    let lastResetDate = Date(
-      timeIntervalSinceReferenceDate: lastEmergencyUnblocksResetDateTimestamp)
-    let calendar = Calendar.current
-    return calendar.date(
-      byAdding: .weekOfYear,
-      value: emergencyUnblocksResetPeriodInWeeks,
-      to: lastResetDate
-    )
+  private var emergencyCyclePeriodInSeconds: TimeInterval {
+    TimeInterval(emergencyUnblocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
   }
 
   func getResetPeriodInWeeks() -> Int {
@@ -479,39 +467,41 @@ class StrategyManager: ObservableObject {
   }
 
   func checkAndResetRecoveryUnlocks() {
+    // Read every time, even with no cycle running, so a cycle that starts
+    // later only counts time from its own start.
+    let elapsed = TrustedClock.recoveryCycle.trustedElapsed()
+
     // No cooldown until the recovery unlock has actually been used once
-    guard lastRecoveryUnlockDateTimestamp > 0 else {
+    guard isRecoveryCycleRunning else {
       return
     }
 
-    let lastUnlockDate = Date(timeIntervalSinceReferenceDate: lastRecoveryUnlockDateTimestamp)
-    let weeksInSeconds: TimeInterval = TimeInterval(
-      recoveryUnlocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
+    recoveryCycleElapsed += elapsed
 
-    if Date().timeIntervalSince(lastUnlockDate) >= weeksInSeconds {
-      recoveryUnlocksRemaining = 2
-      lastRecoveryUnlockDateTimestamp = 0
+    if recoveryCycleElapsed >= recoveryCyclePeriodInSeconds {
+      resetRecoveryUnlocks()
     }
   }
 
   func resetRecoveryUnlocks() {
     recoveryUnlocksRemaining = 2
-    lastRecoveryUnlockDateTimestamp = 0
+    recoveryCycleElapsed = 0
+    isRecoveryCycleRunning = false
   }
 
   func getNextRecoveryResetDate() -> Date? {
     // Available as soon as the first unlock is used, not just once they're
     // all gone — the "1 left" message shows this too, not only "0 left".
-    guard lastRecoveryUnlockDateTimestamp > 0 else {
+    guard isRecoveryCycleRunning else {
       return nil
     }
 
-    let lastUnlockDate = Date(timeIntervalSinceReferenceDate: lastRecoveryUnlockDateTimestamp)
-    return Calendar.current.date(
-      byAdding: .weekOfYear,
-      value: recoveryUnlocksResetPeriodInWeeks,
-      to: lastUnlockDate
-    )
+    let remainingTime = max(0, recoveryCyclePeriodInSeconds - recoveryCycleElapsed)
+    return Date().addingTimeInterval(remainingTime)
+  }
+
+  private var recoveryCyclePeriodInSeconds: TimeInterval {
+    TimeInterval(recoveryUnlocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
   }
 
   static func getStrategyFromId(id: String) -> BlockingStrategy {
@@ -640,6 +630,8 @@ class StrategyManager: ObservableObject {
 
   private func handleSessionStarted(session: BlockedProfileSession) {
     self.dismissView()
+    self.checkAndResetEmergencyUnblocks()
+    self.checkAndResetRecoveryUnlocks()
 
     if SoftUnblockGrantStore.activeSession?.sessionId != session.id {
       SoftUnblockGrantScheduler.stopAll()
@@ -665,6 +657,8 @@ class StrategyManager: ObservableObject {
   private func handleSessionEnded(profile: BlockedProfiles) {
     self.hasCompletedFirstSession = true
     self.dismissView()
+    self.checkAndResetEmergencyUnblocks()
+    self.checkAndResetRecoveryUnlocks()
 
     SoftUnblockGrantScheduler.stopAll()
     SoftUnblockGrantStore.clearAll()
@@ -901,8 +895,10 @@ class StrategyManager: ObservableObject {
     // the first unlock of the cycle — using the second one shouldn't push
     // the reset date back further.
     recoveryUnlocksRemaining = max(0, recoveryUnlocksRemaining - 1)
-    if lastRecoveryUnlockDateTimestamp == 0 {
-      lastRecoveryUnlockDateTimestamp = Date().timeIntervalSinceReferenceDate
+    if !isRecoveryCycleRunning {
+      checkAndResetRecoveryUnlocks()
+      recoveryCycleElapsed = 0
+      isRecoveryCycleRunning = true
     }
 
     if let activeSession = getActiveSession(context: context) {

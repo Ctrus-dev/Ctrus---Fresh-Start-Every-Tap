@@ -59,6 +59,10 @@ class StrategyTimerActivity: TimerActivity {
     SharedData.endActiveSharedSession()
 
     ScheduleReminderUtil.sync(
-      forProfileId: profile.id, profileName: profile.name, schedule: profile.schedule)
+      forProfileId: profile.id,
+      profileName: profile.name,
+      schedule: profile.schedule,
+      skip: profile.scheduleSkip
+    )
   }
 }

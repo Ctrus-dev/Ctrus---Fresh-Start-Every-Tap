@@ -27,6 +27,7 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var domains: [String]
   @Published var physicalUnblockItems: [PhysicalUnblockItem]
   @Published var schedule: BlockedProfileSchedule
+  @Published var allowSkip: Bool
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -80,6 +81,7 @@ final class BlockedProfileDraft: ObservableObject {
       )
     schedule = resolvedSchedule
     initialSchedule = resolvedSchedule
+    allowSkip = profile?.allowSkip ?? false
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -143,6 +145,7 @@ final class BlockedProfileDraft: ObservableObject {
         domains: domains,
         physicalUnblockItems: .some(physicalUnblockItemsToSave),
         schedule: schedule,
+        allowSkip: allowSkip,
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -171,6 +174,7 @@ final class BlockedProfileDraft: ObservableObject {
       domains: domains,
       physicalUnblockItems: physicalUnblockItemsToSave,
       schedule: schedule,
+      allowSkip: allowSkip,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )

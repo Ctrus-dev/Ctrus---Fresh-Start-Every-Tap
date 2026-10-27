@@ -40,6 +40,10 @@ class BlockedProfiles {
 
   var schedule: BlockedProfileSchedule? = nil
 
+  var allowSkip: Bool = false
+  var skipNextOccurrence: Date? = nil
+  var skipUntil: Date? = nil
+
   var disableBackgroundStops: Bool = false
 
   var enableEmergencyUnblock: Bool = true
@@ -55,6 +59,16 @@ class BlockedProfiles {
   var scheduleIsOutOfSync: Bool {
     return self.schedule?.isActive == true
       && DeviceActivityCenterUtil.getActiveScheduleTimerActivity(for: self) == nil
+  }
+
+  var scheduleSkip: ScheduleSkip {
+    ScheduleSkip(skipNextOccurrence: skipNextOccurrence, skipUntil: skipUntil)
+  }
+
+  // Skipping needs a tag to authorize it, so a profile without one never
+  // offers it.
+  var canSkipSessions: Bool {
+    allowSkip && schedule?.isActive == true && hasPhysicalUnblockItem(ofType: .nfc)
   }
 
   var allowsTimedBreaks: Bool {
@@ -210,6 +224,7 @@ class BlockedProfiles {
     domains: [String]? = nil,
     physicalUnblockItems: [PhysicalUnblockItem]?? = nil,
     schedule: BlockedProfileSchedule? = nil,
+    allowSkip: Bool? = nil,
     disableBackgroundStops: Bool? = nil,
     enableEmergencyUnblock: Bool? = nil
   ) throws -> BlockedProfiles {
@@ -295,6 +310,15 @@ class BlockedProfiles {
       profile.schedule = newSchedule
     }
 
+    if let newAllowSkip = allowSkip {
+      profile.allowSkip = newAllowSkip
+
+      if !newAllowSkip {
+        profile.skipNextOccurrence = nil
+        profile.skipUntil = nil
+      }
+    }
+
     if let newDisableBackgroundStops = disableBackgroundStops {
       profile.disableBackgroundStops = newDisableBackgroundStops
     }
@@ -376,9 +400,38 @@ class BlockedProfiles {
       physicalUnblockNFCTagId: nil,
       physicalUnblockItems: profile.physicalUnblockItems,
       schedule: profile.schedule,
+      allowSkip: profile.allowSkip,
+      skipNextOccurrence: profile.skipNextOccurrence,
+      skipUntil: profile.skipUntil,
       disableBackgroundStops: profile.disableBackgroundStops,
       enableEmergencyUnblock: profile.enableEmergencyUnblock
     )
+  }
+
+  static func updateScheduleSkip(
+    _ profile: BlockedProfiles,
+    to skip: ScheduleSkip,
+    in context: ModelContext
+  ) throws {
+    profile.skipNextOccurrence = skip.skipNextOccurrence
+    profile.skipUntil = skip.skipUntil
+
+    updateSnapshot(for: profile)
+    try context.save()
+
+    DeviceActivityCenterUtil.refreshUpcomingSessionReminders(for: profile)
+  }
+
+  static func clearExpiredScheduleSkips(in context: ModelContext) {
+    guard let profiles = try? fetchProfiles(in: context) else { return }
+
+    for profile in profiles {
+      let skip = profile.scheduleSkip
+      let activeSkip = skip.clearingExpired()
+      guard activeSkip != skip else { continue }
+
+      try? updateScheduleSkip(profile, to: activeSkip, in: context)
+    }
   }
 
   // Create a codable/equatable snapshot suitable for UserDefaults
@@ -432,6 +485,7 @@ class BlockedProfiles {
     domains: [String]? = nil,
     physicalUnblockItems: [PhysicalUnblockItem]? = nil,
     schedule: BlockedProfileSchedule? = nil,
+    allowSkip: Bool = false,
     disableBackgroundStops: Bool = false,
     enableEmergencyUnblock: Bool = true
   ) throws -> BlockedProfiles {
@@ -464,6 +518,7 @@ class BlockedProfiles {
     if let schedule = schedule {
       profile.schedule = schedule
     }
+    profile.allowSkip = allowSkip
 
     // Create the snapshot so extensions can read it immediately
     updateSnapshot(for: profile)
@@ -502,6 +557,7 @@ class BlockedProfiles {
       schedule: source.schedule,
       enableEmergencyUnblock: source.enableEmergencyUnblock
     )
+    cloned.allowSkip = source.allowSkip
 
     context.insert(cloned)
     try context.save()

@@ -47,6 +47,10 @@ enum SharedData {
 
     var schedule: BlockedProfileSchedule?
 
+    var allowSkip: Bool? = nil
+    var skipNextOccurrence: Date? = nil
+    var skipUntil: Date? = nil
+
     var disableBackgroundStops: Bool?
     var enableEmergencyUnblock: Bool?
   }
@@ -233,5 +237,12 @@ enum SharedData {
 
   static func setPauseEndTime(date: Date) {
     activeSharedSession?.pauseEndTime = date
+  }
+}
+
+extension SharedData.ProfileSnapshot {
+  var scheduleSkip: ScheduleSkip {
+    guard allowSkip == true else { return ScheduleSkip() }
+    return ScheduleSkip(skipNextOccurrence: skipNextOccurrence, skipUntil: skipUntil)
   }
 }

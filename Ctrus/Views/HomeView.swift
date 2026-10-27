@@ -44,6 +44,12 @@ struct HomeView: View {
   // Settings View
   @State private var showSettingsView = false
 
+  // Skipping schedule sessions
+  @State private var scheduleSkipUtil = ScheduleSkipUtil()
+  @State private var profileToSkipUntil: BlockedProfiles? = nil
+  @State private var skipUntilErrorMessage: String? = nil
+  @State private var toastMessage: String? = nil
+
   // Navigate to profile
   @State private var navigateToProfileId: UUID? = nil
 
@@ -219,6 +225,15 @@ struct HomeView: View {
     .sheet(isPresented: $showSettingsView) {
       SettingsView()
     }
+    .sheet(item: $profileToSkipUntil) { profile in
+      if let schedule = profile.schedule {
+        SkipUntilView(schedule: schedule, errorMessage: $skipUntilErrorMessage) { day in
+          skipUntil(day, for: profile)
+        }
+        .presentationDetents([.large])
+      }
+    }
+    .toastBanner(message: $toastMessage)
     .alert(alertTitle, isPresented: $showingAlert) {
       Button("OK", role: .cancel) { dismissAlert() }
     } message: {
@@ -321,6 +336,15 @@ struct HomeView: View {
               },
               onBreakTapped: {
                 strategyManager.toggleBreak(context: context)
+              },
+              onSkipNextTapped: { profile in
+                skipNextOccurrence(for: profile)
+              },
+              onSkipUntilTapped: { profile in
+                profileToSkipUntil = profile
+              },
+              onResumeScheduleTapped: { profile in
+                scheduleSkipUtil.resume(profile, in: context)
               }
             )
 
@@ -399,11 +423,45 @@ struct HomeView: View {
 
   private func loadApp() {
     strategyManager.loadActiveSession(context: context)
+    strategyManager.checkAndResetEmergencyUnblocks()
+    strategyManager.checkAndResetRecoveryUnlocks()
+    BlockedProfiles.clearExpiredScheduleSkips(in: context)
+  }
+
+  private func skipNextOccurrence(for profile: BlockedProfiles) {
+    scheduleSkipUtil.skipNextOccurrence(
+      of: profile,
+      in: context,
+      onSuccess: { message in
+        toastMessage = message
+      },
+      onError: { message in
+        showErrorAlert(message: message)
+      }
+    )
+  }
+
+  private func skipUntil(_ day: Date, for profile: BlockedProfiles) {
+    scheduleSkipUtil.skipUntil(
+      day,
+      of: profile,
+      in: context,
+      onSuccess: { message in
+        profileToSkipUntil = nil
+        toastMessage = message
+      },
+      onError: { message in
+        skipUntilErrorMessage = message
+      }
+    )
   }
 
   private func onAppearApp() {
     requestAuthorizer.refreshAuthorizationStatus()
     strategyManager.loadActiveSession(context: context)
+    strategyManager.checkAndResetEmergencyUnblocks()
+    strategyManager.checkAndResetRecoveryUnlocks()
+    BlockedProfiles.clearExpiredScheduleSkips(in: context)
     strategyManager.cleanUpGhostSchedules(context: context)
     refreshAlerts()
   }

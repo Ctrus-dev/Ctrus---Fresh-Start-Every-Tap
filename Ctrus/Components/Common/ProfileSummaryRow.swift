@@ -130,6 +130,10 @@ struct ProfileSummaryContent: View {
           }
         }
 
+        if layout == .dashboard {
+          ProfileSummarySkipLine(profile: profile, forcedLight: forcedLight)
+        }
+
         if metadata.isVisible {
           ProfileSummaryMetadataLine(profile: profile, metadata: metadata, forcedLight: forcedLight)
         }
@@ -284,7 +288,11 @@ private struct ProfileSummaryStatusLine: View {
 
   var body: some View {
     if let schedule = profile.schedule, schedule.isActive {
-      ProfileSummaryNextScheduleLine(schedule: schedule, forcedLight: forcedLight)
+      ProfileSummaryNextScheduleLine(
+        schedule: schedule,
+        skip: profile.scheduleSkip,
+        forcedLight: forcedLight
+      )
     } else if mode == .scheduleOrIndicators {
       ProfileSummaryCompactIndicators(
         enableLiveActivity: profile.enableLiveActivity,
@@ -297,8 +305,44 @@ private struct ProfileSummaryStatusLine: View {
   }
 }
 
+private struct ProfileSummarySkipLine: View {
+  let profile: BlockedProfiles
+  var forcedLight: Bool = false
+
+  private var message: String? {
+    guard profile.canSkipSessions else { return nil }
+    let skip = profile.scheduleSkip
+
+    if skip.isSkipUntilActive(), let skipUntil = skip.skipUntil {
+      return String(localized: "Skipped until \(ScheduleSkipUtil.shortDayText(for: skipUntil))")
+    }
+
+    if skip.isNextOccurrenceSkipActive(), let skipNextOccurrence = skip.skipNextOccurrence {
+      return Calendar.current.isDateInToday(skipNextOccurrence)
+        ? String(localized: "Today's session skipped")
+        : String(localized: "Next session skipped")
+    }
+
+    return nil
+  }
+
+  var body: some View {
+    if let message {
+      Text(message)
+        .font(.caption2)
+        .fontWeight(.semibold)
+        .lineLimit(1)
+        .minimumScaleFactor(0.82)
+        .foregroundStyle(forcedLight ? Color.fixedLightSecondaryText : Color.secondary)
+    }
+  }
+}
+
 private struct ProfileSummaryNextScheduleLine: View {
   let schedule: BlockedProfileSchedule
+  // Skipped occurrences are passed over, so this names the next one that
+  // will actually start.
+  var skip = ScheduleSkip()
   var forcedLight: Bool = false
 
   var body: some View {
@@ -307,7 +351,9 @@ private struct ProfileSummaryNextScheduleLine: View {
     // long after 10pm had passed, until some unrelated state change happened
     // to redraw this row.
     TimelineView(.periodic(from: .now, by: 30)) { context in
-      if let message = schedule.nextStartMessage(now: context.date, includePrefix: false) {
+      if let message = schedule.nextStartMessage(
+        now: context.date, includePrefix: false, skip: skip)
+      {
         Text(message)
           .font(.caption2)
           .lineLimit(1)

@@ -50,6 +50,17 @@ class DeviceActivityCenterUtil {
     ScheduleReminderUtil.cancel(forProfileId: profile.id)
   }
 
+  // Puts the reminders back in line with the profile (e.g. after a skip
+  // changed) without re-registering the schedule's monitoring itself.
+  static func refreshUpcomingSessionReminders(for profile: BlockedProfiles) {
+    guard let schedule = profile.schedule, schedule.isActive else {
+      cancelUpcomingSessionReminders(for: profile)
+      return
+    }
+
+    scheduleUpcomingSessionReminders(for: profile, schedule: schedule)
+  }
+
   private static func scheduleUpcomingSessionReminders(
     for profile: BlockedProfiles,
     schedule: BlockedProfileSchedule
@@ -58,6 +69,7 @@ class DeviceActivityCenterUtil {
 
     let profileId = profile.id
     let profileName = profile.name
+    let skip = profile.scheduleSkip
 
     // Saving a profile normally dismisses its sheet right away, which can
     // background the app before this authorization round-trip and the
@@ -86,7 +98,8 @@ class DeviceActivityCenterUtil {
       ScheduleReminderUtil.sync(
         forProfileId: profileId,
         profileName: profileName,
-        schedule: schedule
+        schedule: schedule,
+        skip: skip
       ) {
         endBackgroundTaskIfNeeded()
       }

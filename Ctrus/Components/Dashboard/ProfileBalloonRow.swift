@@ -20,6 +20,9 @@ struct ProfileBalloonRow: View {
   let onBreakTapped: () -> Void
   let onEditTapped: () -> Void
   let onStatsTapped: () -> Void
+  var onSkipNextTapped: () -> Void = {}
+  var onSkipUntilTapped: () -> Void = {}
+  var onResumeScheduleTapped: () -> Void = {}
 
   @State private var isExpanded = false
   @State private var isHolding = false
@@ -204,6 +207,8 @@ struct ProfileBalloonRow: View {
         }
         .disabled(!canStart)
       }
+
+      skipMenuItems
     } label: {
       Image(systemName: "ellipsis")
         .font(.system(size: 16, weight: .semibold))
@@ -272,6 +277,8 @@ struct ProfileBalloonRow: View {
         Label(stopButtonAction.title, systemImage: stopButtonAction.systemImageName)
       }
       .disabled(!showStopButton)
+
+      skipMenuItems
     } label: {
       Image(systemName: "ellipsis")
         .font(.system(size: 16, weight: .semibold))
@@ -280,6 +287,27 @@ struct ProfileBalloonRow: View {
         .contentShape(Rectangle())
     }
     .accessibilityLabel("More actions for \(profile.name)")
+  }
+
+  @ViewBuilder
+  private var skipMenuItems: some View {
+    if profile.canSkipSessions {
+      Divider()
+
+      Button(action: onSkipNextTapped) {
+        Label("Skip next session", systemImage: "forward.end")
+      }
+
+      Button(action: onSkipUntilTapped) {
+        Label("Skip until…", systemImage: "calendar")
+      }
+
+      if profile.scheduleSkip.isActive() {
+        Button(action: onResumeScheduleTapped) {
+          Label("Resume schedule", systemImage: "arrow.uturn.backward")
+        }
+      }
+    }
   }
 
   private var activeAccessibilityLabel: String {

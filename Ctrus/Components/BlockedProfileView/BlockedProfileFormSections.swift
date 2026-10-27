@@ -263,6 +263,29 @@ struct BlockedProfileScheduleFields: View {
     ProfileFieldDivider(isVisible: showsSeparators)
 
     durationPicker
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    skipSessionsBlock
+  }
+
+  private var skipSessionsBlock: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text("Some days it doesn't suit? You can skip a session without changing the schedule.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+
+      Toggle(String(localized: "Allow skipping sessions"), isOn: $draft.allowSkip)
+        .tint(themeManager.themeColor)
+        .disabled(disabled)
+
+      Text("You'll find this option in the profile's ⋯ menu.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+    .padding(.vertical, 4)
   }
 
   private var weekdaySelector: some View {

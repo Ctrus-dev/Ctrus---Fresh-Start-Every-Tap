@@ -168,7 +168,8 @@ class BlockedProfileSession {
     ScheduleReminderUtil.sync(
       forProfileId: blockedProfile.id,
       profileName: blockedProfile.name,
-      schedule: blockedProfile.schedule
+      schedule: blockedProfile.schedule,
+      skip: blockedProfile.scheduleSkip
     )
   }
 

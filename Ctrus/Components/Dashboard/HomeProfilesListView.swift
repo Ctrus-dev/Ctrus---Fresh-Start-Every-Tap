@@ -21,6 +21,9 @@ struct HomeProfilesListView: View {
   let onEditTapped: (BlockedProfiles) -> Void
   let onStatsTapped: (BlockedProfiles) -> Void
   var onBreakTapped: () -> Void = {}
+  var onSkipNextTapped: (BlockedProfiles) -> Void = { _ in }
+  var onSkipUntilTapped: (BlockedProfiles) -> Void = { _ in }
+  var onResumeScheduleTapped: (BlockedProfiles) -> Void = { _ in }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
@@ -65,6 +68,15 @@ struct HomeProfilesListView: View {
             },
             onStatsTapped: {
               onStatsTapped(profile)
+            },
+            onSkipNextTapped: {
+              onSkipNextTapped(profile)
+            },
+            onSkipUntilTapped: {
+              onSkipUntilTapped(profile)
+            },
+            onResumeScheduleTapped: {
+              onResumeScheduleTapped(profile)
             }
           )
         }

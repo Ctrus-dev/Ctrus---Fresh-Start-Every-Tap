@@ -20,11 +20,13 @@ enum ScheduleReminderUtil {
   // The reminders repeat on the calendar with nothing checking the session
   // when they fire, so while this profile is already blocking (an indefinite
   // schedule can run past its next start) they're taken down entirely and
-  // only put back once the session ends.
+  // only put back once the session ends. A day whose next occurrence is
+  // skipped is left out the same way, until that occurrence has gone by.
   static func sync(
     forProfileId profileId: UUID,
     profileName: String,
     schedule: BlockedProfileSchedule?,
+    skip: ScheduleSkip = ScheduleSkip(),
     completion: (() -> Void)? = nil
   ) {
     cancel(forProfileId: profileId)
@@ -39,7 +41,18 @@ enum ScheduleReminderUtil {
     let center = UNUserNotificationCenter.current()
     let group = DispatchGroup()
 
-    for day in schedule.days {
+    let now = Date()
+    let daysToRemind = schedule.days.filter { day in
+      guard
+        let occurrenceStart = schedule.nextOccurrenceStart(
+          on: day, remindingMinutesBefore: reminderMinutesBefore, after: now)
+      else {
+        return true
+      }
+      return !skip.skips(occurrenceStartingAt: occurrenceStart)
+    }
+
+    for day in daysToRemind {
       group.enter()
 
       let content = UNMutableNotificationContent()
