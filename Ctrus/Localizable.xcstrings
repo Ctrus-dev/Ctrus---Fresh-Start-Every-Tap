@@ -935,6 +935,29 @@
         }
       }
     },
+    "Ctrus %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus %lld"
+          }
+        }
+      }
+    },
     "Done. The schedule is back on %@.": {
       "extractionState": "manual",
       "localizations": {
