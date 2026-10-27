@@ -1464,6 +1464,29 @@
         }
       }
     },
+    "Indefinite (max. 24h)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinite (max. 24h)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida (máx. 24 h)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indefinida (máx. 24 h)"
+          }
+        }
+      }
+    },
     "Normal mode": {
       "extractionState": "manual",
       "localizations": {
