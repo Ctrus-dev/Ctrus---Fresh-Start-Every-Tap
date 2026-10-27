@@ -45,11 +45,11 @@ struct ChildModeSettingsView: View {
           Button(role: .destructive) {
             showSwitchToNormalAlert = true
           } label: {
-            Text("Switch to normal mode")
+            Text("Switch to Normal Mode")
           }
         }
       }
-      .navigationTitle(String(localized: "Child mode"))
+      .navigationTitle(String(localized: "Child Mode"))
       .navigationBarTitleDisplayMode(.large)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
@@ -76,10 +76,10 @@ struct ChildModeSettingsView: View {
         }
       }
       .alert(
-        String(localized: "Switch to normal mode"),
+        String(localized: "Switch to Normal Mode"),
         isPresented: $showSwitchToNormalAlert
       ) {
-        Button(String(localized: "Switch to normal mode"), role: .destructive) {
+        Button(String(localized: "Switch to Normal Mode"), role: .destructive) {
           ChildModeSwitcher.switchToNormal(in: context)
           dismiss()
           onSwitchedToNormal()

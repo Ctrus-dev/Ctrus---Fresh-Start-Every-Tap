@@ -42,7 +42,7 @@ struct ChildModeSetupView: View {
         .padding(.horizontal, 24)
         .padding(.bottom, 24)
       }
-      .navigationTitle(String(localized: "Child mode"))
+      .navigationTitle(String(localized: "Child Mode"))
       .navigationBarTitleDisplayMode(.large)
       .toolbar {
         if let onCancel {

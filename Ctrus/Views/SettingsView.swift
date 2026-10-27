@@ -222,7 +222,7 @@ struct SettingsView: View {
           }
         }
 
-        Section(String(localized: "Child mode")) {
+        Section(String(localized: "Child Mode")) {
           if isChildMode {
             Button {
               parentConfirmationRequest = ParentConfirmationRequest(
@@ -231,14 +231,16 @@ struct SettingsView: View {
                 showChildModeSettings = true
               }
             } label: {
-              Label("Child mode", systemImage: "figure.and.child.holdinghands")
+              Label("Child Mode", systemImage: "figure.and.child.holdinghands")
             }
+            .foregroundStyle(themeManager.themeColor)
           } else {
             Button {
               showChildModeSetup = true
             } label: {
-              Label("Turn on child mode", systemImage: "figure.and.child.holdinghands")
+              Label("Turn on Child Mode", systemImage: "figure.and.child.holdinghands")
             }
+            .foregroundStyle(themeManager.themeColor)
           }
         }
 

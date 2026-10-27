@@ -1073,13 +1073,13 @@
         }
       }
     },
-    "Child mode": {
+    "Child Mode": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Child mode"
+            "value": "Child Mode"
           }
         },
         "es": {
@@ -1487,13 +1487,13 @@
         }
       }
     },
-    "Normal mode": {
+    "Normal Mode": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Normal mode"
+            "value": "Normal Mode"
           }
         },
         "es": {
@@ -1875,13 +1875,13 @@
         }
       }
     },
-    "Switch to normal mode": {
+    "Switch to Normal Mode": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Switch to normal mode"
+            "value": "Switch to Normal Mode"
           }
         },
         "es": {
@@ -2312,13 +2312,13 @@
         }
       }
     },
-    "Turn on child mode": {
+    "Turn on Child Mode": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on child mode"
+            "value": "Turn on Child Mode"
           }
         },
         "es": {

@@ -17,7 +17,7 @@ struct ModeChoiceIntroScreen: View {
 
       VStack(spacing: 14) {
         IntroCard(
-          title: String(localized: "Normal mode"),
+          title: String(localized: "Normal Mode"),
           subtitle: String(localized: "For your own phone."),
           iconName: "person.fill"
         ) {
@@ -25,7 +25,7 @@ struct ModeChoiceIntroScreen: View {
         }
 
         IntroCard(
-          title: String(localized: "Child mode"),
+          title: String(localized: "Child Mode"),
           subtitle: String(localized: "For your child's phone."),
           iconName: "figure.and.child.holdinghands"
         ) {
