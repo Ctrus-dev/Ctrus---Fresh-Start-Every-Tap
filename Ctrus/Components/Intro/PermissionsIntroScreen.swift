@@ -28,7 +28,7 @@ struct PermissionsIntroScreen: View {
       // it comes back in a less cramped layout.
       IntroCard(
         title: String(localized: "Welcome to Ctrus"),
-        subtitle: String(localized: "We need Screen Time Access to get started"),
+        subtitle: String(localized: "We need Screen Time Access to get started."),
         iconName: "hourglass",
         action: onRequestAuthorization
       )

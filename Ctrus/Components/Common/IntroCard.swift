@@ -50,7 +50,7 @@ struct IntroCard: View {
 #Preview {
   IntroCard(
     title: "Welcome to Ctrus",
-    subtitle: "We need Screen Time Access to get started",
+    subtitle: "We need Screen Time Access to get started.",
     iconName: "hourglass",
     action: {}
   )

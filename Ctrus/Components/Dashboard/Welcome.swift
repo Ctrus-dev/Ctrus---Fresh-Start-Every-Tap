@@ -7,7 +7,7 @@ struct Welcome: View {
   var body: some View {
     IntroCard(
       title: String(localized: "First Steps"),
-      subtitle: String(localized: "Let's get you started by creating your first profile"),
+      subtitle: String(localized: "Let's get you started by creating your first profile."),
       iconName: "person.crop.circle",
       action: onGuidedTap
     )

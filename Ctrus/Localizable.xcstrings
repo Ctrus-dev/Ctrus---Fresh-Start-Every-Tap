@@ -7305,25 +7305,25 @@
         }
       }
     },
-    "Let's get you started by creating your first profile": {
+    "Let's get you started by creating your first profile.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Let's get you started by creating your first profile"
+            "value": "Let's get you started by creating your first profile."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Empecemos creando tu primer perfil"
+            "value": "Empecemos creando tu primer perfil."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vamos começar por criar o teu primeiro perfil"
+            "value": "Vamos começar por criar o teu primeiro perfil."
           }
         }
       }
@@ -13261,25 +13261,25 @@
         }
       }
     },
-    "We need Screen Time Access to get started": {
+    "We need Screen Time Access to get started.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "We need Screen Time Access to get started"
+            "value": "We need Screen Time Access to get started."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Necesitamos Acceso a Tiempo de Uso para empezar"
+            "value": "Necesitamos Acceso a Tiempo de Uso para empezar."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Precisamos de Acesso ao Tempo de Ecrã para começar"
+            "value": "Precisamos de Acesso ao Tempo de Ecrã para começar."
           }
         }
       }
