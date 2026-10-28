@@ -1234,52 +1234,6 @@
         }
       }
     },
-    "Ctrus permission turned off": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus permission turned off"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permiso de Ctrus desactivado"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permissão da Ctrus desligada"
-          }
-        }
-      }
-    },
-    "Ctrus was stopped during a session": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus was stopped during a session"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus se detuvo durante una sesión"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A Ctrus foi parada durante uma sessão"
-          }
-        }
-      }
-    },
     "Done. The schedule is back on %@.": {
       "extractionState": "manual",
       "localizations": {
@@ -1940,6 +1894,29 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Some permissions may have been turned off": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some permissions may have been turned off"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algumas permissões podem ter sido desligadas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es posible que se hayan desactivado algunos permisos"
           }
         }
       }

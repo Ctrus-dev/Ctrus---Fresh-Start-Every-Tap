@@ -25,7 +25,6 @@ struct ChildTag: Codable, Equatable, Hashable {
 struct TamperLogEntry: Codable, Equatable, Identifiable {
   enum Kind: String, Codable {
     case permissionRevoked
-    case appStopped
     case clockChanged
     case pinLockout
   }
@@ -36,8 +35,7 @@ struct TamperLogEntry: Codable, Equatable, Identifiable {
 
   var title: String {
     switch type {
-    case .permissionRevoked: return String(localized: "Ctrus permission turned off")
-    case .appStopped: return String(localized: "Ctrus was stopped during a session")
+    case .permissionRevoked: return String(localized: "Some permissions may have been turned off")
     case .clockChanged: return String(localized: "Phone date changed")
     case .pinLockout: return String(localized: "5 wrong codes in a row")
     }
