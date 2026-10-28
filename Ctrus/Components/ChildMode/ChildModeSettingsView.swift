@@ -25,19 +25,19 @@ struct ChildModeSettingsView: View {
       List {
         Section {
           NavigationLink(value: Destination.changeCode) {
-            Label("Change parent code", systemImage: "lock.rotation")
+            themedLabel("Change parent code", systemImage: "lock.rotation")
           }
 
           NavigationLink(value: Destination.parentTags) {
-            Label("Parents' Ctrus", systemImage: "wave.3.right")
+            themedLabel("Parents' Ctrus", systemImage: "wave.3.right")
           }
 
           NavigationLink(value: Destination.newRecoveryKey) {
-            Label("Create a new recovery key", systemImage: "key")
+            themedLabel("Create a new recovery key", systemImage: "key")
           }
 
           NavigationLink(value: Destination.log) {
-            Label("Attempt log", systemImage: "list.bullet.rectangle")
+            themedLabel("Attempt log", systemImage: "list.bullet.rectangle")
           }
         }
 
@@ -91,9 +91,6 @@ struct ChildModeSettingsView: View {
         )
       }
     }
-    // Row icons, links and buttons take the theme colour, like the rest of
-    // the app.
-    .tint(themeManager.themeColor)
     .onAppear {
       if startsOnLog {
         path = [.log]
@@ -102,22 +99,70 @@ struct ChildModeSettingsView: View {
   }
 }
 
+extension ChildModeSettingsView {
+  // Only the row icons take the theme colour; the toolbar keeps the system
+  // look, like Settings.
+  fileprivate func themedLabel(_ title: LocalizedStringKey, systemImage: String) -> some View {
+    Label {
+      Text(title)
+    } icon: {
+      Image(systemName: systemImage)
+        .foregroundStyle(themeManager.themeColor)
+    }
+  }
+}
+
 /// Leaving child mode: everything that belongs only to it goes; the
-/// profiles stay.
+/// profiles stay, and keep the parents' Ctrus as their physical unlocks so
+/// they can still be ended in normal mode.
 enum ChildModeSwitcher {
   static func switchToNormal(in context: ModelContext) {
+    let parentTags = ChildModeStore.parentTags
+
     ChildSessionLimit.end()
     ParentCredentials.clearAll()
     ChildModeStore.clearChildModeData()
 
     if let profiles = try? BlockedProfiles.fetchProfiles(in: context) {
       for profile in profiles {
+        profile.physicalUnblockItems = PhysicalUnblockItem.normalizedItems(
+          physicalUnblocks(for: profile, adding: parentTags))
         profile.childTag = nil
         profile.childTagCanStop = false
         BlockedProfiles.updateSnapshot(for: profile)
       }
       try? context.save()
     }
+  }
+
+  /// The profile's own unlocks plus each parents' Ctrus it doesn't have yet,
+  /// stored the way normal mode reads a scanned tag (its URL, else its ID).
+  private static func physicalUnblocks(
+    for profile: BlockedProfiles,
+    adding parentTags: [ParentTag]
+  ) -> [PhysicalUnblockItem] {
+    var items = profile.physicalUnblockItems ?? []
+
+    for tag in parentTags {
+      let codeValue = tag.url ?? tag.uid.uppercased()
+      let alreadyThere = items.contains {
+        $0.type == .nfc
+          && ($0.codeValue == codeValue
+            || ChildModeStore.normalizedUID($0.codeValue) == ChildModeStore.normalizedUID(tag.uid))
+      }
+      guard !alreadyThere else { continue }
+
+      let number = items.filter { $0.type == .nfc }.count + 1
+      items.append(
+        PhysicalUnblockItem(
+          name: String(localized: "Ctrus \(number)"),
+          type: .nfc,
+          codeValue: codeValue
+        )
+      )
+    }
+
+    return items
   }
 }
 
