@@ -258,6 +258,7 @@ struct BlockedProfileScheduleFields: View {
       selection: startTimeBinding,
       displayedComponents: .hourAndMinute
     )
+    .tint(themeManager.themeColor)
     .disabled(disabled)
 
     ProfileFieldDivider(isVisible: showsSeparators)
