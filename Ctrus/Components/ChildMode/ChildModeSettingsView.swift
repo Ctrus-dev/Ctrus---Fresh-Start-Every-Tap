@@ -244,14 +244,28 @@ private struct ParentTagsView: View {
     List {
       Section {
         ForEach(parentTags) { tag in
-          Label(tag.label, systemImage: "wave.3.right")
-            .deleteDisabled(parentTags.count <= 1)
-        }
-        .onDelete { offsets in
-          // There always has to be at least one.
-          guard parentTags.count - offsets.count >= 1 else { return }
-          parentTags.remove(atOffsets: offsets)
-          save()
+          HStack {
+            Label {
+              Text(tag.label)
+            } icon: {
+              Image(systemName: "wave.3.right")
+                .foregroundStyle(themeManager.themeColor)
+            }
+
+            Spacer()
+
+            // There always has to be at least one.
+            if parentTags.count > 1 {
+              Button {
+                removeTag(tag)
+              } label: {
+                Image(systemName: "trash")
+                  .foregroundStyle(.red)
+              }
+              .buttonStyle(.borderless)
+              .accessibilityLabel("Delete")
+            }
+          }
         }
       } footer: {
         Text("Changes apply to every profile straight away.")
@@ -289,6 +303,12 @@ private struct ParentTagsView: View {
       )
       save()
     }
+  }
+
+  private func removeTag(_ tag: ParentTag) {
+    guard parentTags.count > 1 else { return }
+    parentTags.removeAll { $0.uid == tag.uid }
+    save()
   }
 
   private func save() {
