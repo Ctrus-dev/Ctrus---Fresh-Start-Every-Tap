@@ -113,8 +113,9 @@ extension ChildModeSettingsView {
 }
 
 /// Leaving child mode: everything that belongs only to it goes; the
-/// profiles stay, and keep the parents' Ctrus as their physical unlocks so
-/// they can still be ended in normal mode.
+/// profiles stay, and keep every Ctrus they were linked to (the parents', and
+/// their own child's) as physical unlocks, so they can still be ended in
+/// normal mode.
 enum ChildModeSwitcher {
   static func switchToNormal(in context: ModelContext) {
     let parentTags = ChildModeStore.parentTags
@@ -135,7 +136,7 @@ enum ChildModeSwitcher {
     }
   }
 
-  /// The profile's own unlocks plus each parents' Ctrus it doesn't have yet,
+  /// The profile's own unlocks plus each linked Ctrus it doesn't have yet,
   /// stored the way normal mode reads a scanned tag (its URL, else its ID).
   private static func physicalUnblocks(
     for profile: BlockedProfiles,
@@ -143,7 +144,12 @@ enum ChildModeSwitcher {
   ) -> [PhysicalUnblockItem] {
     var items = profile.physicalUnblockItems ?? []
 
-    for tag in parentTags {
+    var linkedTags = parentTags.map { (uid: $0.uid, url: $0.url) }
+    if let childTag = profile.childTag {
+      linkedTags.append((uid: childTag.uid, url: childTag.url))
+    }
+
+    for tag in linkedTags {
       let codeValue = tag.url ?? tag.uid.uppercased()
       let alreadyThere = items.contains {
         $0.type == .nfc
