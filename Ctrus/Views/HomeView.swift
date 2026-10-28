@@ -264,7 +264,8 @@ struct HomeView: View {
         presentationDetents: strategyManager.customStrategyViewPresentationDetents
       )
     }
-    .sheet(isPresented: $showSettingsView) {
+    // The mode may have changed in Settings, which takes the banner with it.
+    .sheet(isPresented: $showSettingsView, onDismiss: checkChildMode) {
       SettingsView()
     }
     .sheet(item: $profileToSkipUntil) { profile in
@@ -583,7 +584,9 @@ struct HomeView: View {
   // Missing Screen Time access comes first; what else was logged shows once
   // access is back.
   private var visibleTamperEntry: TamperLogEntry? {
-    guard !alertsManager.alerts.contains(where: { $0.type == .screenTimeAccess }) else {
+    guard ChildModeStore.isChildMode,
+      !alertsManager.alerts.contains(where: { $0.type == .screenTimeAccess })
+    else {
       return nil
     }
     return unseenTamperEntry
