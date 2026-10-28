@@ -87,7 +87,7 @@ struct ChildModeSettingsView: View {
         Button("Cancel", role: .cancel) {}
       } message: {
         Text(
-          "The parent code, recovery key, parents' Ctrus and attempt log are deleted. Your profiles stay."
+          "The parent code, recovery key and attempt log are deleted. Your profiles stay, and can still be unblocked with the Ctrus they used in Child Mode."
         )
       }
     }

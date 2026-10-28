@@ -2105,25 +2105,25 @@
         }
       }
     },
-    "The parent code, recovery key, parents' Ctrus and attempt log are deleted. Your profiles stay.": {
+    "The parent code, recovery key and attempt log are deleted. Your profiles stay, and can still be unblocked with the Ctrus they used in Child Mode.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The parent code, recovery key, parents' Ctrus and attempt log are deleted. Your profiles stay."
+            "value": "The parent code, recovery key and attempt log are deleted. Your profiles stay, and can still be unblocked with the Ctrus they used in Child Mode."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se borran el código parental, la clave de recuperación, los Ctrus de los padres y el registro de intentos. Los perfiles se mantienen."
+            "value": "Se borran el código parental, la clave de recuperación y el registro de intentos. Los perfiles se mantienen y se pueden seguir desbloqueando con los Ctrus que usaban en el Modo Infantil."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O código dos pais, a chave de recuperação, os Ctrus dos pais e o registo de tentativas são apagados. Os perfis mantêm-se."
+            "value": "O código dos pais, a chave de recuperação e o registo de tentativas são apagados. Os perfis mantêm-se e continuam a poder ser desbloqueados com os Ctrus que usavam no Modo Criança."
           }
         }
       }
