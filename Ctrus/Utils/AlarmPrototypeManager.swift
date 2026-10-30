@@ -49,7 +49,13 @@ final class AlarmPrototypeManager: ObservableObject {
   private var vibrationTimer: Timer?
   private var backupTimer: Timer?
 
-  private init() {}
+  private init() {
+    NotificationCenter.default.addObserver(
+      forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main
+    ) { _ in
+      Task { @MainActor in AlarmPrototypeManager.shared.appLeftWhileRinging() }
+    }
+  }
 
   // MARK: - Scheduling
 
@@ -179,6 +185,36 @@ final class AlarmPrototypeManager: ObservableObject {
   }
 
   func stopRinging() {
+    stopSound()
+    log("Parado à mão")
+
+    Task { await cancelAll() }
+  }
+
+  // The in-app sound can't outlive the app, so the system alarm takes over
+  // straight away. Leaving the app to force-quit it passes through here too.
+  private func appLeftWhileRinging() {
+    guard isRinging else { return }
+    stopSound()
+
+    let backgroundTask = UIApplication.shared.beginBackgroundTask()
+    Task {
+      await cancelAll()
+      let fireDate = Date().addingTimeInterval(1)
+      do {
+        try await schedule(at: fireDate)
+        if withBackups {
+          try await scheduleBackups(after: fireDate)
+        }
+        log("Saiu da app: o alarme volta a tocar já")
+      } catch {
+        log("Erro ao voltar a marcar: \(error)")
+      }
+      UIApplication.shared.endBackgroundTask(backgroundTask)
+    }
+  }
+
+  private func stopSound() {
     player?.stop()
     player = nil
     vibrationTimer?.invalidate()
@@ -187,9 +223,6 @@ final class AlarmPrototypeManager: ObservableObject {
     backupTimer = nil
     isRinging = false
     try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-    log("Parado à mão")
-
-    Task { await cancelAll() }
   }
 
   private func startRinging() {
