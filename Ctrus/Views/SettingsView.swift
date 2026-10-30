@@ -10,7 +10,6 @@ struct SettingsView: View {
   @EnvironmentObject var strategyManager: StrategyManager
 
   @State private var showLicenseView = false
-  @State private var showDebugView = false
   @State private var unlockCode = ""
   @State private var isVerifyingUnlockCode = false
   @State private var showInvalidUnlockCodeAlert = false
@@ -176,14 +175,6 @@ struct SettingsView: View {
                 .foregroundColor(.secondary)
             }
           }
-
-          // Only in development builds, to reach the alarm prototype.
-          #if DEBUG
-            Button("Debug Mode") {
-              showDebugView = true
-            }
-            .foregroundColor(.primary)
-          #endif
         }
 
         Section("Locked Out and Lost Your Ctrus?") {
@@ -281,9 +272,6 @@ struct SettingsView: View {
 
       }
       .navigationTitle("Settings")
-      .sheet(isPresented: $showDebugView) {
-        DebugView()
-      }
       .onAppear {
         strategyManager.checkAndResetRecoveryUnlocks()
       }

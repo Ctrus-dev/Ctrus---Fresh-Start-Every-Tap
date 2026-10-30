@@ -76,7 +76,8 @@ enum SessionTimeCalculator {
     // which tags with the strategy id, not the profile's UUID like an
     // automatic start does) — those still need the fixed-duration countdown.
     session.blockedProfile.schedule?.isActive == true
-      && session.blockedProfile.blockingStrategyId == ScheduleBlockingStrategy.id
+      && StrategyManager.scheduledStrategyIds.contains(
+        session.blockedProfile.blockingStrategyId ?? "")
   }
 
   private static func pauseDurationInSeconds(for profile: BlockedProfiles) -> TimeInterval {

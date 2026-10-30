@@ -20,6 +20,8 @@ class BlockedProfiles {
   var enableBreaks: Bool = false
   var breakTimeInMinutes: Int = 10
   var allowMultipleBreaks: Bool = false
+  // Alarm mode's stand-in for breaks.
+  var enableSnooze: Bool = true
   var enableStrictMode: Bool = false
   var enableBlockAppInstallation: Bool = false
   var enableAllowMode: Bool = false
@@ -225,6 +227,7 @@ class BlockedProfiles {
     physicalUnblockItems: [PhysicalUnblockItem]?? = nil,
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool? = nil,
+    enableSnooze: Bool? = nil,
     disableBackgroundStops: Bool? = nil,
     enableEmergencyUnblock: Bool? = nil
   ) throws -> BlockedProfiles {
@@ -317,6 +320,10 @@ class BlockedProfiles {
         profile.skipNextOccurrence = nil
         profile.skipUntil = nil
       }
+    }
+
+    if let newEnableSnooze = enableSnooze {
+      profile.enableSnooze = newEnableSnooze
     }
 
     if let newDisableBackgroundStops = disableBackgroundStops {
@@ -486,6 +493,7 @@ class BlockedProfiles {
     physicalUnblockItems: [PhysicalUnblockItem]? = nil,
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool = false,
+    enableSnooze: Bool = true,
     disableBackgroundStops: Bool = false,
     enableEmergencyUnblock: Bool = true
   ) throws -> BlockedProfiles {
@@ -519,6 +527,7 @@ class BlockedProfiles {
       profile.schedule = schedule
     }
     profile.allowSkip = allowSkip
+    profile.enableSnooze = enableSnooze
 
     // Create the snapshot so extensions can read it immediately
     updateSnapshot(for: profile)
@@ -558,6 +567,7 @@ class BlockedProfiles {
       enableEmergencyUnblock: source.enableEmergencyUnblock
     )
     cloned.allowSkip = source.allowSkip
+    cloned.enableSnooze = source.enableSnooze
 
     context.insert(cloned)
     try context.save()

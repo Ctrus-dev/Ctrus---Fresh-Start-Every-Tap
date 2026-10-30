@@ -912,6 +912,52 @@
         }
       }
     },
+    "Alarm + Ctrus NFC": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarm + Ctrus NFC"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despertador + Ctrus NFC"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despertador + Ctrus NFC"
+          }
+        }
+      }
+    },
+    "Alarm sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarm sound"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonido de la alarma"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Som do alarme"
+          }
+        }
+      }
+    },
     "Allow skipping sessions": {
       "extractionState": "manual",
       "localizations": {
@@ -935,6 +981,52 @@
         }
       }
     },
+    "Allow snooze": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow snooze"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir posponer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir adiar"
+          }
+        }
+      }
+    },
+    "Blocks your apps overnight. In the morning an alarm rings that only stops with your Ctrus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocks your apps overnight. In the morning an alarm rings that only stops with your Ctrus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloquea las apps durante la noche. Por la mañana suena una alarma que solo se apaga con tu Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloqueia as apps durante a noite. De manhã toca um alarme que só se desliga com o Ctrus."
+          }
+        }
+      }
+    },
     "Ctrus %lld": {
       "extractionState": "manual",
       "localizations": {
@@ -954,6 +1046,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ctrus %lld"
+          }
+        }
+      }
+    },
+    "Ctrus Alarm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus Alarm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarma Ctrus"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarme Ctrus"
           }
         }
       }
@@ -1004,6 +1119,52 @@
         }
       }
     },
+    "Enabled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enabled"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activado"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativado"
+          }
+        }
+      }
+    },
+    "End Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End Time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Fin"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de Fim"
+          }
+        }
+      }
+    },
     "Failed to save changes: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -1023,6 +1184,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Não foi possível guardar as alterações: %@"
+          }
+        }
+      }
+    },
+    "Open Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ctrus"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir o Ctrus"
+          }
+        }
+      }
+    },
+    "Open the alarm's profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the alarm's profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir el perfil de la alarma"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir o perfil do alarme"
           }
         }
       }
@@ -1231,6 +1438,121 @@
         }
       }
     },
+    "Snooze": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snooze"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posponer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiar"
+          }
+        }
+      }
+    },
+    "Snooze silences the alarm for 1 minute. Then it rings again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snooze silences the alarm for 1 minute. Then it rings again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posponer silencia la alarma 1 minuto. Después vuelve a sonar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiar cala o alarme durante 1 minuto. Depois volta a tocar."
+          }
+        }
+      }
+    },
+    "Snoozed · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snoozed · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pospuesta · %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiado · %@"
+          }
+        }
+      }
+    },
+    "The alarm rings %@ at %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The alarm rings %@ at %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La alarma suena %@ a las %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O alarme toca %@ às %@"
+          }
+        }
+      }
+    },
+    "The end time must be different from the start time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The end time must be different from the start time."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La hora de fin debe ser distinta de la hora de inicio."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A hora de fim tem de ser diferente da hora de início."
+          }
+        }
+      }
+    },
     "There are no sessions on those days.": {
       "extractionState": "manual",
       "localizations": {
@@ -1273,6 +1595,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este Ctrus não é deste perfil."
+          }
+        }
+      }
+    },
+    "Vibrate only": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vibrate only"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo vibrar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só vibrar"
+          }
+        }
+      }
+    },
+    "Without alarm access, Alarm mode can't work. You can turn it on in Settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Without alarm access, Alarm mode can't work. You can turn it on in Settings."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin acceso a las alarmas, el modo Despertador no funciona. Puedes activarlo en Ajustes."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem acesso aos alarmes, o modo Despertador não funciona. Podes ativá-lo nas Definições."
           }
         }
       }

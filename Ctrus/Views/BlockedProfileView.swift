@@ -10,6 +10,7 @@ struct AlertIdentifier: Identifiable {
     case deleteProfile
     case missingPhysicalUnlock
     case missingScheduleDays
+    case invalidAlarmTime
     case discardChanges
   }
 
@@ -101,7 +102,11 @@ struct BlockedProfileView: View {
 
         BlockedProfileStrictUnlocksSection(draft: draft, disabled: isBlocking)
 
-        BlockedProfileBreaksSection(draft: draft, disabled: isBlocking)
+        if draft.useAlarm {
+          BlockedProfileSnoozeSection(draft: draft, disabled: isBlocking)
+        } else {
+          BlockedProfileBreaksSection(draft: draft, disabled: isBlocking)
+        }
 
         BlockedProfileStrictSafeguardsSection(draft: draft, disabled: isBlocking)
 
@@ -240,6 +245,12 @@ struct BlockedProfileView: View {
             message: Text("Choose at least one day for the schedule."),
             dismissButton: .default(Text("OK"))
           )
+        case .invalidAlarmTime:
+          return Alert(
+            title: Text("Warning!"),
+            message: Text("The end time must be different from the start time."),
+            dismissButton: .default(Text("OK"))
+          )
         case .discardChanges:
           return Alert(
             title: Text("Discard Changes?"),
@@ -278,11 +289,25 @@ struct BlockedProfileView: View {
       }
     }
 
-    do {
-      _ = try draft.save(existingProfile: profile, in: modelContext)
-      dismiss()
-    } catch {
-      alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+    if draft.useAlarm {
+      guard draft.schedule.hasValidAlarmTime else {
+        alertIdentifier = AlertIdentifier(id: .invalidAlarmTime)
+        return
+      }
+    }
+
+    Task { @MainActor in
+      guard await WakeAlarmManager.requestAlarmAccessIfNeeded(for: draft) else {
+        showError(message: WakeAlarmManager.alarmAccessDeniedMessage)
+        return
+      }
+
+      do {
+        _ = try draft.save(existingProfile: profile, in: modelContext)
+        dismiss()
+      } catch {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+      }
     }
   }
 }

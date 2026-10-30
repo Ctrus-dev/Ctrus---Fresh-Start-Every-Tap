@@ -5,6 +5,7 @@ import UIKit
 /// reveal break/emergency/stop, tap again to collapse.
 struct ProfileBalloonRow: View {
   @EnvironmentObject private var themeManager: ThemeManager
+  @EnvironmentObject private var wakeAlarmManager: WakeAlarmManager
 
   let profile: BlockedProfiles
   let isBlocking: Bool
@@ -35,7 +36,7 @@ struct ProfileBalloonRow: View {
   private let heldBorderWidth: CGFloat = 5
 
   private var isScheduleMode: Bool {
-    blockingStrategy?.getIdentifier() == ScheduleBlockingStrategy.id
+    StrategyManager.scheduledStrategyIds.contains(blockingStrategy?.getIdentifier() ?? "")
   }
 
   private var canStart: Bool {
@@ -112,7 +113,16 @@ struct ProfileBalloonRow: View {
       isPressed = false
       if !newValue {
         isExpanded = false
+      } else if wakeAlarmManager.expandRequestProfileId == profile.id {
+        isExpanded = true
+        wakeAlarmManager.expandRequestProfileId = nil
       }
+    }
+    // The alarm opened the app on this profile: show its buttons straight away.
+    .onChange(of: wakeAlarmManager.expandRequestProfileId, initial: true) { _, profileId in
+      guard isActive, profileId == profile.id else { return }
+      isExpanded = true
+      wakeAlarmManager.expandRequestProfileId = nil
     }
     .sheet(isPresented: $showEmergencyView) {
       EmergencyView()
@@ -317,8 +327,35 @@ struct ProfileBalloonRow: View {
     return String(localized: "Active Profile \(profile.name)")
   }
 
+  private var isAlarmDue: Bool {
+    WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId)
+      && wakeAlarmManager.dueProfileId == profile.id
+  }
+
+  private var snoozeCountdownText: String {
+    let snoozedUntil = wakeAlarmManager.snoozedUntil ?? wakeAlarmManager.now
+    let remaining = max(0, Int(ceil(snoozedUntil.timeIntervalSince(wakeAlarmManager.now))))
+    let time = String(format: "%d:%02d", remaining / 60, remaining % 60)
+    return String(localized: "Snoozed · \(time)")
+  }
+
   private var expandedActions: some View {
     VStack(spacing: 12) {
+      // Alarm mode's snooze sits where the break button would, once it rings.
+      if isAlarmDue && profile.enableSnooze {
+        SessionActionButton(
+          title: wakeAlarmManager.isSnoozed
+            ? snoozeCountdownText : String(localized: "Snooze"),
+          iconName: "zzz",
+          role: .standard,
+          themeColor: themeManager.themeColor,
+          action: {
+            guard !wakeAlarmManager.isSnoozed else { return }
+            wakeAlarmManager.snooze()
+          }
+        )
+      }
+
       if !isPauseActive && isBreakAvailable {
         SessionActionButton(
           title: breakButtonTitle,

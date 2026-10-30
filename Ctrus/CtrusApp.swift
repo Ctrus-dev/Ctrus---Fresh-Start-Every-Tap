@@ -39,6 +39,7 @@ struct CtrusApp: App {
   @StateObject private var liveActivityManager = LiveActivityManager.shared
   @StateObject private var themeManager = ThemeManager.shared
   @StateObject private var alertsManager = AlertsManager.shared
+  @StateObject private var wakeAlarmManager = WakeAlarmManager.shared
 
   init() {
     TimersUtil.registerBackgroundTasks()
@@ -56,7 +57,6 @@ struct CtrusApp: App {
   var body: some Scene {
     WindowGroup {
       HomeView()
-        .alarmPrototypeOverlay()
         .onOpenURL { url in
           handleUniversalLink(url)
         }
@@ -76,6 +76,7 @@ struct CtrusApp: App {
         .environmentObject(ratingManager)
         .environmentObject(liveActivityManager)
         .environmentObject(themeManager)
+        .environmentObject(wakeAlarmManager)
     }
     .modelContainer(container)
   }

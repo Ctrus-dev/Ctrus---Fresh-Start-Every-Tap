@@ -18,7 +18,7 @@ struct OpenAlarmProfileIntent: LiveActivityIntent {
 
   @MainActor
   func perform() async throws -> some IntentResult {
-    AlarmPrototypeManager.shared.alarmOpenedApp(profileId: profileId)
+    WakeAlarmManager.shared.alarmOpenedApp(profileId: profileId)
     return .result()
   }
 }

@@ -54,6 +54,23 @@ struct BlockedProfileSchedule: Codable, Equatable {
 
   var updatedAt: Date = Date()
 
+  // Alarm mode only. Optional so schedules saved before it still decode;
+  // read through `alarmTime` and `alarmSoundId`, which fill in the defaults.
+  var alarmHour: Int?
+  var alarmMinute: Int?
+  var alarmSound: String?
+
+  static let defaultAlarmSound = "default"
+  static let vibrateAlarmSound = "vibrate"
+
+  var alarmTime: (hour: Int, minute: Int) {
+    (alarmHour ?? 7, alarmMinute ?? 0)
+  }
+
+  var alarmSoundId: String {
+    alarmSound ?? Self.defaultAlarmSound
+  }
+
   var isActive: Bool {
     return !days.isEmpty
   }
@@ -99,6 +116,77 @@ struct BlockedProfileSchedule: Codable, Equatable {
     let start = formattedTimeString(hour24: startHour, minute: startMinute)
 
     return "\(daysSummary) · \(start) · \(durationText)"
+  }
+
+  /// Alarm mode's summary: the end time takes the duration's place.
+  var alarmSummaryText: String {
+    guard isActive else { return String(localized: "No Schedule Set") }
+
+    let daysSummary =
+      days
+      .sorted { $0.rawValue < $1.rawValue }
+      .map { $0.shortLabel }
+      .joined(separator: " ")
+
+    let start = formattedTimeString(hour24: startHour, minute: startMinute)
+    let end = formattedTimeString(hour24: alarmTime.hour, minute: alarmTime.minute)
+
+    return "\(daysSummary) · \(start) → \(end)"
+  }
+
+  var hasValidAlarmTime: Bool {
+    alarmTime.hour != startHour || alarmTime.minute != startMinute
+  }
+
+  /// When the alarm rings for a session that started at `start`: the first
+  /// end time after it, so an end at or before the start is the next day.
+  /// Matched on the wall clock, so a daylight saving change that night
+  /// doesn't move it.
+  func alarmDate(after start: Date, calendar: Calendar = .current) -> Date? {
+    calendar.nextDate(
+      after: start,
+      matching: DateComponents(hour: alarmTime.hour, minute: alarmTime.minute, second: 0),
+      matchingPolicy: .nextTime
+    )
+  }
+
+  /// The days the alarm rings on, which move to the next day when the end
+  /// time is at or before the start.
+  var alarmDays: [Weekday] {
+    let endsNextDay =
+      alarmTime.hour * 60 + alarmTime.minute <= startHour * 60 + startMinute
+    guard endsNextDay else { return days }
+
+    return days.compactMap { Weekday(rawValue: $0.rawValue % 7 + 1) }
+  }
+
+  /// "Mon–Fri", or "Mon, Wed, Sat" when the days aren't in a row.
+  func alarmDaysText(calendar: Calendar = .current) -> String {
+    let symbols = calendar.shortWeekdaySymbols
+    let ringDays = Set(alarmDays.map(\.rawValue))
+    let week = (0..<7).map { (calendar.firstWeekday - 1 + $0) % 7 + 1 }
+
+    var runs: [[Int]] = []
+    for day in week where ringDays.contains(day) {
+      if let last = runs.last?.last, week.firstIndex(of: last)! + 1 == week.firstIndex(of: day)! {
+        runs[runs.count - 1].append(day)
+      } else {
+        runs.append([day])
+      }
+    }
+
+    return
+      runs
+      .map { run in
+        run.count >= 3
+          ? "\(symbols[run.first! - 1])–\(symbols[run.last! - 1])"
+          : run.map { symbols[$0 - 1] }.joined(separator: ", ")
+      }
+      .joined(separator: ", ")
+  }
+
+  var alarmTimeText: String {
+    formattedTimeString(hour24: alarmTime.hour, minute: alarmTime.minute)
   }
 
   func isTodayScheduled(now: Date = Date(), calendar: Calendar = .current) -> Bool {

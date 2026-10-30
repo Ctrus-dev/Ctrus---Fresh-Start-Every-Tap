@@ -28,6 +28,7 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var physicalUnblockItems: [PhysicalUnblockItem]
   @Published var schedule: BlockedProfileSchedule
   @Published var allowSkip: Bool
+  @Published var enableSnooze: Bool
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -42,6 +43,11 @@ final class BlockedProfileDraft: ObservableObject {
       // leaving it silently active in the background.
       if !useSchedule {
         schedule.days = []
+      }
+
+      // Alarm mode never ends on a timer; the alarm does that.
+      if useAlarm {
+        schedule.durationInHours = nil
       }
     }
   }
@@ -82,6 +88,7 @@ final class BlockedProfileDraft: ObservableObject {
     schedule = resolvedSchedule
     initialSchedule = resolvedSchedule
     allowSkip = profile?.allowSkip ?? false
+    enableSnooze = profile?.enableSnooze ?? true
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -105,8 +112,17 @@ final class BlockedProfileDraft: ObservableObject {
     return selectedStrategy?.allowsTimedBreaks ?? true
   }
 
+  /// Schedule and Alarm both start on their own and share the schedule step.
   var useSchedule: Bool {
-    return selectedStrategy?.getIdentifier() == ScheduleBlockingStrategy.id
+    return StrategyManager.scheduledStrategyIds.contains(selectedStrategy?.getIdentifier() ?? "")
+  }
+
+  var useAlarm: Bool {
+    return selectedStrategy?.getIdentifier() == AlarmBlockingStrategy.id
+  }
+
+  var hasValidSchedule: Bool {
+    !schedule.days.isEmpty && (!useAlarm || schedule.hasValidAlarmTime)
   }
 
   func save(
@@ -146,6 +162,7 @@ final class BlockedProfileDraft: ObservableObject {
         physicalUnblockItems: .some(physicalUnblockItemsToSave),
         schedule: schedule,
         allowSkip: allowSkip,
+        enableSnooze: enableSnooze,
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -175,6 +192,7 @@ final class BlockedProfileDraft: ObservableObject {
       physicalUnblockItems: physicalUnblockItemsToSave,
       schedule: schedule,
       allowSkip: allowSkip,
+      enableSnooze: enableSnooze,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )

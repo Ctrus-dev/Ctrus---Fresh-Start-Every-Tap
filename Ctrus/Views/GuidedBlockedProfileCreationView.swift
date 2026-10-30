@@ -10,6 +10,7 @@ private enum GuidedProfileStep: Int, Identifiable {
   case strictUnlocks
   case schedule
   case breaks
+  case snooze
   case strictSafeguards
   case review
 
@@ -31,6 +32,8 @@ private enum GuidedProfileStep: Int, Identifiable {
       return "Schedule"
     case .breaks:
       return "Breaks"
+    case .snooze:
+      return "Snooze"
     case .strictSafeguards:
       return "Protection"
     case .review:
@@ -54,6 +57,8 @@ private enum GuidedProfileStep: Int, Identifiable {
       return String(localized: "Set your schedule")
     case .breaks:
       return String(localized: "Allow breaks")
+    case .snooze:
+      return String(localized: "Snooze")
     case .strictSafeguards:
       return String(localized: "Choose session protection")
     case .review:
@@ -81,6 +86,8 @@ private enum GuidedProfileStep: Int, Identifiable {
       )
     case .breaks:
       return String(localized: "Timed breaks let you pause once during a session without ending the profile.")
+    case .snooze:
+      return ""
     case .strictSafeguards:
       return String(
         localized: "These settings make it harder to work around restrictions by deleting or installing apps."
@@ -113,8 +120,12 @@ struct GuidedBlockedProfileCreationView: View {
       result.append(.schedule)
     }
 
+    // Alarm mode has no breaks; snoozing takes their place.
     result.append(
-      contentsOf: [.apps, .domains, .strictUnlocks, .breaks, .strictSafeguards, .review])
+      contentsOf: [
+        .apps, .domains, .strictUnlocks, draft.useAlarm ? .snooze : .breaks, .strictSafeguards,
+        .review,
+      ])
     return result
   }
 
@@ -137,7 +148,7 @@ struct GuidedBlockedProfileCreationView: View {
     case .strictUnlocks:
       return !draft.physicalUnblockItems.isEmpty
     case .schedule:
-      return !draft.schedule.days.isEmpty
+      return draft.hasValidSchedule
     default:
       return true
     }
@@ -336,6 +347,11 @@ struct GuidedBlockedProfileCreationView: View {
         )
       }
 
+    case .snooze:
+      guidedCard(title: "Snooze") {
+        BlockedProfileSnoozeFields(draft: draft, disabled: false)
+      }
+
     case .strictSafeguards:
       guidedCard(title: "Session Protection") {
         BlockedProfileStrictSafeguardsFields(
@@ -416,11 +432,19 @@ struct GuidedBlockedProfileCreationView: View {
   }
 
   private func createProfile() {
-    do {
-      _ = try draft.save(existingProfile: nil, in: modelContext)
-      dismiss()
-    } catch {
-      alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+    Task { @MainActor in
+      guard await WakeAlarmManager.requestAlarmAccessIfNeeded(for: draft) else {
+        alertIdentifier = AlertIdentifier(
+          id: .error, errorMessage: WakeAlarmManager.alarmAccessDeniedMessage)
+        return
+      }
+
+      do {
+        _ = try draft.save(existingProfile: nil, in: modelContext)
+        dismiss()
+      } catch {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+      }
     }
   }
 }
@@ -442,10 +466,18 @@ private struct GuidedProfileReviewContent: View {
       reviewRow(title: String(localized: "Domains"), value: domainSummary)
       reviewDivider
       if draft.useSchedule {
-        reviewRow(title: String(localized: "Schedule"), value: draft.schedule.summaryText)
+        reviewRow(
+          title: String(localized: "Schedule"),
+          value: draft.useAlarm ? draft.schedule.alarmSummaryText : draft.schedule.summaryText)
         reviewDivider
       }
-      reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
+      if draft.useAlarm {
+        reviewRow(
+          title: String(localized: "Snooze"),
+          value: draft.enableSnooze ? String(localized: "Enabled") : String(localized: "Disabled"))
+      } else {
+        reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
+      }
       reviewDivider
       reviewRow(title: String(localized: "Safeguards"), value: safeguardsSummary)
     }

@@ -44,6 +44,7 @@ struct BlockedProfileStrategyFields: View {
   var showsSeparators: Bool = false
 
   private let scheduleStrategy: BlockingStrategy = ScheduleBlockingStrategy()
+  private let alarmStrategy: BlockingStrategy = AlarmBlockingStrategy()
 
   var body: some View {
     ForEach(Array(StrategyManager.pickerStrategies.enumerated()), id: \.element.name) {
@@ -72,6 +73,20 @@ struct BlockedProfileStrategyFields: View {
       }
     )
     .disabled(disabled)
+
+    // Alarm mode needs AlarmKit, which only exists from iOS 26.
+    if #available(iOS 26.0, *) {
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      StrategyRow(
+        strategy: alarmStrategy,
+        isSelected: draft.useAlarm,
+        onTap: {
+          draft.selectedStrategy = AlarmBlockingStrategy()
+        }
+      )
+      .disabled(disabled)
+    }
   }
 }
 
@@ -251,6 +266,15 @@ struct BlockedProfileScheduleFields: View {
   var body: some View {
     weekdaySelector
 
+    if draft.useAlarm && !draft.schedule.days.isEmpty {
+      Text(
+        "The alarm rings \(draft.schedule.alarmDaysText()) at \(draft.schedule.alarmTimeText)"
+      )
+      .font(.caption)
+      .foregroundStyle(.secondary)
+      .fixedSize(horizontal: false, vertical: true)
+    }
+
     ProfileFieldDivider(isVisible: showsSeparators)
 
     DatePicker(
@@ -263,11 +287,79 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    durationPicker
+    if draft.useAlarm {
+      alarmFields
+    } else {
+      durationPicker
+    }
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
     skipSessionsBlock
+  }
+
+  @ViewBuilder
+  private var alarmFields: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      DatePicker(
+        String(localized: "End Time"),
+        selection: alarmTimeBinding,
+        displayedComponents: .hourAndMinute
+      )
+      .tint(themeManager.themeColor)
+      .disabled(disabled)
+
+      if !draft.schedule.hasValidAlarmTime {
+        Text("The end time must be different from the start time.")
+          .font(.caption)
+          .foregroundStyle(.red)
+      }
+    }
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    // A menu rather than a picker, so choosing a sound again still plays it.
+    HStack {
+      Text("Alarm sound")
+
+      Spacer()
+
+      Menu {
+        ForEach(WakeAlarmManager.availableSounds, id: \.self) { soundId in
+          Button {
+            draft.schedule.alarmSound = soundId
+            WakeAlarmManager.shared.previewSound(soundId)
+          } label: {
+            if soundId == draft.schedule.alarmSoundId {
+              Label(WakeAlarmManager.soundTitle(for: soundId), systemImage: "checkmark")
+            } else {
+              Text(WakeAlarmManager.soundTitle(for: soundId))
+            }
+          }
+        }
+      } label: {
+        HStack(spacing: 4) {
+          Text(WakeAlarmManager.soundTitle(for: draft.schedule.alarmSoundId))
+          Image(systemName: "chevron.up.chevron.down")
+            .font(.caption)
+        }
+        .foregroundStyle(.secondary)
+      }
+    }
+    .disabled(disabled)
+  }
+
+  private var alarmTimeBinding: Binding<Date> {
+    Binding(
+      get: {
+        dateFrom(hour: draft.schedule.alarmTime.hour, minute: draft.schedule.alarmTime.minute)
+      },
+      set: { newValue in
+        let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+        draft.schedule.alarmHour = components.hour ?? draft.schedule.alarmTime.hour
+        draft.schedule.alarmMinute = components.minute ?? draft.schedule.alarmTime.minute
+      }
+    )
   }
 
   private var skipSessionsBlock: some View {
@@ -441,6 +533,32 @@ struct BlockedProfileBreaksSection: View {
   var body: some View {
     Section("Breaks") {
       BlockedProfileBreaksFields(draft: draft, disabled: disabled)
+    }
+  }
+}
+
+struct BlockedProfileSnoozeFields: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  var disabled: Bool
+
+  var body: some View {
+    CustomToggle(
+      title: String(localized: "Allow snooze"),
+      description: String(
+        localized: "Snooze silences the alarm for 1 minute. Then it rings again."),
+      isOn: $draft.enableSnooze,
+      isDisabled: disabled
+    )
+  }
+}
+
+struct BlockedProfileSnoozeSection: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  var disabled: Bool
+
+  var body: some View {
+    Section("Snooze") {
+      BlockedProfileSnoozeFields(draft: draft, disabled: disabled)
     }
   }
 }

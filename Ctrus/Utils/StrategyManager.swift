@@ -17,6 +17,13 @@ class StrategyManager: ObservableObject {
     NFCPauseTimerBlockingStrategy(),
     ShortcutTimerBlockingStrategy(),
     ScheduleBlockingStrategy(),
+    AlarmBlockingStrategy(),
+  ]
+
+  // Strategies that only ever start on their own, at the schedule's time.
+  static let scheduledStrategyIds: Set<String> = [
+    ScheduleBlockingStrategy.id,
+    AlarmBlockingStrategy.id,
   ]
 
   // Strategies offered when creating or editing a profile.
@@ -656,6 +663,10 @@ class StrategyManager: ObservableObject {
 
   private func handleSessionEnded(profile: BlockedProfiles) {
     self.hasCompletedFirstSession = true
+
+    if WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId) {
+      WakeAlarmManager.shared.sessionEnded(profileId: profile.id)
+    }
     self.dismissView()
     self.checkAndResetEmergencyUnblocks()
     self.checkAndResetRecoveryUnlocks()

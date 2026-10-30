@@ -24,7 +24,9 @@ struct HomeView: View {
   // Schedule-mode profiles only ever start on their own, so they're left out
   // of the manual start picker rather than offered and then refused.
   private var manuallyStartableProfiles: [BlockedProfiles] {
-    profiles.filter { $0.blockingStrategyId != ScheduleBlockingStrategy.id }
+    profiles.filter {
+      !StrategyManager.scheduledStrategyIds.contains($0.blockingStrategyId ?? "")
+    }
   }
   @State private var isProfileListPresent = false
 
@@ -367,7 +369,7 @@ struct HomeView: View {
   // so the hint says so when there are any.
   private var sessionHint: String {
     let scheduleCount = profiles.filter {
-      $0.blockingStrategyId == ScheduleBlockingStrategy.id
+      StrategyManager.scheduledStrategyIds.contains($0.blockingStrategyId ?? "")
     }.count
 
     if scheduleCount == profiles.count {

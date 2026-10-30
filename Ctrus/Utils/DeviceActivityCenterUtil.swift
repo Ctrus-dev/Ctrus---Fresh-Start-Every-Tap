@@ -7,6 +7,8 @@ import UserNotifications
 
 class DeviceActivityCenterUtil {
   static func scheduleTimerActivity(for profile: BlockedProfiles) {
+    WakeAlarmManager.shared.refresh(profileId: profile.id)
+
     // Only schedule if the schedule is active
     guard let schedule = profile.schedule else {
       cancelUpcomingSessionReminders(for: profile)
@@ -53,6 +55,8 @@ class DeviceActivityCenterUtil {
   // Puts the reminders back in line with the profile (e.g. after a skip
   // changed) without re-registering the schedule's monitoring itself.
   static func refreshUpcomingSessionReminders(for profile: BlockedProfiles) {
+    WakeAlarmManager.shared.refresh(profileId: profile.id)
+
     guard let schedule = profile.schedule, schedule.isActive else {
       cancelUpcomingSessionReminders(for: profile)
       return
@@ -179,6 +183,7 @@ class DeviceActivityCenterUtil {
       from: profile.id.uuidString)
     stopActivities(for: [deviceActivityName])
     cancelUpcomingSessionReminders(for: profile)
+    WakeAlarmManager.shared.refresh(profileId: profile.id)
   }
 
   static func removeScheduleTimerActivities(for activity: DeviceActivityName) {
