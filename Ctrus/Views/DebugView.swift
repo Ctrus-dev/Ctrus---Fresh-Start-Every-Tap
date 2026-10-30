@@ -22,6 +22,12 @@ struct DebugView: View {
     NavigationView {
       ScrollView {
         VStack(alignment: .leading, spacing: 20) {
+          if #available(iOS 26.0, *) {
+            DebugSection(title: "Alarm prototype") {
+              AlarmPrototypeCard()
+            }
+          }
+
           // Strategy Manager Section (always shown)
           DebugSection(title: "Strategy Manager") {
             StrategyManagerDebugCard(strategyManager: strategyManager)

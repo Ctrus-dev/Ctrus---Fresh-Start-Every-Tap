@@ -56,6 +56,7 @@ struct CtrusApp: App {
   var body: some Scene {
     WindowGroup {
       HomeView()
+        .alarmPrototypeOverlay()
         .onOpenURL { url in
           handleUniversalLink(url)
         }

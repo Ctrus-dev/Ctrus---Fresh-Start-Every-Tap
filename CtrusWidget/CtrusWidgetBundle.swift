@@ -13,5 +13,9 @@ struct CtrusWidgetBundle: WidgetBundle {
   var body: some Widget {
     ProfileControlWidget()
     CtrusWidgetLiveActivity()
+
+    if #available(iOS 26.0, *) {
+      CtrusAlarmLiveActivity()
+    }
   }
 }

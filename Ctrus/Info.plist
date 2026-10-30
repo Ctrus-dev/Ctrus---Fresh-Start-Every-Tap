@@ -8,6 +8,8 @@
 	</array>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>Ctrus uses alarms to wake you up in Alarm mode.</string>
 	<key>Supported</key>
 	<false/>
 	<key>UIBackgroundModes</key>
