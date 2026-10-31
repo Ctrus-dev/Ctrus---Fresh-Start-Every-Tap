@@ -10,7 +10,7 @@ class AlarmBlockingStrategy: BlockingStrategy {
   var name: String = String(localized: "Alarm + Ctrus NFC")
   var description: String = String(
     localized:
-      "Blocks your apps overnight. In the morning an alarm rings that only stops with your Ctrus."
+      "Blocks your apps on a schedule. When it ends, an alarm rings that only stops with your Ctrus."
   )
   var color: Color = .green
   var pickerCategory: BlockingStrategyPickerCategory = .mostPopular

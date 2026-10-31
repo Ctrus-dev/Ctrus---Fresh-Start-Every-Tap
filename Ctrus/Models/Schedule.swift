@@ -59,6 +59,10 @@ struct BlockedProfileSchedule: Codable, Equatable {
   var alarmHour: Int?
   var alarmMinute: Int?
   var alarmSound: String?
+  var snoozeMinutes: Int?
+
+  static let availableSnoozeMinutes = Array(1...15)
+  static let defaultSnoozeMinutes = 9
 
   static let defaultAlarmSound = "default"
   static let vibrateAlarmSound = "vibrate"
@@ -69,6 +73,11 @@ struct BlockedProfileSchedule: Codable, Equatable {
 
   var alarmSoundId: String {
     alarmSound ?? Self.defaultAlarmSound
+  }
+
+  var alarmSnoozeMinutes: Int {
+    get { snoozeMinutes ?? Self.defaultSnoozeMinutes }
+    set { snoozeMinutes = newValue }
   }
 
   var isActive: Bool {

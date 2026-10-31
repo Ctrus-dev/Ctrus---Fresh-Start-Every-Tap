@@ -14,7 +14,6 @@ import UIKit
 final class WakeAlarmManager: ObservableObject {
   static let shared = WakeAlarmManager()
 
-  static let snoozeSeconds: TimeInterval = 60
   static let silentSoundFile = "alarm_silence.caf"
   // Stands in for the system alarm sound inside the app, which apps can't play.
   private static let inAppDefaultSoundFile = "alarm_beep"
@@ -239,7 +238,10 @@ final class WakeAlarmManager: ObservableObject {
 
   func snooze() {
     guard let profileId = dueProfileId else { return }
-    let until = Date().addingTimeInterval(Self.snoozeSeconds)
+    let snoozeMinutes =
+      SharedData.snapshot(for: profileId.uuidString)?.schedule?.alarmSnoozeMinutes
+      ?? BlockedProfileSchedule.defaultSnoozeMinutes
+    let until = Date().addingTimeInterval(TimeInterval(snoozeMinutes * 60))
     setSnoozedUntil(until)
     stopSound()
 

@@ -60,7 +60,7 @@ final class BlockedProfileDraft: ObservableObject {
     selectedActivity = profile?.selectedActivity ?? FamilyActivitySelection()
     enableLiveActivity = profile?.enableLiveActivity ?? false
     enableBreaks = profile?.enableBreaks ?? false
-    breakTimeInMinutes = profile?.breakTimeInMinutes ?? 10
+    breakTimeInMinutes = profile?.breakTimeInMinutes ?? 5
     allowMultipleBreaks = profile?.allowMultipleBreaks ?? false
     enableStrictMode = profile?.enableStrictMode ?? true
     enableBlockAppInstallation = profile?.enableBlockAppInstallation ?? false

@@ -456,7 +456,9 @@ private struct GuidedProfileReviewContent: View {
       if draft.useAlarm {
         reviewRow(
           title: String(localized: "Snooze"),
-          value: draft.enableSnooze ? String(localized: "Enabled") : String(localized: "Disabled"))
+          value: draft.enableSnooze
+            ? String(localized: "\(draft.schedule.alarmSnoozeMinutes) minutes")
+            : String(localized: "Disabled"))
         reviewDivider
       }
       reviewRow(title: String(localized: "Breaks"), value: breaksSummary)

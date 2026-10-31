@@ -1073,6 +1073,29 @@
         }
       }
     },
+    "1 minute": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 minute"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 minuto"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 minuto"
+          }
+        }
+      }
+    },
     "1-3h": {
       "extractionState": "manual",
       "localizations": {
@@ -2982,25 +3005,25 @@
         }
       }
     },
-    "Blocks your apps overnight. In the morning an alarm rings that only stops with your Ctrus.": {
+    "Blocks your apps on a schedule. When it ends, an alarm rings that only stops with your Ctrus.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Blocks your apps overnight. In the morning an alarm rings that only stops with your Ctrus."
+            "value": "Blocks your apps on a schedule. When it ends, an alarm rings that only stops with your Ctrus."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bloquea las apps durante la noche. Por la mañana suena una alarma que solo se apaga con tu Ctrus."
+            "value": "Bloquea las apps en el horario que elijas. Al terminar, suena una alarma que solo se apaga con tu Ctrus."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bloqueia as apps durante a noite. De manhã toca um alarme que só se desliga com o Ctrus."
+            "value": "Bloqueia as apps num horário à tua escolha. No fim, toca um alarme que só se desliga com o Ctrus."
           }
         }
       }
@@ -10343,25 +10366,48 @@
         }
       }
     },
-    "Snooze silences the alarm for 1 minute. Then it rings again.": {
+    "Snooze Duration": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snooze silences the alarm for 1 minute. Then it rings again."
+            "value": "Snooze Duration"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posponer silencia la alarma 1 minuto. Después vuelve a sonar."
+            "value": "Duración de la posposición"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adiar cala o alarme durante 1 minuto. Depois volta a tocar."
+            "value": "Duração do adiamento"
+          }
+        }
+      }
+    },
+    "Snooze silences the alarm for a while. Then it rings again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snooze silences the alarm for a while. Then it rings again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posponer silencia la alarma un rato. Después vuelve a sonar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiar cala o alarme durante algum tempo. Depois volta a tocar."
           }
         }
       }

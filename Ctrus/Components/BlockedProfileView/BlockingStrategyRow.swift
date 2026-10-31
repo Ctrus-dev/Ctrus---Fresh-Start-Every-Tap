@@ -14,22 +14,6 @@ struct StrategyRow: View {
   let onTap: () -> Void
   var accessoryStyle: AccessoryStyle = .selection
 
-  private func backgroundColor(for tag: BlockingStrategyTag) -> Color {
-    if tag == .beta {
-      return .orange.opacity(0.16)
-    }
-
-    return .secondary.opacity(0.14)
-  }
-
-  private func foregroundColor(for tag: BlockingStrategyTag) -> Color {
-    if tag == .beta {
-      return .orange
-    }
-
-    return .secondary
-  }
-
   var body: some View {
     Button(action: onTap) {
       VStack(alignment: .leading, spacing: 8) {
@@ -58,21 +42,6 @@ struct StrategyRow: View {
           .font(.subheadline)
           .foregroundStyle(.secondary)
           .lineLimit(3)
-
-        if !strategy.tags.isEmpty {
-          HStack(spacing: 6) {
-            ForEach(strategy.tags, id: \.self) { tag in
-              Text(tag.title)
-                .font(.caption2)
-                .fontWeight(tag == .beta ? .semibold : .medium)
-                .foregroundStyle(foregroundColor(for: tag))
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(backgroundColor(for: tag))
-                .clipShape(Capsule())
-            }
-          }
-        }
       }
       .padding(.vertical, 4)
     }

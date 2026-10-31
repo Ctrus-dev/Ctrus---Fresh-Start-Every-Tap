@@ -42,7 +42,6 @@ struct BlockedProfileStrategyFields: View {
   @ObservedObject var draft: BlockedProfileDraft
   var disabled: Bool
   var showsSeparators: Bool = false
-
   private let scheduleStrategy: BlockingStrategy = ScheduleBlockingStrategy()
   private let alarmStrategy: BlockingStrategy = AlarmBlockingStrategy()
 
@@ -465,7 +464,8 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    BlockedProfileSnoozeFields(draft: draft, disabled: disabled)
+    BlockedProfileSnoozeFields(
+      draft: draft, disabled: disabled, showsSeparators: showsSeparators)
   }
 
   private var alarmTimeBinding: Binding<Date> {
@@ -642,12 +642,21 @@ struct BlockedProfileBreaksFields: View {
   }
 
   private var breakDurationPicker: some View {
-    Picker("Break Duration", selection: $draft.breakTimeInMinutes) {
-      Text("5 minutes").tag(5)
-      Text("10 minutes").tag(10)
-      Text("15 minutes").tag(15)
+    // Its own labeled row, like Snooze Duration, so the guided flow shows the label too.
+    HStack {
+      Text("Break Duration")
+
+      Spacer()
+
+      Picker("Break Duration", selection: $draft.breakTimeInMinutes) {
+        Text("5 minutes").tag(5)
+        Text("10 minutes").tag(10)
+        Text("15 minutes").tag(15)
+      }
+      .labelsHidden()
+      .pickerStyle(.menu)
+      .tint(themeManager.themeColor)
     }
-    .tint(themeManager.themeColor)
     .disabled(disabled)
   }
 }
@@ -665,16 +674,45 @@ struct BlockedProfileBreaksSection: View {
 
 struct BlockedProfileSnoozeFields: View {
   @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
   var disabled: Bool
+  var showsSeparators: Bool = false
 
+  @ViewBuilder
   var body: some View {
     CustomToggle(
-      title: String(localized: "Allow snooze"),
+      title: String(localized: "Snooze"),
       description: String(
-        localized: "Snooze silences the alarm for 1 minute. Then it rings again."),
+        localized: "Snooze silences the alarm for a while. Then it rings again."),
       isOn: $draft.enableSnooze,
       isDisabled: disabled
     )
+
+    if draft.enableSnooze {
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      // Its own labeled row, like Duration: outside a Form (the guided flow)
+      // a menu picker drops its label and shows only the value.
+      HStack {
+        Text("Snooze Duration")
+
+        Spacer()
+
+        Picker("Snooze Duration", selection: $draft.schedule.alarmSnoozeMinutes) {
+          ForEach(BlockedProfileSchedule.availableSnoozeMinutes, id: \.self) { minutes in
+            Text(
+              minutes == 1
+                ? String(localized: "1 minute") : String(localized: "\(minutes) minutes")
+            )
+            .tag(minutes)
+          }
+        }
+        .labelsHidden()
+        .pickerStyle(.menu)
+        .tint(themeManager.themeColor)
+      }
+      .disabled(disabled)
+    }
   }
 }
 
