@@ -6,6 +6,7 @@ final class TrustedClockTests: XCTestCase {
   private var defaults: UserDefaults!
   private var wallClock = Date(timeIntervalSinceReferenceDate: 1_000_000)
   private var uptime: TimeInterval = 10_000
+  private var bootSession = "boot-1"
 
   private let day: TimeInterval = 24 * 60 * 60
 
@@ -20,7 +21,8 @@ final class TrustedClockTests: XCTestCase {
       key: "test",
       defaults: defaults,
       wallClock: { self.wallClock },
-      uptime: { self.uptime }
+      uptime: { self.uptime },
+      bootSession: { self.bootSession }
     )
   }
 
@@ -90,5 +92,39 @@ final class TrustedClockTests: XCTestCase {
     _ = first.trustedElapsed()
 
     XCTAssertEqual(second.trustedElapsed(), 100, accuracy: 0.001)
+  }
+
+  func testGivenRebootDaysAfterLastReading_WhenRead_ThenNoClockJump() {
+    let clock = makeClock()
+    _ = clock.read()
+
+    wallClock += 3 * day
+    uptime = 600
+    bootSession = "boot-2"
+
+    XCTAssertFalse(clock.read().clockJumped)
+  }
+
+  func testGivenRebootWithLongerUptime_WhenRead_ThenTreatedAsReboot() {
+    let clock = makeClock()
+    _ = clock.read()
+
+    wallClock += 3 * day
+    uptime = 20_000
+    bootSession = "boot-2"
+
+    let reading = clock.read()
+    XCTAssertFalse(reading.clockJumped)
+    XCTAssertEqual(reading.elapsed, 20_000 + day, accuracy: 0.001)
+  }
+
+  func testGivenNoReboot_WhenDateMovedForward_ThenClockJumped() {
+    let clock = makeClock()
+    _ = clock.read()
+
+    wallClock += day
+    uptime += 60
+
+    XCTAssertTrue(clock.read().clockJumped)
   }
 }

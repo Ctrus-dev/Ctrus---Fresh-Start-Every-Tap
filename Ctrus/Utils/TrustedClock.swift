@@ -12,20 +12,25 @@ final class TrustedClock {
   private let defaults: UserDefaults
   private let lastWallClockKey: String
   private let lastUptimeKey: String
+  private let lastBootSessionKey: String
   private let wallClock: () -> Date
   private let uptime: () -> TimeInterval
+  private let bootSession: () -> String?
 
   init(
     key: String,
     defaults: UserDefaults = .standard,
     wallClock: @escaping () -> Date = Date.init,
-    uptime: @escaping () -> TimeInterval = TrustedClock.continuousUptime
+    uptime: @escaping () -> TimeInterval = TrustedClock.continuousUptime,
+    bootSession: @escaping () -> String? = TrustedClock.currentBootSession
   ) {
     self.defaults = defaults
     self.lastWallClockKey = "trustedClock.\(key).lastWallClock"
     self.lastUptimeKey = "trustedClock.\(key).lastUptime"
+    self.lastBootSessionKey = "trustedClock.\(key).lastBootSession"
     self.wallClock = wallClock
     self.uptime = uptime
+    self.bootSession = bootSession
   }
 
   // Not ProcessInfo.systemUptime: that one stops while the phone sleeps, so
@@ -34,6 +39,18 @@ final class TrustedClock {
   // ignores the date and only resets on a reboot.
   static func continuousUptime() -> TimeInterval {
     TimeInterval(clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW)) / 1_000_000_000
+  }
+
+  // Changes on every boot. The uptime alone can't tell a reboot apart once
+  // the phone has been on longer than at the previous reading.
+  static func currentBootSession() -> String? {
+    var size = 0
+    guard sysctlbyname("kern.bootsessionuuid", nil, &size, nil, 0) == 0, size > 0 else {
+      return nil
+    }
+    var buffer = [CChar](repeating: 0, count: size)
+    guard sysctlbyname("kern.bootsessionuuid", &buffer, &size, nil, 0) == 0 else { return nil }
+    return String(cString: buffer)
   }
 
   struct Reading {
@@ -54,10 +71,13 @@ final class TrustedClock {
   func read() -> Reading {
     let now = wallClock()
     let currentUptime = uptime()
+    let currentBootSession = bootSession()
+    let lastBootSession = defaults.string(forKey: lastBootSessionKey)
 
     defer {
       defaults.set(now.timeIntervalSinceReferenceDate, forKey: lastWallClockKey)
       defaults.set(currentUptime, forKey: lastUptimeKey)
+      defaults.set(currentBootSession, forKey: lastBootSessionKey)
     }
 
     guard defaults.object(forKey: lastUptimeKey) != nil,
@@ -71,9 +91,14 @@ final class TrustedClock {
       timeIntervalSinceReferenceDate: defaults.double(forKey: lastWallClockKey))
     let wallClockDelta = now.timeIntervalSince(lastWallClock)
 
+    let rebooted =
+      currentUptime < lastUptime
+      || (lastBootSession != nil && currentBootSession != nil
+        && lastBootSession != currentBootSession)
+
     // Same boot: the uptime difference is the real time. Any extra the date
     // moved on top of it is a manual date change and is left out.
-    if currentUptime >= lastUptime {
+    if !rebooted {
       let elapsed = currentUptime - lastUptime
       return Reading(
         elapsed: elapsed,
@@ -82,13 +107,14 @@ final class TrustedClock {
     }
 
     // Rebooted: the uptime only covers time since boot. The date is the only
-    // hint at how long the phone was off, so it's trusted up to a cap.
+    // hint at how long the phone was off, so it's trusted up to a cap. A long
+    // gap isn't flagged: readings can be days apart, so it proves nothing.
+    // Only a date earlier than the uptime allows is a sure change.
     let reportedPoweredOffTime = wallClockDelta - currentUptime
     let poweredOffTime = min(max(0, reportedPoweredOffTime), Self.maxPoweredOffTime)
     return Reading(
       elapsed: max(0, currentUptime + poweredOffTime),
       clockJumped: reportedPoweredOffTime < -Self.clockJumpTolerance
-        || reportedPoweredOffTime > Self.maxPoweredOffTime
     )
   }
 }
