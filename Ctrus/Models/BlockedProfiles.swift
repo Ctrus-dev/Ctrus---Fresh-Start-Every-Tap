@@ -44,6 +44,10 @@ class BlockedProfiles {
   var skipNextOccurrence: Date? = nil
   var skipUntil: Date? = nil
 
+  // Child mode only
+  var childTag: ChildTag? = nil
+  var childTagCanStop: Bool = false
+
   var disableBackgroundStops: Bool = false
 
   var enableEmergencyUnblock: Bool = true
@@ -66,9 +70,27 @@ class BlockedProfiles {
   }
 
   // Skipping needs a tag to authorize it, so a profile without one never
-  // offers it.
+  // offers it. In child mode the parents authorize it instead.
   var canSkipSessions: Bool {
-    allowSkip && schedule?.isActive == true && hasPhysicalUnblockItem(ofType: .nfc)
+    guard allowSkip, schedule?.isActive == true else { return false }
+    return ChildModeStore.isChildMode || hasPhysicalUnblockItem(ofType: .nfc)
+  }
+
+  // Child mode treats every profile as if background stops were off, so
+  // shortcuts, the widget and the profile link can't end a session.
+  var blocksBackgroundStops: Bool {
+    disableBackgroundStops || ChildModeStore.isChildMode
+  }
+
+  /// Child mode: only a parents' Ctrus, or this profile's child's Ctrus when
+  /// it's allowed to, can end a session — matched by UID, never by URL.
+  func childModeAllowsEnding(withTagId tagId: String) -> Bool {
+    if ChildModeStore.isParentTag(uid: tagId) {
+      return true
+    }
+
+    guard childTagCanStop, let childTag else { return false }
+    return ChildModeStore.normalizedUID(childTag.uid) == ChildModeStore.normalizedUID(tagId)
   }
 
   var allowsTimedBreaks: Bool {
@@ -225,6 +247,8 @@ class BlockedProfiles {
     physicalUnblockItems: [PhysicalUnblockItem]?? = nil,
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool? = nil,
+    childTag: ChildTag?? = nil,
+    childTagCanStop: Bool? = nil,
     disableBackgroundStops: Bool? = nil,
     enableEmergencyUnblock: Bool? = nil
   ) throws -> BlockedProfiles {
@@ -319,6 +343,14 @@ class BlockedProfiles {
       }
     }
 
+    if let childTag {
+      profile.childTag = childTag
+    }
+
+    if let newChildTagCanStop = childTagCanStop {
+      profile.childTagCanStop = newChildTagCanStop
+    }
+
     if let newDisableBackgroundStops = disableBackgroundStops {
       profile.disableBackgroundStops = newDisableBackgroundStops
     }
@@ -403,6 +435,8 @@ class BlockedProfiles {
       allowSkip: profile.allowSkip,
       skipNextOccurrence: profile.skipNextOccurrence,
       skipUntil: profile.skipUntil,
+      childTag: profile.childTag,
+      childTagCanStop: profile.childTagCanStop,
       disableBackgroundStops: profile.disableBackgroundStops,
       enableEmergencyUnblock: profile.enableEmergencyUnblock
     )
@@ -486,6 +520,8 @@ class BlockedProfiles {
     physicalUnblockItems: [PhysicalUnblockItem]? = nil,
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool = false,
+    childTag: ChildTag? = nil,
+    childTagCanStop: Bool = false,
     disableBackgroundStops: Bool = false,
     enableEmergencyUnblock: Bool = true
   ) throws -> BlockedProfiles {
@@ -519,6 +555,8 @@ class BlockedProfiles {
       profile.schedule = schedule
     }
     profile.allowSkip = allowSkip
+    profile.childTag = childTag
+    profile.childTagCanStop = childTagCanStop
 
     // Create the snapshot so extensions can read it immediately
     updateSnapshot(for: profile)
@@ -558,6 +596,8 @@ class BlockedProfiles {
       enableEmergencyUnblock: source.enableEmergencyUnblock
     )
     cloned.allowSkip = source.allowSkip
+    cloned.childTag = source.childTag
+    cloned.childTagCanStop = source.childTagCanStop
 
     context.insert(cloned)
     try context.save()

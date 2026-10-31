@@ -28,6 +28,8 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var physicalUnblockItems: [PhysicalUnblockItem]
   @Published var schedule: BlockedProfileSchedule
   @Published var allowSkip: Bool
+  @Published var childTag: ChildTag?
+  @Published var childTagCanStop: Bool
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -81,7 +83,10 @@ final class BlockedProfileDraft: ObservableObject {
       )
     schedule = resolvedSchedule
     initialSchedule = resolvedSchedule
-    allowSkip = profile?.allowSkip ?? false
+    // New child mode profiles allow skipping; existing ones keep theirs.
+    allowSkip = profile?.allowSkip ?? ChildModeStore.isChildMode
+    childTag = profile?.childTag
+    childTagCanStop = profile?.childTagCanStop ?? false
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -100,6 +105,17 @@ final class BlockedProfileDraft: ObservableObject {
   var isValid: Bool {
     return !name.isEmpty
   }
+
+  var isChildMode: Bool {
+    ChildModeStore.isChildMode
+  }
+
+  // Child mode's master key is the parents' Ctrus, so a profile doesn't need
+  // tags of its own there.
+  var hasRequiredUnlocks: Bool {
+    isChildMode || !physicalUnblockItems.isEmpty
+  }
+
 
   var selectedStrategyAllowsTimedBreaks: Bool {
     return selectedStrategy?.allowsTimedBreaks ?? true
@@ -146,6 +162,8 @@ final class BlockedProfileDraft: ObservableObject {
         physicalUnblockItems: .some(physicalUnblockItemsToSave),
         schedule: schedule,
         allowSkip: allowSkip,
+        childTag: .some(childTag),
+        childTagCanStop: childTag != nil && childTagCanStop,
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -175,6 +193,8 @@ final class BlockedProfileDraft: ObservableObject {
       physicalUnblockItems: physicalUnblockItemsToSave,
       schedule: schedule,
       allowSkip: allowSkip,
+      childTag: childTag,
+      childTagCanStop: childTag != nil && childTagCanStop,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )

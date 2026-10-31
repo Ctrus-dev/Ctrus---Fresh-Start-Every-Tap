@@ -54,10 +54,17 @@ class NFCManualBlockingStrategy: BlockingStrategy {
     context: ModelContext,
     session: BlockedProfileSession
   ) -> (any View)? {
-    nfcScanner.onTagScanned = { tag in
-      let tag = tag.url ?? tag.id
+    nfcScanner.onTagScanned = { scanned in
+      let tag = scanned.url ?? scanned.id
 
-      if session.blockedProfile.hasPhysicalUnblockItem(ofType: .nfc)
+      if ChildModeStore.isChildMode {
+        guard session.blockedProfile.childModeAllowsEnding(withTagId: scanned.id) else {
+          self.onErrorMessage?(
+            String(localized: "This is not allowed to unblock this profile.")
+          )
+          return
+        }
+      } else if session.blockedProfile.hasPhysicalUnblockItem(ofType: .nfc)
         && !session.blockedProfile.canUnblock(withCode: tag, type: .nfc)
       {
         self.onErrorMessage?(

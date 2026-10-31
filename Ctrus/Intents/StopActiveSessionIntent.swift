@@ -34,7 +34,7 @@ struct StopActiveSessionIntent: AppIntent {
     let profileName = blockedProfile.name
 
     // Check if the profile has background stops disabled
-    if blockedProfile.disableBackgroundStops {
+    if blockedProfile.blocksBackgroundStops {
       return .result(value: false, dialog: "Background stop disabled for profile: \(profileName)")
     }
 

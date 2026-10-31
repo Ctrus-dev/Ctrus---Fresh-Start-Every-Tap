@@ -49,6 +49,9 @@ struct HomeView: View {
   @State private var profileToSkipUntil: BlockedProfiles? = nil
   @State private var skipUntilErrorMessage: String? = nil
   @State private var toastMessage: String? = nil
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
+  @State private var unseenTamperEntry: TamperLogEntry? = nil
+  @State private var showTamperLog = false
 
   // Navigate to profile
   @State private var navigateToProfileId: UUID? = nil
@@ -72,6 +75,8 @@ struct HomeView: View {
 
   // Intro sheet
   @AppStorage("showIntroScreen") private var showIntroScreen = true
+  @AppStorage("pendingChildModeSetup") private var pendingChildModeSetup = false
+  @AppStorage("hasChosenAppMode") private var hasChosenAppMode = false
 
   // Small how-to caption under the profile list, shown until the person
   // completes their very first session.
@@ -107,6 +112,17 @@ struct HomeView: View {
     return !isBlocking
   }
 
+  // A mistaken pick of normal mode can be undone until the first profile
+  // exists; after that, child mode is turned on from Settings.
+  private var canGoBackToModeChoice: Bool {
+    !ChildModeStore.isChildMode && profiles.isEmpty && requestAuthorizer.isAuthorized
+  }
+
+  private func goBackToModeChoice() {
+    hasChosenAppMode = false
+    showIntroScreen = true
+  }
+
   var body: some View {
     ZStack {
       themeManager.pastelBackground
@@ -139,7 +155,10 @@ struct HomeView: View {
       }
     }
     .onChange(of: requestAuthorizer.isAuthorized) { _, newValue in
-      if newValue {
+      // Granting access only gets a new install to the mode choice; the
+      // intro closes itself once a mode has been picked (and, for child
+      // mode, set up).
+      if newValue && hasChosenAppMode && !pendingChildModeSetup {
         showIntroScreen = false
       }
       refreshAlerts()
@@ -166,6 +185,23 @@ struct HomeView: View {
     .onAppear {
       onAppearApp()
     }
+    // A thin strip on the left edge, above the scroll view — a gesture on
+    // the page itself never sees the drag, as the scroll view takes it first.
+    .overlay(alignment: .leading) {
+      if canGoBackToModeChoice {
+        Color.clear
+          .frame(width: 24)
+          .contentShape(Rectangle())
+          .gesture(
+            DragGesture(minimumDistance: 10)
+              .onEnded { value in
+                if value.translation.width > 60 {
+                  goBackToModeChoice()
+                }
+              }
+          )
+      }
+    }
     .sheet(isPresented: $isProfileListPresent) {
       BlockedProfileListView()
     }
@@ -184,9 +220,15 @@ struct HomeView: View {
       )
     }
     .fullScreenCover(isPresented: $showIntroScreen) {
-      IntroView {
-        requestAuthorizer.requestAuthorization()
-      }.interactiveDismissDisabled()
+      IntroView(
+        onRequestAuthorization: {
+          requestAuthorizer.requestAuthorization()
+        },
+        onFinished: {
+          showIntroScreen = false
+        }
+      )
+      .interactiveDismissDisabled()
     }
     .sheet(item: $profileToShowStats) { profile in
       ProfileInsightsView(profile: profile)
@@ -222,7 +264,8 @@ struct HomeView: View {
         presentationDetents: strategyManager.customStrategyViewPresentationDetents
       )
     }
-    .sheet(isPresented: $showSettingsView) {
+    // The mode may have changed in Settings, which takes the banner with it.
+    .sheet(isPresented: $showSettingsView, onDismiss: checkChildMode) {
       SettingsView()
     }
     .sheet(item: $profileToSkipUntil) { profile in
@@ -234,6 +277,20 @@ struct HomeView: View {
       }
     }
     .toastBanner(message: $toastMessage)
+    .parentConfirmation($parentConfirmationRequest)
+    .sheet(isPresented: $showTamperLog, onDismiss: refreshTamperBanner) {
+      NavigationStack {
+        TamperLogView()
+          .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+              Button(action: { showTamperLog = false }) {
+                Image(systemName: "xmark")
+              }
+              .accessibilityLabel("Close")
+            }
+          }
+      }
+    }
     .alert(alertTitle, isPresented: $showingAlert) {
       Button("OK", role: .cancel) { dismissAlert() }
     } message: {
@@ -266,11 +323,20 @@ struct HomeView: View {
     ScrollView(showsIndicators: false) {
       VStack(alignment: .leading, spacing: 30) {
         HStack(alignment: .center) {
+          if canGoBackToModeChoice {
+            RoundedButton(
+              "", action: goBackToModeChoice, iconName: "chevron.left", forcedLight: true
+            )
+            .accessibilityLabel("Back")
+          }
+
           HomeAlertsView(
             alerts: alertsManager.alerts,
             onAlertTapped: { alert in
               presentAlert(alert)
-            }
+            },
+            tamperEntry: visibleTamperEntry,
+            onTamperTapped: openTamperLog
           )
 
           Spacer()
@@ -447,6 +513,7 @@ struct HomeView: View {
   }
 
   private func loadApp() {
+    checkChildMode()
     strategyManager.loadActiveSession(context: context)
     strategyManager.checkAndResetEmergencyUnblocks()
     strategyManager.checkAndResetRecoveryUnlocks()
@@ -454,9 +521,23 @@ struct HomeView: View {
   }
 
   private func skipNextOccurrence(for profile: BlockedProfiles) {
+    guard ChildModeStore.isChildMode else {
+      skipNextOccurrence(for: profile, alreadyConfirmed: false)
+      return
+    }
+
+    parentConfirmationRequest = ParentConfirmationRequest(
+      reason: String(localized: "To skip sessions")
+    ) {
+      skipNextOccurrence(for: profile, alreadyConfirmed: true)
+    }
+  }
+
+  private func skipNextOccurrence(for profile: BlockedProfiles, alreadyConfirmed: Bool) {
     scheduleSkipUtil.skipNextOccurrence(
       of: profile,
       in: context,
+      alreadyConfirmed: alreadyConfirmed,
       onSuccess: { message in
         toastMessage = message
       },
@@ -471,6 +552,7 @@ struct HomeView: View {
       day,
       of: profile,
       in: context,
+      alreadyConfirmed: ChildModeStore.isChildMode,
       onSuccess: { message in
         profileToSkipUntil = nil
         toastMessage = message
@@ -481,8 +563,46 @@ struct HomeView: View {
     )
   }
 
+  // Catches up on anything the device monitor may have missed while the app
+  // was closed: an automatic end that's already due, or a moved date.
+  private func checkChildMode() {
+    guard ChildModeStore.isChildMode else {
+      unseenTamperEntry = nil
+      return
+    }
+    ChildModeStore.checkForClockChange()
+    ChildSessionLimit.check()
+    refreshTamperBanner()
+  }
+
+  private func refreshTamperBanner() {
+    unseenTamperEntry =
+      ChildModeStore.isChildMode && ChildModeStore.tamperLogUnseen
+      ? ChildModeStore.tamperLog.last : nil
+  }
+
+  // Missing Screen Time access comes first; what else was logged shows once
+  // access is back.
+  private var visibleTamperEntry: TamperLogEntry? {
+    guard ChildModeStore.isChildMode,
+      !alertsManager.alerts.contains(where: { $0.type == .screenTimeAccess })
+    else {
+      return nil
+    }
+    return unseenTamperEntry
+  }
+
+  private func openTamperLog() {
+    parentConfirmationRequest = ParentConfirmationRequest(
+      reason: String(localized: "To see the attempt log")
+    ) {
+      showTamperLog = true
+    }
+  }
+
   private func onAppearApp() {
     requestAuthorizer.refreshAuthorizationStatus()
+    checkChildMode()
     strategyManager.loadActiveSession(context: context)
     strategyManager.checkAndResetEmergencyUnblocks()
     strategyManager.checkAndResetRecoveryUnlocks()

@@ -37,6 +37,9 @@ struct BlockedProfileView: View {
   // Alert management
   @State private var alertIdentifier: AlertIdentifier?
 
+  // In child mode, changing or deleting a profile needs the parents.
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
+
   // Alert for cloning
   @State private var showingClonePrompt = false
   @State private var cloneName: String = ""
@@ -105,6 +108,12 @@ struct BlockedProfileView: View {
 
         BlockedProfileStrictSafeguardsSection(draft: draft, disabled: isBlocking)
 
+        // A schedule already shows this under its duration.
+        if draft.isChildMode && !draft.useSchedule {
+          Section {
+            ChildModeSessionLimitNote()
+          }
+        }
       }
       .navigationTitle(isEditing ? "Edit Profile" : "New Profile")
       .toolbar {
@@ -218,13 +227,14 @@ struct BlockedProfileView: View {
               "Are you sure you want to delete this profile? This action cannot be undone."),
             primaryButton: .cancel(),
             secondaryButton: .destructive(Text("Delete")) {
-              dismiss()
-              if let profileToDelete = profile {
-                do {
-                  try BlockedProfiles.deleteProfile(profileToDelete, in: modelContext)
-                } catch {
-                  showError(message: error.localizedDescription)
+              if draft.isChildMode {
+                parentConfirmationRequest = ParentConfirmationRequest(
+                  reason: String(localized: "To delete this profile")
+                ) {
+                  deleteProfile()
                 }
+              } else {
+                deleteProfile()
               }
             }
           )
@@ -250,6 +260,18 @@ struct BlockedProfileView: View {
         }
       }
       .interactiveDismissDisabled(draft.isDirty)
+      .parentConfirmation($parentConfirmationRequest)
+    }
+  }
+
+  private func deleteProfile() {
+    dismiss()
+    if let profileToDelete = profile {
+      do {
+        try BlockedProfiles.deleteProfile(profileToDelete, in: modelContext)
+      } catch {
+        showError(message: error.localizedDescription)
+      }
     }
   }
 
@@ -266,7 +288,7 @@ struct BlockedProfileView: View {
   }
 
   private func saveProfile() {
-    guard !draft.physicalUnblockItems.isEmpty else {
+    guard draft.hasRequiredUnlocks else {
       alertIdentifier = AlertIdentifier(id: .missingPhysicalUnlock)
       return
     }
@@ -278,6 +300,20 @@ struct BlockedProfileView: View {
       }
     }
 
+    // Creating a profile only ever adds blocking; changing one can loosen it.
+    if draft.isChildMode && isEditing {
+      parentConfirmationRequest = ParentConfirmationRequest(
+        reason: String(localized: "To edit this profile")
+      ) {
+        commitSave()
+      }
+      return
+    }
+
+    commitSave()
+  }
+
+  private func commitSave() {
     do {
       _ = try draft.save(existingProfile: profile, in: modelContext)
       dismiss()

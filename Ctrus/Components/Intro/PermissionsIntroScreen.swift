@@ -23,53 +23,16 @@ struct PermissionsIntroScreen: View {
         .padding(.top, 46)
         .opacity(showContent ? 1 : 0)
 
-      VStack(spacing: 14) {
-        Text("Welcome to Ctrus")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.fixedLightPrimaryText)
-
-        Text("We need Screen Time Access to get started")
-          .font(.subheadline)
-          .foregroundColor(.fixedLightSecondaryText)
-          .multilineTextAlignment(.center)
-          .fixedSize(horizontal: false, vertical: true)
-          .padding(.horizontal, 8)
-
-        // Passcode warning message
-        // Disabled: was cutting into the "Allow Screen Time Access" button on
-        // small screens. Keeping the logic in AnimatedIntroContainer in case
-        // this comes back in a less cramped layout.
-        // if showPasscodeMessage {
-        //   HStack(spacing: 8) {
-        //     Image(systemName: "exclamationmark.triangle.fill")
-        //       .foregroundColor(.orange)
-        //     Text(
-        //       "Still here? You need to set a passcode on your phone for Screen Time to work properly."
-        //     )
-        //     .font(.system(size: 14, weight: .medium))
-        //     .foregroundColor(.orange)
-        //     .multilineTextAlignment(.center)
-        //   }
-        //   .padding(.horizontal, 16)
-        //   .padding(.vertical, 12)
-        //   .background(
-        //     RoundedRectangle(cornerRadius: 12)
-        //       .fill(Color.orange.opacity(0.15))
-        //   )
-        //   .transition(.opacity.combined(with: .move(edge: .bottom)))
-        // }
-
-        ShimmerLauncherButton(
-          title: String(localized: "Allow Screen Time Access"),
-          iconName: "hourglass",
-          height: 56,
-          showShimmer: false,
-          accessibilityLabel: String(localized: "Allow Screen Time Access"),
-          action: onRequestAuthorization
-        )
-        .padding(.top, 6)
-      }
+      // Passcode warning: disabled, it was cutting into the access button
+      // on small screens. The logic stays in AnimatedIntroContainer in case
+      // it comes back in a less cramped layout.
+      IntroCard(
+        title: String(localized: "Welcome to Ctrus"),
+        subtitle: String(localized: "We need Screen Time Access to get started."),
+        iconName: "hourglass",
+        action: onRequestAuthorization
+      )
+      .accessibilityLabel(String(localized: "Allow Screen Time Access"))
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 16)
       .padding(.vertical, 22)

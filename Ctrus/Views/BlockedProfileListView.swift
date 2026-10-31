@@ -24,6 +24,7 @@ struct BlockedProfileListView: View {
   @State private var showErrorAlert = false
   @State private var editMode: EditMode = .inactive
   @State private var showingAllProfilesInsights = false
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
 
   var body: some View {
     NavigationStack {
@@ -62,7 +63,7 @@ struct BlockedProfileListView: View {
                   }
 
                 if editMode == .active {
-                  Button(action: { deleteProfile(profile) }) {
+                  Button(action: { requestDelete(profile) }) {
                     Image(systemName: "minus.circle.fill")
                       .font(.title2)
                       .foregroundStyle(.red)
@@ -127,6 +128,7 @@ struct BlockedProfileListView: View {
       .sheet(isPresented: $showingAllProfilesInsights) {
         ProfileInsightsView(profiles: profiles, title: String(localized: "Profiles"))
       }
+      .parentConfirmation($parentConfirmationRequest)
       .alert(
         "Cannot Delete Active Profile",
         isPresented: $showErrorAlert
@@ -146,6 +148,19 @@ struct BlockedProfileListView: View {
 
   private var canCreateProfiles: Bool {
     return activeSessionProfileId == nil
+  }
+
+  private func requestDelete(_ profile: BlockedProfiles) {
+    guard ChildModeStore.isChildMode else {
+      deleteProfile(profile)
+      return
+    }
+
+    parentConfirmationRequest = ParentConfirmationRequest(
+      reason: String(localized: "To delete this profile")
+    ) {
+      deleteProfile(profile)
+    }
   }
 
   private func deleteProfile(_ profile: BlockedProfiles) {

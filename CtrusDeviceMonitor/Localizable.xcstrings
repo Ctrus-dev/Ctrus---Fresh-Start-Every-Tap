@@ -139,9 +139,7 @@
         }
       }
     },
-    "%@ didn't start because Screen Time access is turned off. Turn it back on in Ctrus to resume blocking." : {
-
-    },
+    "%@ didn't start because Screen Time access is turned off. Turn it back on in Ctrus to resume blocking." : {},
     "%@ does not use a strategy that supports pausing." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -322,6 +320,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ selecionado(s)"
+          }
+        }
+      }
+    },
+    "%@ starts in 5 minutes." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ starts in 5 minutes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ comienza en 5 minutos."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ começa dentro de 5 minutos."
           }
         }
       }
@@ -947,6 +968,29 @@
         }
       }
     },
+    "5 wrong codes in a row" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 wrong codes in a row"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 códigos incorrectos seguidos"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 códigos errados seguidos"
+          }
+        }
+      }
+    },
     ">5h" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -966,6 +1010,75 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : ">5h"
+          }
+        }
+      }
+    },
+    "Phone date changed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone date changed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha del móvil cambiada"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data do telemóvel alterada"
+          }
+        }
+      }
+    },
+    "Some permissions may have been turned off" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some permissions may have been turned off"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algumas permissões podem ter sido desligadas"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es posible que se hayan desactivado algunos permisos"
+          }
+        }
+      }
+    },
+    "Starting Soon!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting Soon!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Casi Empieza!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quase a Começar!"
           }
         }
       }

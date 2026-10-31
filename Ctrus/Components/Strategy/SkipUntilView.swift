@@ -14,6 +14,11 @@ struct SkipUntilView: View {
   static let maxDaysAhead = 30
 
   @State private var selectedDay: Date? = nil
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
+
+  // In child mode the parents confirm here, in this sheet, and the skip is
+  // then handed over as already confirmed.
+  private var isChildMode: Bool { ChildModeStore.isChildMode }
 
   private var skippedSessionCount: Int {
     guard let selectedDay else { return 0 }
@@ -62,18 +67,28 @@ struct SkipUntilView: View {
       }
 
       ActionButton(
-        title: String(localized: "Skip with Ctrus"),
+        title: isChildMode ? String(localized: "Skip") : String(localized: "Skip with Ctrus"),
         backgroundColor: themeManager.themeColor,
         isDisabled: skippedSessionCount == 0
       ) {
         guard let selectedDay else { return }
-        onSkip(selectedDay)
+
+        if isChildMode {
+          parentConfirmationRequest = ParentConfirmationRequest(
+            reason: String(localized: "To skip sessions")
+          ) {
+            onSkip(selectedDay)
+          }
+        } else {
+          onSkip(selectedDay)
+        }
       }
 
       Spacer(minLength: 0)
     }
     .padding(.horizontal, 24)
     .padding(.bottom, 24)
+    .parentConfirmation($parentConfirmationRequest)
     .alert(
       String(localized: "Whoops"),
       isPresented: Binding(

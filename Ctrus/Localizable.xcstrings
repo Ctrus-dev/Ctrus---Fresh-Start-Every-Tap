@@ -912,6 +912,75 @@
         }
       }
     },
+    "5 wrong codes in a row": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 wrong codes in a row"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 códigos incorrectos seguidos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 códigos errados seguidos"
+          }
+        }
+      }
+    },
+    "Add another parents' Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add another parents' Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir otro Ctrus de los padres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar outro Ctrus dos pais"
+          }
+        }
+      }
+    },
+    "Add the child's Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add the child's Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir el Ctrus del hijo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar o Ctrus do filho"
+          }
+        }
+      }
+    },
     "Allow skipping sessions": {
       "extractionState": "manual",
       "localizations": {
@@ -931,6 +1000,213 @@
           "stringUnit": {
             "state": "translated",
             "value": "Permitir saltar sessões"
+          }
+        }
+      }
+    },
+    "Attempt log": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attempt log"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registro de intentos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registo de tentativas"
+          }
+        }
+      }
+    },
+    "Change parent code": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change parent code"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar el código parental"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mudar o código dos pais"
+          }
+        }
+      }
+    },
+    "Changes apply to every profile straight away.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes apply to every profile straight away."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cambios se aplican enseguida a todos los perfiles."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As alterações valem logo para todos os perfis."
+          }
+        }
+      }
+    },
+    "Child Mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Child Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo Infantil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo Criança"
+          }
+        }
+      }
+    },
+    "Child's Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Child's Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus del hijo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus do filho"
+          }
+        }
+      }
+    },
+    "Choose a 6-digit parent code": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a 6-digit parent code"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un código parental de 6 dígitos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhe um código dos pais com 6 dígitos"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar"
+          }
+        }
+      }
+    },
+    "Clear the attempt log?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear the attempt log?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Borrar el registro de intentos?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar o registo de tentativas?"
+          }
+        }
+      }
+    },
+    "Create a new recovery key": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a new recovery key"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generar nueva clave de recuperación"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerar chave de recuperação nova"
           }
         }
       }
@@ -1004,6 +1280,75 @@
         }
       }
     },
+    "Enter the code again": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter the code again"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe el código otra vez"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreve o código outra vez"
+          }
+        }
+      }
+    },
+    "Enter the recovery key": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter the recovery key"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe la clave de recuperación"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreve a chave de recuperação"
+          }
+        }
+      }
+    },
+    "Every entry is deleted. This can't be undone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every entry is deleted. This can't be undone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se borran todas las entradas. No se puede deshacer."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas as entradas são apagadas. Não dá para desfazer."
+          }
+        }
+      }
+    },
     "Failed to save changes: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -1027,25 +1372,324 @@
         }
       }
     },
-    "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+    "For your child's phone.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+            "value": "For your child's phone."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantén pulsado tu perfil para dar inicio a la sesión, o espera a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+            "value": "Para el móvil de tu hijo."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prime o teu perfil sem soltar para dares início à sessão, ou espera pela hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
+            "value": "Para o telemóvel do teu filho."
+          }
+        }
+      }
+    },
+    "For your own phone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For your own phone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para tu móvil."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para o teu telemóvel."
+          }
+        }
+      }
+    },
+    "I forgot the code": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I forgot the code"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olvidé el código"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esqueci o código"
+          }
+        }
+      }
+    },
+    "I've saved it": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I've saved it"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya la guardé"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Já guardei"
+          }
+        }
+      }
+    },
+    "If you lose your Ctrus and forget the code, this key is the only way back. Take a photo or write it down. It won't be shown again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you lose your Ctrus and forget the code, this key is the only way back. Take a photo or write it down. It won't be shown again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si pierdes el Ctrus y olvidas el código, solo esta clave te salva. Hazle una foto o apúntala. No volverá a aparecer."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se perderes o Ctrus e te esqueceres do código, só esta chave te safa. Tira uma foto ou escreve-a. Não volta a aparecer."
+          }
+        }
+      }
+    },
+    "In Child Mode, sessions end on their own after 24 hours.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Child Mode, sessions end on their own after 24 hours."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Modo Infantil, las sesiones terminan solas a las 24 horas."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Modo Criança, as sessões acabam sozinhas ao fim de 24 horas."
+          }
+        }
+      }
+    },
+    "It confirms changes and ends sessions when the parents' Ctrus isn't at hand.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It confirms changes and ends sessions when the parents' Ctrus isn't at hand."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sirve para confirmar cambios y terminar sesiones cuando el Ctrus de los padres no está a mano."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serve para confirmar alterações e acabar sessões quando o Ctrus dos pais não está à mão."
+          }
+        }
+      }
+    },
+    "Normal Mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo Normal"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo Normal"
+          }
+        }
+      }
+    },
+    "Nothing recorded yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing recorded yet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay nada registrado."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainda não há nada registado."
+          }
+        }
+      }
+    },
+    "Parent code": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parent code"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código parental"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código dos pais"
+          }
+        }
+      }
+    },
+    "Parents' Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parents' Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus de los padres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus dos pais"
+          }
+        }
+      }
+    },
+    "Parents' Ctrus %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parents' Ctrus %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus de los padres %lld"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus dos pais %lld"
+          }
+        }
+      }
+    },
+    "Phone date changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone date changed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha del móvil cambiada"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data do telemóvel alterada"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover"
           }
         }
       }
@@ -1069,6 +1713,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Retomar horário"
+          }
+        }
+      }
+    },
+    "Skip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saltar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saltar"
           }
         }
       }
@@ -1231,6 +1898,259 @@
         }
       }
     },
+    "Some permissions may have been turned off": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some permissions may have been turned off"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algumas permissões podem ter sido desligadas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es posible que se hayan desactivado algunos permisos"
+          }
+        }
+      }
+    },
+    "Switch to Normal Mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to Normal Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar al Modo Normal"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passar para o Modo Normal"
+          }
+        }
+      }
+    },
+    "Tap the parents' Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap the parents' Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acerca el Ctrus de los padres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encosta o Ctrus dos pais"
+          }
+        }
+      }
+    },
+    "That code is too easy to guess.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That code is too easy to guess."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese código es fácil de adivinar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esse código é fácil de adivinhar."
+          }
+        }
+      }
+    },
+    "That code isn't right.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That code isn't right."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese código no es correcto."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esse código não está certo."
+          }
+        }
+      }
+    },
+    "That recovery key isn't right.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That recovery key isn't right."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esa clave de recuperación no es correcta."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essa chave de recuperação não está certa."
+          }
+        }
+      }
+    },
+    "The child's Ctrus can also end the session": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The child's Ctrus can also end the session"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El Ctrus del hijo también termina la sesión"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus do filho também acaba a sessão"
+          }
+        }
+      }
+    },
+    "The codes don't match.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The codes don't match."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los códigos no coinciden."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os códigos não são iguais."
+          }
+        }
+      }
+    },
+    "The current recovery key stops working as soon as a new one is created.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current recovery key stops working as soon as a new one is created."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La clave de recuperación actual deja de valer en cuanto se genera una nueva."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A chave de recuperação atual deixa de valer assim que for gerada uma nova."
+          }
+        }
+      }
+    },
+    "The parent code, recovery key and attempt log are deleted. Your profiles stay, and can still be unblocked with the Ctrus they used in Child Mode.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The parent code, recovery key and attempt log are deleted. Your profiles stay, and can still be unblocked with the Ctrus they used in Child Mode."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se borran el código parental, la clave de recuperación y el registro de intentos. Los perfiles se mantienen y se pueden seguir desbloqueando con los Ctrus que usaban en el Modo Infantil."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O código dos pais, a chave de recuperação e o registo de tentativas são apagados. Os perfis mantêm-se e continuam a poder ser desbloqueados com os Ctrus que usavam no Modo Criança."
+          }
+        }
+      }
+    },
+    "The parents' Ctrus ends any session, on every profile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The parents' Ctrus ends any session, on every profile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El Ctrus de los padres termina cualquier sesión, en todos los perfiles."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus dos pais acaba qualquer sessão, em todos os perfis."
+          }
+        }
+      }
+    },
     "There are no sessions on those days.": {
       "extractionState": "manual",
       "localizations": {
@@ -1277,6 +2197,282 @@
         }
       }
     },
+    "This isn't a parents' Ctrus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This isn't a parents' Ctrus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este no es un Ctrus de los padres."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este não é um Ctrus dos pais."
+          }
+        }
+      }
+    },
+    "To delete this profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To delete this profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para borrar este perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para apagar este perfil"
+          }
+        }
+      }
+    },
+    "To edit this profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To edit this profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para editar este perfil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para editar este perfil"
+          }
+        }
+      }
+    },
+    "To end the active session": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To end the active session"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para terminar la sesión activa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para acabar a sessão ativa"
+          }
+        }
+      }
+    },
+    "To open the Child Mode settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To open the Child Mode settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para abrir los ajustes del Modo Infantil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para abrir as definições do Modo Criança"
+          }
+        }
+      }
+    },
+    "To see the attempt log": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To see the attempt log"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ver el registro de intentos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ver o registo de tentativas"
+          }
+        }
+      }
+    },
+    "To skip sessions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To skip sessions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para saltar sesiones"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para saltar sessões"
+          }
+        }
+      }
+    },
+    "Too many attempts. Try again in %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many attempts. Try again in %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demasiados intentos. Vuelve a intentarlo en %@."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demasiadas tentativas. Tenta de novo daqui a %@."
+          }
+        }
+      }
+    },
+    "Turn on Child Mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Child Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar Modo Infantil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativar Modo Criança"
+          }
+        }
+      }
+    },
+    "Type the same code to make sure it's right.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type the same code to make sure it's right."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe el mismo código para confirmar que es correcto."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreve o mesmo código para confirmares que está certo."
+          }
+        }
+      }
+    },
+    "Unblock with the parent code": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unblock with the parent code"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear con el código parental"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear com o código dos pais"
+          }
+        }
+      }
+    },
+    "Use the parents' Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the parents' Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar el Ctrus de los padres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar o Ctrus dos pais"
+          }
+        }
+      }
+    },
     "You'll find this option in the profile's ⋯ menu.": {
       "extractionState": "manual",
       "localizations": {
@@ -1319,6 +2515,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "O teu perfil começa sozinho à hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
+          }
+        }
+      }
+    },
+    "Your recovery key": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your recovery key"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu clave de recuperación"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tua chave de recuperação"
           }
         }
       }
@@ -6063,25 +7282,25 @@
         }
       }
     },
-    "Let's get you started by creating your first profile": {
+    "Let's get you started by creating your first profile.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Let's get you started by creating your first profile"
+            "value": "Let's get you started by creating your first profile."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Empecemos creando tu primer perfil"
+            "value": "Empecemos creando tu primer perfil."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vamos começar por criar o teu primeiro perfil"
+            "value": "Vamos começar por criar o teu primeiro perfil."
           }
         }
       }
@@ -7841,6 +9060,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prime o teu perfil sem soltar para dares início à sessão. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
+          }
+        }
+      }
+    },
+    "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén pulsado tu perfil para dar inicio a la sesión, o espera a la hora programada. Tócalo mientras esté activo para acceder a las opciones de detener, de emergencia y de pausar."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prime o teu perfil sem soltar para dares início à sessão, ou espera pela hora marcada. Toca nele enquanto estiver ativo para teres acesso às opções de parar, de emergência e de pausar."
           }
         }
       }
@@ -11996,25 +13238,25 @@
         }
       }
     },
-    "We need Screen Time Access to get started": {
+    "We need Screen Time Access to get started.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "We need Screen Time Access to get started"
+            "value": "We need Screen Time Access to get started."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Necesitamos Acceso a Tiempo de Uso para empezar"
+            "value": "Necesitamos Acceso a Tiempo de Uso para empezar."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Precisamos de Acesso ao Tempo de Ecrã para começar"
+            "value": "Precisamos de Acesso ao Tempo de Ecrã para começar."
           }
         }
       }
@@ -12810,6 +14052,9 @@
           }
         }
       }
+    },
+    "XXXX-XXXX-XXXX": {
+      "shouldTranslate": false
     }
   },
   "version": "1.0"
