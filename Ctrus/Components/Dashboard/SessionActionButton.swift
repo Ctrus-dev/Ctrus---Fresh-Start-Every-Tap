@@ -192,6 +192,84 @@ struct SessionTimeAccessory: View {
   }
 }
 
+/// Alarm mode's take on `SessionTimeAccessory`: counts down to the alarm,
+/// says it's ringing once it's due, and counts a snooze down in its place.
+/// During a break, the break's own countdown sits underneath.
+struct AlarmSessionTimeAccessory: View {
+  let alarmDate: Date?
+  let snoozedUntil: Date?
+  let isRinging: Bool
+  /// Shown underneath while a break is on.
+  let breakTime: TimeInterval?
+  /// Stands in for the alarm countdown before its alarm has been set.
+  let fallbackTime: TimeInterval
+  let color: Color
+
+  private let iconFont = Font.system(size: 16, weight: .semibold)
+  private let labelFont = Font.system(size: 17, weight: .semibold)
+
+  private var timeFont: Font {
+    .system(size: breakTime == nil ? 28 : 22, weight: .bold, design: .monospaced)
+  }
+
+  var body: some View {
+    TimelineView(.periodic(from: .now, by: 1)) { context in
+      VStack(spacing: 4) {
+        topRow(now: context.date)
+
+        if let breakTime {
+          clockRow(
+            systemImageName: "cup.and.heat.waves.fill",
+            time: breakTime,
+            font: .system(size: 17, weight: .bold, design: .monospaced)
+          )
+          .opacity(0.75)
+          .accessibilityLabel(String(localized: "On a Break"))
+        }
+      }
+    }
+    .foregroundStyle(color)
+  }
+
+  @ViewBuilder
+  private func topRow(now: Date) -> some View {
+    if let snoozedUntil, snoozedUntil > now {
+      clockRow(systemImageName: "zzz", time: snoozedUntil.timeIntervalSince(now), font: timeFont)
+    } else if isRinging {
+      HStack(spacing: 4) {
+        Image(systemName: "alarm.waves.left.and.right.fill")
+          .font(iconFont)
+          .symbolEffect(.pulse, options: .repeating)
+
+        Text("Ringing")
+          .font(labelFont)
+          .lineLimit(1)
+          .minimumScaleFactor(0.6)
+      }
+    } else {
+      clockRow(
+        systemImageName: "alarm.fill",
+        time: alarmDate.map { $0.timeIntervalSince(now) } ?? fallbackTime,
+        font: timeFont
+      )
+    }
+  }
+
+  private func clockRow(systemImageName: String, time: TimeInterval, font: Font) -> some View {
+    HStack(spacing: 4) {
+      Image(systemName: systemImageName)
+        .font(iconFont)
+
+      Text(DateFormatters.formatDurationClock(time))
+        .font(font)
+        .lineLimit(1)
+        .minimumScaleFactor(0.4)
+        .contentTransition(.numericText())
+        .animation(.default, value: Int(time))
+    }
+  }
+}
+
 private struct OptionalForegroundStyle: ViewModifier {
   let color: Color?
 

@@ -137,7 +137,7 @@ struct GuidedBlockedProfileCreationView: View {
     case .strictUnlocks:
       return draft.hasRequiredUnlocks
     case .schedule:
-      return !draft.schedule.days.isEmpty
+      return draft.hasValidSchedule
     default:
       return true
     }
@@ -416,11 +416,18 @@ struct GuidedBlockedProfileCreationView: View {
   }
 
   private func createProfile() {
-    do {
-      _ = try draft.save(existingProfile: nil, in: modelContext)
-      dismiss()
-    } catch {
-      alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+    Task { @MainActor in
+      if let problem = await WakeAlarmManager.alarmSetupProblem(for: draft) {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: problem)
+        return
+      }
+
+      do {
+        _ = try draft.save(existingProfile: nil, in: modelContext)
+        dismiss()
+      } catch {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+      }
     }
   }
 }
@@ -442,7 +449,15 @@ private struct GuidedProfileReviewContent: View {
       reviewRow(title: String(localized: "Domains"), value: domainSummary)
       reviewDivider
       if draft.useSchedule {
-        reviewRow(title: String(localized: "Schedule"), value: draft.schedule.summaryText)
+        reviewRow(title: String(localized: "Schedule"), value: scheduleSummary)
+        reviewDivider
+      }
+      if draft.useAlarm {
+        reviewRow(
+          title: String(localized: "Snooze"),
+          value: draft.enableSnooze
+            ? String(localized: "\(draft.schedule.alarmSnoozeMinutes) minutes")
+            : String(localized: "Disabled"))
         reviewDivider
       }
       reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
@@ -480,6 +495,14 @@ private struct GuidedProfileReviewContent: View {
   private var reviewDivider: some View {
     Divider()
       .padding(.leading, 118)
+  }
+
+  private var scheduleSummary: String {
+    if draft.useOneTimeAlarm {
+      return String(localized: "Once · \(draft.schedule.alarmTimeRangeText)")
+    }
+
+    return draft.useAlarm ? draft.schedule.alarmSummaryText : draft.schedule.summaryText
   }
 
   private var domainSummary: String {

@@ -28,6 +28,8 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var physicalUnblockItems: [PhysicalUnblockItem]
   @Published var schedule: BlockedProfileSchedule
   @Published var allowSkip: Bool
+  @Published var enableSnooze: Bool
+  @Published var isOneTimeAlarm: Bool
   @Published var childTag: ChildTag?
   @Published var childTagCanStop: Bool
   // Captured once at load so save() can tell whether the schedule itself
@@ -45,6 +47,11 @@ final class BlockedProfileDraft: ObservableObject {
       if !useSchedule {
         schedule.days = []
       }
+
+      // Alarm mode never ends on a timer; the alarm does that.
+      if useAlarm {
+        schedule.durationInHours = nil
+      }
     }
   }
 
@@ -53,7 +60,7 @@ final class BlockedProfileDraft: ObservableObject {
     selectedActivity = profile?.selectedActivity ?? FamilyActivitySelection()
     enableLiveActivity = profile?.enableLiveActivity ?? false
     enableBreaks = profile?.enableBreaks ?? false
-    breakTimeInMinutes = profile?.breakTimeInMinutes ?? 10
+    breakTimeInMinutes = profile?.breakTimeInMinutes ?? 5
     allowMultipleBreaks = profile?.allowMultipleBreaks ?? false
     enableStrictMode = profile?.enableStrictMode ?? true
     enableBlockAppInstallation = profile?.enableBlockAppInstallation ?? false
@@ -83,6 +90,8 @@ final class BlockedProfileDraft: ObservableObject {
       )
     schedule = resolvedSchedule
     initialSchedule = resolvedSchedule
+    enableSnooze = profile?.enableSnooze ?? true
+    isOneTimeAlarm = profile?.isOneTimeAlarm ?? false
     // New child mode profiles allow skipping; existing ones keep theirs.
     allowSkip = profile?.allowSkip ?? ChildModeStore.isChildMode
     childTag = profile?.childTag
@@ -121,14 +130,35 @@ final class BlockedProfileDraft: ObservableObject {
     return selectedStrategy?.allowsTimedBreaks ?? true
   }
 
+  /// Schedule and Alarm both start on their own and share the schedule step.
   var useSchedule: Bool {
-    return selectedStrategy?.getIdentifier() == ScheduleBlockingStrategy.id
+    return StrategyManager.scheduledStrategyIds.contains(selectedStrategy?.getIdentifier() ?? "")
+  }
+
+  var useAlarm: Bool {
+    return selectedStrategy?.getIdentifier() == AlarmBlockingStrategy.id
+  }
+
+  var useOneTimeAlarm: Bool {
+    useAlarm && isOneTimeAlarm
+  }
+
+  var hasValidSchedule: Bool {
+    (useOneTimeAlarm || !schedule.days.isEmpty) && (!useAlarm || schedule.hasValidAlarmTime)
   }
 
   func save(
     existingProfile: BlockedProfiles?,
     in context: ModelContext
   ) throws -> BlockedProfiles {
+    // A one-time alarm runs on whichever day its start time comes next.
+    if useOneTimeAlarm, let start = nextOneTimeStart(),
+      let weekday = Weekday(rawValue: Calendar.current.component(.weekday, from: start))
+    {
+      schedule.days = [weekday]
+      allowSkip = false
+    }
+
     if schedule != initialSchedule {
       schedule.updatedAt = Date()
     }
@@ -162,6 +192,8 @@ final class BlockedProfileDraft: ObservableObject {
         physicalUnblockItems: .some(physicalUnblockItemsToSave),
         schedule: schedule,
         allowSkip: allowSkip,
+        enableSnooze: enableSnooze,
+        isOneTimeAlarm: useOneTimeAlarm,
         childTag: .some(childTag),
         childTagCanStop: childTag != nil && childTagCanStop,
         disableBackgroundStops: disableBackgroundStops,
@@ -193,6 +225,8 @@ final class BlockedProfileDraft: ObservableObject {
       physicalUnblockItems: physicalUnblockItemsToSave,
       schedule: schedule,
       allowSkip: allowSkip,
+      enableSnooze: enableSnooze,
+      isOneTimeAlarm: useOneTimeAlarm,
       childTag: childTag,
       childTagCanStop: childTag != nil && childTagCanStop,
       disableBackgroundStops: disableBackgroundStops,
@@ -201,6 +235,16 @@ final class BlockedProfileDraft: ObservableObject {
 
     DeviceActivityCenterUtil.scheduleTimerActivity(for: newProfile)
     return newProfile
+  }
+
+  // Far enough ahead that saving now doesn't fall inside the settle window
+  // the Screen Time extension ignores.
+  private func nextOneTimeStart(now: Date = Date()) -> Date? {
+    Calendar.current.nextDate(
+      after: now.addingTimeInterval(BlockedProfileSchedule.registrationSettleSeconds),
+      matching: DateComponents(hour: schedule.startHour, minute: schedule.startMinute, second: 0),
+      matchingPolicy: .nextTime
+    )
   }
 
   private func enforceStrategyBreaksPolicy() {

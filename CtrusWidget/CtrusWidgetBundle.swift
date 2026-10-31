@@ -12,6 +12,5 @@ import WidgetKit
 struct CtrusWidgetBundle: WidgetBundle {
   var body: some Widget {
     ProfileControlWidget()
-    CtrusWidgetLiveActivity()
   }
 }

@@ -42,8 +42,8 @@ struct BlockedProfileStrategyFields: View {
   @ObservedObject var draft: BlockedProfileDraft
   var disabled: Bool
   var showsSeparators: Bool = false
-
   private let scheduleStrategy: BlockingStrategy = ScheduleBlockingStrategy()
+  private let alarmStrategy: BlockingStrategy = AlarmBlockingStrategy()
 
   var body: some View {
     ForEach(Array(StrategyManager.pickerStrategies.enumerated()), id: \.element.name) {
@@ -66,12 +66,27 @@ struct BlockedProfileStrategyFields: View {
 
     StrategyRow(
       strategy: scheduleStrategy,
-      isSelected: draft.useSchedule,
+      // Not `useSchedule`, which Alarm mode shares.
+      isSelected: draft.selectedStrategy?.getIdentifier() == ScheduleBlockingStrategy.id,
       onTap: {
         draft.selectedStrategy = ScheduleBlockingStrategy()
       }
     )
     .disabled(disabled)
+
+    // Alarm mode needs AlarmKit, which only exists from iOS 26.
+    if #available(iOS 26.0, *) {
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      StrategyRow(
+        strategy: alarmStrategy,
+        isSelected: draft.useAlarm,
+        onTap: {
+          draft.selectedStrategy = AlarmBlockingStrategy()
+        }
+      )
+      .disabled(disabled)
+    }
   }
 }
 
@@ -104,6 +119,14 @@ struct BlockedProfileAppsFields: View {
       allowMode: draft.enableAllowMode,
       disabled: disabled
     )
+
+    // iOS doesn't always shield every app in a chosen category.
+    if !draft.enableAllowMode {
+      Text("If an app isn't blocked when you choose its whole category, open the category and select its apps one by one instead.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    }
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
@@ -336,9 +359,34 @@ struct BlockedProfileScheduleFields: View {
   var showsSeparators: Bool = false
 
   var body: some View {
-    weekdaySelector
+    if draft.useAlarm {
+      CustomToggle(
+        title: String(localized: "Ring only once"),
+        description: String(
+          localized:
+            "Rings the next time the end time comes around. Once you stop it, this profile is deleted."
+        ),
+        isOn: $draft.isOneTimeAlarm,
+        isDisabled: disabled
+      )
 
-    ProfileFieldDivider(isVisible: showsSeparators)
+      ProfileFieldDivider(isVisible: showsSeparators)
+    }
+
+    if !draft.useOneTimeAlarm {
+      weekdaySelector
+
+      if draft.useAlarm && !draft.schedule.days.isEmpty {
+        Text(
+          "The alarm rings \(draft.schedule.alarmDaysText()) at \(draft.schedule.alarmTimeText)"
+        )
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+      }
+
+      ProfileFieldDivider(isVisible: showsSeparators)
+    }
 
     DatePicker(
       String(localized: "Start Time"),
@@ -350,7 +398,37 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    durationPicker
+    if draft.useAlarm {
+      alarmFields
+    } else {
+      durationPicker
+    }
+
+    // A one-time alarm has no later sessions to skip.
+    if !draft.useOneTimeAlarm {
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      skipSessionsBlock
+    }
+  }
+
+  @ViewBuilder
+  private var alarmFields: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      DatePicker(
+        String(localized: "End Time"),
+        selection: alarmTimeBinding,
+        displayedComponents: .hourAndMinute
+      )
+      .tint(themeManager.themeColor)
+      .disabled(disabled)
+
+      if !draft.schedule.hasValidAlarmTime {
+        Text("The end time must be different from the start time.")
+          .font(.caption)
+          .foregroundStyle(.red)
+      }
+    }
 
     // Child mode caps every session at 24 hours, so it says so right here.
     if draft.isChildMode {
@@ -359,7 +437,56 @@ struct BlockedProfileScheduleFields: View {
 
     ProfileFieldDivider(isVisible: showsSeparators)
 
-    skipSessionsBlock
+    // A menu rather than a picker, so choosing a sound again still plays it.
+    HStack {
+      Text("Alarm sound")
+        .foregroundStyle(.primary)
+
+      Spacer()
+
+      Menu {
+        ForEach(WakeAlarmManager.availableSounds, id: \.self) { soundId in
+          Button {
+            draft.schedule.alarmSound = soundId
+            WakeAlarmManager.shared.previewSound(soundId)
+          } label: {
+            if soundId == draft.schedule.alarmSoundId {
+              Label(WakeAlarmManager.soundTitle(for: soundId), systemImage: "checkmark")
+            } else {
+              Text(WakeAlarmManager.soundTitle(for: soundId))
+            }
+          }
+        }
+      } label: {
+        HStack(spacing: 4) {
+          Text(WakeAlarmManager.soundTitle(for: draft.schedule.alarmSoundId))
+          Image(systemName: "chevron.up.chevron.down")
+            .font(.caption)
+        }
+      }
+      // A menu's label takes the tint over its own style, so it's themed
+      // like the start and end times.
+      .tint(themeManager.themeColor)
+    }
+    .disabled(disabled)
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    BlockedProfileSnoozeFields(
+      draft: draft, disabled: disabled, showsSeparators: showsSeparators)
+  }
+
+  private var alarmTimeBinding: Binding<Date> {
+    Binding(
+      get: {
+        dateFrom(hour: draft.schedule.alarmTime.hour, minute: draft.schedule.alarmTime.minute)
+      },
+      set: { newValue in
+        let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+        draft.schedule.alarmHour = components.hour ?? draft.schedule.alarmTime.hour
+        draft.schedule.alarmMinute = components.minute ?? draft.schedule.alarmTime.minute
+      }
+    )
   }
 
   private var skipSessionsBlock: some View {
@@ -479,8 +606,12 @@ struct BlockedProfileBreaksFields: View {
     if draft.selectedStrategyAllowsTimedBreaks {
       CustomToggle(
         title: String(localized: "Allow Timed Breaks"),
-        description:
-          String(
+        description: draft.useAlarm
+          ? String(
+            localized:
+              "Get your apps back for a while during the session. The break ends on its own, and the alarm still rings at the end time."
+          )
+          : String(
             localized:
               "Take a break during your session. The break will automatically end after the selected duration."
           ),
@@ -516,12 +647,21 @@ struct BlockedProfileBreaksFields: View {
   }
 
   private var breakDurationPicker: some View {
-    Picker("Break Duration", selection: $draft.breakTimeInMinutes) {
-      Text("5 minutes").tag(5)
-      Text("10 minutes").tag(10)
-      Text("15 minutes").tag(15)
+    // Its own labeled row, like Snooze Duration, so the guided flow shows the label too.
+    HStack {
+      Text("Break Duration")
+
+      Spacer()
+
+      Picker("Break Duration", selection: $draft.breakTimeInMinutes) {
+        Text("5 minutes").tag(5)
+        Text("10 minutes").tag(10)
+        Text("15 minutes").tag(15)
+      }
+      .labelsHidden()
+      .pickerStyle(.menu)
+      .tint(themeManager.themeColor)
     }
-    .tint(themeManager.themeColor)
     .disabled(disabled)
   }
 }
@@ -533,6 +673,50 @@ struct BlockedProfileBreaksSection: View {
   var body: some View {
     Section("Breaks") {
       BlockedProfileBreaksFields(draft: draft, disabled: disabled)
+    }
+  }
+}
+
+struct BlockedProfileSnoozeFields: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
+  var disabled: Bool
+  var showsSeparators: Bool = false
+
+  @ViewBuilder
+  var body: some View {
+    CustomToggle(
+      title: String(localized: "Snooze"),
+      description: String(
+        localized: "Snooze silences the alarm for a while. Then it rings again."),
+      isOn: $draft.enableSnooze,
+      isDisabled: disabled
+    )
+
+    if draft.enableSnooze {
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      // Its own labeled row, like Duration: outside a Form (the guided flow)
+      // a menu picker drops its label and shows only the value.
+      HStack {
+        Text("Snooze Duration")
+
+        Spacer()
+
+        Picker("Snooze Duration", selection: $draft.schedule.alarmSnoozeMinutes) {
+          ForEach(BlockedProfileSchedule.availableSnoozeMinutes, id: \.self) { minutes in
+            Text(
+              minutes == 1
+                ? String(localized: "1 minute") : String(localized: "\(minutes) minutes")
+            )
+            .tag(minutes)
+          }
+        }
+        .labelsHidden()
+        .pickerStyle(.menu)
+        .tint(themeManager.themeColor)
+      }
+      .disabled(disabled)
     }
   }
 }

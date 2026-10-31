@@ -4,6 +4,7 @@ struct HomeAlert: Identifiable {
   enum AlertType: Equatable {
     case screenTimeAccess
     case scheduleOutOfSync(profileId: UUID)
+    case alarmLiveActivitiesOff
   }
 
   let type: AlertType
@@ -19,6 +20,8 @@ struct HomeAlert: Identifiable {
       return "screen-time-access"
     case .scheduleOutOfSync(let profileId):
       return "schedule-out-of-sync-\(profileId.uuidString)"
+    case .alarmLiveActivitiesOff:
+      return "alarm-live-activities-off"
     }
   }
 }

@@ -17,6 +17,13 @@ class StrategyManager: ObservableObject {
     NFCPauseTimerBlockingStrategy(),
     ShortcutTimerBlockingStrategy(),
     ScheduleBlockingStrategy(),
+    AlarmBlockingStrategy(),
+  ]
+
+  // Strategies that only ever start on their own, at the schedule's time.
+  static let scheduledStrategyIds: Set<String> = [
+    ScheduleBlockingStrategy.id,
+    AlarmBlockingStrategy.id,
   ]
 
   // The only strategies whose sessions already end with a Ctrus, which child
@@ -47,8 +54,6 @@ class StrategyManager: ObservableObject {
   @Published var errorMessage: String?
 
   @AppStorage("emergencyUnblocksRemaining") private var emergencyUnblocksRemaining: Int = 3
-  @AppStorage("emergencyUnblocksResetPeriodInWeeks") private
-    var emergencyUnblocksResetPeriodInWeeks: Int = 4
   // Real time counted towards the current cycle by TrustedClock — the
   // phone's date can be moved forward, so it isn't used to tell when the
   // unblocks come back.
@@ -67,8 +72,6 @@ class StrategyManager: ObservableObject {
   // (Stop, Emergency, or a recovery code), since `handleSessionEnded` below
   // is the one place all of those paths funnel through.
   @AppStorage("hasCompletedFirstSession") private var hasCompletedFirstSession = false
-
-  private let liveActivityManager = LiveActivityManager.shared
 
   private let timersUtil = TimersUtil()
   private let appBlocker = AppBlockerUtil()
@@ -101,19 +104,10 @@ class StrategyManager: ObservableObject {
 
     if activeSession?.isActive == true {
       startTimer()
-
-      // Start live activity for existing session if one exists
-      // live activities can only be started when the app is in the foreground
-      if let session = activeSession {
-        liveActivityManager.startSessionActivity(session: session)
-      }
     } else {
       stopTimer()
       elapsedTime = 0
       sessionDisplayTime = 0
-
-      // Close live activity if no session is active and a scheduled session might have ended
-      liveActivityManager.endSessionActivity()
     }
 
     // Reload widget to reflect any changes from extension (e.g., timer expiration)
@@ -423,7 +417,6 @@ class StrategyManager: ObservableObject {
     )
 
     // Do end sections for the profile
-    self.liveActivityManager.endSessionActivity()
     self.scheduleReminder(profile: activeSession.blockedProfile)
     self.stopTimer()
 
@@ -467,16 +460,7 @@ class StrategyManager: ObservableObject {
   }
 
   func getResetPeriodInWeeks() -> Int {
-    return ChildModeStore.isChildMode ? 4 : emergencyUnblocksResetPeriodInWeeks
-  }
-
-  func setResetPeriodInWeeks(_ weeks: Int) {
-    emergencyUnblocksResetPeriodInWeeks = weeks
-    // Changing how long a cycle is must not move when the current cycle
-    // started — that discards however much of the wait was already done.
-    // Re-checking against the new period length instead correctly resets
-    // immediately if the shorter period means today already qualifies.
-    checkAndResetEmergencyUnblocks()
+    return 4
   }
 
   func getRemainingRecoveryUnlocks() -> Int {
@@ -594,9 +578,6 @@ class StrategyManager: ObservableObject {
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
 
     updateSessionTimes()
-
-    // Update live activity to show break state
-    liveActivityManager.updateBreakState(session: session)
   }
 
   private func stopBreak(context: ModelContext) {
@@ -625,9 +606,6 @@ class StrategyManager: ObservableObject {
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
 
     updateSessionTimes()
-
-    // Update live activity to show break has ended
-    liveActivityManager.updateBreakState(session: session)
   }
 
   private func handlePauseStarted(context: ModelContext) {
@@ -638,11 +616,6 @@ class StrategyManager: ObservableObject {
 
     // Refresh widgets when pause starts
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
-
-    // Update live activity to show pause state
-    if let session = activeSession {
-      liveActivityManager.updatePauseState(session: session)
-    }
   }
 
   private func handleSessionStarted(session: BlockedProfileSession) {
@@ -664,8 +637,6 @@ class StrategyManager: ObservableObject {
 
     self.activeSession = session
     self.startTimer()
-    self.liveActivityManager
-      .startSessionActivity(session: session)
 
     // Refresh widgets when session starts
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
@@ -673,6 +644,18 @@ class StrategyManager: ObservableObject {
 
   private func handleSessionEnded(profile: BlockedProfiles) {
     self.hasCompletedFirstSession = true
+
+    if WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId) {
+      WakeAlarmManager.shared.sessionEnded(profileId: profile.id)
+
+      // Deferred so whatever is still showing the profile lets go of it first.
+      if profile.isOneTimeAlarm, let context = profile.modelContext {
+        DispatchQueue.main.async {
+          try? BlockedProfiles.deleteProfile(profile, in: context)
+          try? context.save()
+        }
+      }
+    }
     self.dismissView()
     self.checkAndResetEmergencyUnblocks()
     self.checkAndResetRecoveryUnlocks()
@@ -683,7 +666,6 @@ class StrategyManager: ObservableObject {
     // Remove any timers and notifications that were scheduled
     self.timersUtil.cancelAll()
     self.activeSession = nil
-    self.liveActivityManager.endSessionActivity()
     self.scheduleReminder(profile: profile)
 
     self.stopTimer()
@@ -757,6 +739,49 @@ class StrategyManager: ObservableObject {
 
     // Flush completed scheduled sessions
     SharedData.flushCompletedSessionsForSchedular()
+
+    startMissedAlarmSession(context: context)
+  }
+
+  // The Screen Time extension can start a session late or not at all. Alarm
+  // mode's alarm is set regardless, so without a session here it would ring
+  // and then stop as soon as the app was opened, Ctrus or not.
+  private func startMissedAlarmSession(context: ModelContext) {
+    guard SharedData.getActiveSharedSession() == nil,
+      BlockedProfileSession.mostRecentActiveSession(in: context) == nil,
+      SharedData.lastKnownAuthorizationApproved,
+      let profiles = try? context.fetch(FetchDescriptor<BlockedProfiles>())
+    else {
+      return
+    }
+
+    for profile in profiles where WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId) {
+      guard
+        let start = profile.schedule?.currentAlarmOccurrenceStart(
+          grace: WakeAlarmManager.missedSessionGrace, skip: profile.scheduleSkip),
+        // Already ran, and was stopped.
+        !profile.sessions.contains(where: {
+          $0.startTime >= start.addingTimeInterval(-BlockedProfileSchedule.registrationSettleSeconds)
+        }),
+        let profileSnapshot = SharedData.snapshot(for: profile.id.uuidString)
+      else {
+        continue
+      }
+
+      // Started from the occurrence's start, so its alarm stays where it was.
+      let sessionSnapshot = SharedData.SessionSnapshot(
+        id: UUID().uuidString,
+        tag: profile.id.uuidString,
+        blockedProfileId: profile.id,
+        startTime: start,
+        forceStarted: true
+      )
+      SharedData.createActiveSharedSession(for: sessionSnapshot)
+      AppBlockerUtil().activateRestrictions(for: profileSnapshot)
+      BlockedProfileSession.upsertSessionFromSnapshot(in: context, withSnapshot: sessionSnapshot)
+      WakeAlarmManager.shared.refresh(profileId: profile.id)
+      return
+    }
   }
 
   private func resultFromURL(_ url: String) -> NFCResult {
@@ -946,7 +971,6 @@ class StrategyManager: ObservableObject {
         session: activeSession
       )
 
-      self.liveActivityManager.endSessionActivity()
       self.scheduleReminder(profile: activeSession.blockedProfile)
       self.stopTimer()
     }

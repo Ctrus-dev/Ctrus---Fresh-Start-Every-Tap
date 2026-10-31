@@ -1,0 +1,30 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSAlarmKitUsageDescription": {
+      "comment": "Asked before Alarm mode can set alarms.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus uses alarms to wake you up in Alarm mode."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus usa alarmes para te acordar no modo Despertador."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus usa alarmas para despertarte en el modo Despertador."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

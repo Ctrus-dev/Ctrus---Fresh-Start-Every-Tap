@@ -45,6 +45,11 @@ enum SessionTimeCalculator {
     // until the Ctrus is scanned, so it has no end to count towards and the
     // clock counts up instead.
     if isScheduledSession(session), let schedule = session.blockedProfile.schedule {
+      // Alarm mode counts down to its alarm.
+      if session.blockedProfile.blockingStrategyId == AlarmBlockingStrategy.id {
+        return schedule.alarmDate(after: session.startTime)
+      }
+
       guard let durationInSeconds = schedule.automaticEndDurationInSeconds else { return nil }
       return session.startTime.addingTimeInterval(durationInSeconds)
     }
@@ -76,7 +81,8 @@ enum SessionTimeCalculator {
     // which tags with the strategy id, not the profile's UUID like an
     // automatic start does) — those still need the fixed-duration countdown.
     session.blockedProfile.schedule?.isActive == true
-      && session.blockedProfile.blockingStrategyId == ScheduleBlockingStrategy.id
+      && StrategyManager.scheduledStrategyIds.contains(
+        session.blockedProfile.blockingStrategyId ?? "")
   }
 
   private static func pauseDurationInSeconds(for profile: BlockedProfiles) -> TimeInterval {

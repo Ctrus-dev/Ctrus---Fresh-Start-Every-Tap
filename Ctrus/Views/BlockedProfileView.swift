@@ -10,6 +10,7 @@ struct AlertIdentifier: Identifiable {
     case deleteProfile
     case missingPhysicalUnlock
     case missingScheduleDays
+    case invalidAlarmTime
     case discardChanges
   }
 
@@ -250,6 +251,12 @@ struct BlockedProfileView: View {
             message: Text("Choose at least one day for the schedule."),
             dismissButton: .default(Text("OK"))
           )
+        case .invalidAlarmTime:
+          return Alert(
+            title: Text("Warning!"),
+            message: Text("The end time must be different from the start time."),
+            dismissButton: .default(Text("OK"))
+          )
         case .discardChanges:
           return Alert(
             title: Text("Discard Changes?"),
@@ -300,6 +307,13 @@ struct BlockedProfileView: View {
       }
     }
 
+    if draft.useAlarm {
+      guard draft.schedule.hasValidAlarmTime else {
+        alertIdentifier = AlertIdentifier(id: .invalidAlarmTime)
+        return
+      }
+    }
+
     // Creating a profile only ever adds blocking; changing one can loosen it.
     if draft.isChildMode && isEditing {
       parentConfirmationRequest = ParentConfirmationRequest(
@@ -314,11 +328,18 @@ struct BlockedProfileView: View {
   }
 
   private func commitSave() {
-    do {
-      _ = try draft.save(existingProfile: profile, in: modelContext)
-      dismiss()
-    } catch {
-      alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+    Task { @MainActor in
+      if let problem = await WakeAlarmManager.alarmSetupProblem(for: draft) {
+        showError(message: problem)
+        return
+      }
+
+      do {
+        _ = try draft.save(existingProfile: profile, in: modelContext)
+        dismiss()
+      } catch {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: error.localizedDescription)
+      }
     }
   }
 }

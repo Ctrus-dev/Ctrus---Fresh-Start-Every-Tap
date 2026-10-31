@@ -99,13 +99,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8015A1F62D80E29B0037DFE9 /* Exceptions for "CtrusWidget" folder in "Ctrus" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CtrusWidgetLiveActivity.swift,
-			);
-			target = 801B20942CB363A10073E9E2 /* Ctrus */;
-		};
 		801713172DE6C78C00B77FE1 /* Exceptions for "CtrusDeviceMonitor" folder in "CtrusDeviceMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -123,6 +116,7 @@
 		801C99CE2E9C9B9D000E07CD /* Exceptions for "Ctrus" folder in "CtrusWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Models/CtrusAlarmMetadata.swift,
 				Models/ChildMode.swift,
 				Models/PhysicalUnblockItem.swift,
 				Models/Schedule.swift,
@@ -258,7 +252,6 @@
 		80FF38902D80DB540032BC5E /* CtrusWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8015A1F62D80E29B0037DFE9 /* Exceptions for "CtrusWidget" folder in "Ctrus" target */,
 				80FF38A02D80DB560032BC5E /* Exceptions for "CtrusWidget" folder in "CtrusWidgetExtension" target */,
 			);
 			path = CtrusWidget;
@@ -957,6 +950,10 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					AlarmKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = mo.dev.Ctrus;
 				PRODUCT_NAME = "Ctrus - Fresh Start, Every Tap";
 				SDKROOT = auto;
@@ -1005,6 +1002,10 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					AlarmKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = mo.dev.Ctrus;
 				PRODUCT_NAME = "Ctrus - Fresh Start, Every Tap";
 				SDKROOT = auto;
@@ -1181,6 +1182,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					AlarmKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = mo.dev.Ctrus.CtrusWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1210,6 +1215,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					AlarmKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = mo.dev.Ctrus.CtrusWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

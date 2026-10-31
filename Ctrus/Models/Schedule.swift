@@ -54,6 +54,53 @@ struct BlockedProfileSchedule: Codable, Equatable {
 
   var updatedAt: Date = Date()
 
+  // Alarm mode only. Optional so schedules saved before it still decode;
+  // read through `alarmTime` and `alarmSoundId`, which fill in the defaults.
+  var alarmHour: Int?
+  var alarmMinute: Int?
+  var alarmSound: String?
+  var snoozeMinutes: Int?
+
+  static let availableSnoozeMinutes = Array(1...15)
+  static let defaultSnoozeMinutes = 9
+
+  /// The tones in `alarm_sounds/`, by file name without the extension.
+  static let alarmToneIds = [
+    "ctrus_urgent",
+    "ctrus_morning",
+    "ctrus_lumen",
+    "ctrus_pulsar",
+    "ctrus_orbit",
+    "ctrus_lagoon",
+    "ctrus_spark",
+    "ctrus_waves",
+    "ctrus_daybreak",
+    "ctrus_musicbox",
+    "ctrus_rally",
+  ]
+  static let defaultAlarmSound = "ctrus_morning"
+  static let vibrateAlarmSound = "vibrate"
+
+  var alarmTime: (hour: Int, minute: Int) {
+    (alarmHour ?? 7, alarmMinute ?? 0)
+  }
+
+  /// Falls back to the default for a sound that's no longer offered, like
+  /// the system's own alarm sound from before the Ctrus tones.
+  var alarmSoundId: String {
+    guard let alarmSound,
+      alarmSound == Self.vibrateAlarmSound || Self.alarmToneIds.contains(alarmSound)
+    else {
+      return Self.defaultAlarmSound
+    }
+    return alarmSound
+  }
+
+  var alarmSnoozeMinutes: Int {
+    get { snoozeMinutes ?? Self.defaultSnoozeMinutes }
+    set { snoozeMinutes = newValue }
+  }
+
   var isActive: Bool {
     return !days.isEmpty
   }
@@ -71,10 +118,16 @@ struct BlockedProfileSchedule: Codable, Equatable {
   /// schedule still needs one, so it holds the window open until the end of the
   /// day — nothing stops when it closes.
   var endComponents: (hour: Int, minute: Int) {
-    guard let durationInHours else { return (23, 59) }
+    let startMinutes = startHour * 60 + startMinute
 
-    let minutesFromMidnight =
-      (startHour * 60 + startMinute + durationInHours * 60) % (24 * 60)
+    guard let durationInHours else {
+      // DeviceActivity refuses windows under 15 minutes, so a late start runs
+      // the window past midnight instead.
+      let endMinutes = max(23 * 60 + 59, startMinutes + 15) % (24 * 60)
+      return (endMinutes / 60, endMinutes % 60)
+    }
+
+    let minutesFromMidnight = (startMinutes + durationInHours * 60) % (24 * 60)
     return (minutesFromMidnight / 60, minutesFromMidnight % 60)
   }
 
@@ -99,6 +152,112 @@ struct BlockedProfileSchedule: Codable, Equatable {
     let start = formattedTimeString(hour24: startHour, minute: startMinute)
 
     return "\(daysSummary) · \(start) · \(durationText)"
+  }
+
+  /// Alarm mode's summary: the end time takes the duration's place.
+  var alarmSummaryText: String {
+    guard isActive else { return String(localized: "No Schedule Set") }
+
+    let daysSummary =
+      days
+      .sorted { $0.rawValue < $1.rawValue }
+      .map { $0.shortLabel }
+      .joined(separator: " ")
+
+    return "\(daysSummary) · \(alarmTimeRangeText)"
+  }
+
+  var alarmTimeRangeText: String {
+    let start = formattedTimeString(hour24: startHour, minute: startMinute)
+    let end = formattedTimeString(hour24: alarmTime.hour, minute: alarmTime.minute)
+    return "\(start) → \(end)"
+  }
+
+  var hasValidAlarmTime: Bool {
+    alarmTime.hour != startHour || alarmTime.minute != startMinute
+  }
+
+  /// When the alarm rings for a session that started at `start`: the first
+  /// end time after it, so an end at or before the start is the next day.
+  /// Matched on the wall clock, so a daylight saving change that night
+  /// doesn't move it.
+  func alarmDate(after start: Date, calendar: Calendar = .current) -> Date? {
+    calendar.nextDate(
+      after: start,
+      matching: DateComponents(hour: alarmTime.hour, minute: alarmTime.minute, second: 0),
+      matchingPolicy: .nextTime
+    )
+  }
+
+  /// The occurrence under way whose alarm hasn't finished ringing, give or
+  /// take `grace`. One that started before the schedule was last saved never
+  /// ran, as the Screen Time extension ignores it too.
+  func currentAlarmOccurrenceStart(
+    now: Date = Date(),
+    grace: TimeInterval,
+    skip: ScheduleSkip = ScheduleSkip(),
+    calendar: Calendar = .current
+  ) -> Date? {
+    guard isActive else { return nil }
+
+    for daysBack in 0...1 {
+      guard
+        let day = calendar.date(byAdding: .day, value: -daysBack, to: calendar.startOfDay(for: now)),
+        let weekday = Weekday(rawValue: calendar.component(.weekday, from: day)),
+        days.contains(weekday),
+        let start = calendar.date(
+          bySettingHour: startHour, minute: startMinute, second: 0, of: day),
+        start <= now,
+        isPastRegistrationSettleWindow(now: start),
+        !skip.skips(occurrenceStartingAt: start, calendar: calendar),
+        let alarmDate = alarmDate(after: start, calendar: calendar),
+        now < alarmDate.addingTimeInterval(grace)
+      else {
+        continue
+      }
+      return start
+    }
+
+    return nil
+  }
+
+  /// The days the alarm rings on, which move to the next day when the end
+  /// time is at or before the start.
+  var alarmDays: [Weekday] {
+    let endsNextDay =
+      alarmTime.hour * 60 + alarmTime.minute <= startHour * 60 + startMinute
+    guard endsNextDay else { return days }
+
+    return days.compactMap { Weekday(rawValue: $0.rawValue % 7 + 1) }
+  }
+
+  /// "Mon–Fri", or "Mon, Wed, Sat" when the days aren't in a row.
+  func alarmDaysText(calendar: Calendar = .current) -> String {
+    let symbols = calendar.shortWeekdaySymbols
+    let ringDays = Set(alarmDays.map(\.rawValue))
+    let week = (0..<7).map { (calendar.firstWeekday - 1 + $0) % 7 + 1 }
+
+    var runs: [[Int]] = []
+    for day in week where ringDays.contains(day) {
+      if let last = runs.last?.last, week.firstIndex(of: last)! + 1 == week.firstIndex(of: day)! {
+        runs[runs.count - 1].append(day)
+      } else {
+        runs.append([day])
+      }
+    }
+
+    return
+      runs
+      .map { run in
+        run.count >= 3
+          ? "\(symbols[run.first! - 1])–\(symbols[run.last! - 1])"
+          : run.map { symbols[$0 - 1] }.joined(separator: ", ")
+      }
+      .joined(separator: ", ")
+  }
+
+  var alarmTimeText: String {
+    formattedTimeString(hour24: alarmTime.hour, minute: alarmTime.minute)
   }
 
   func isTodayScheduled(now: Date = Date(), calendar: Calendar = .current) -> Bool {

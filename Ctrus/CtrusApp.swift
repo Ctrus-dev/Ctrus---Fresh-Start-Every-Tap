@@ -36,12 +36,13 @@ struct CtrusApp: App {
 
   // Singletons for shared functionality
   @StateObject private var startegyManager = StrategyManager.shared
-  @StateObject private var liveActivityManager = LiveActivityManager.shared
   @StateObject private var themeManager = ThemeManager.shared
   @StateObject private var alertsManager = AlertsManager.shared
+  @StateObject private var wakeAlarmManager = WakeAlarmManager.shared
 
   init() {
     TimersUtil.registerBackgroundTasks()
+    LiveActivityCleanupUtil.endLeftoverActivities()
 
     let asyncDependency: @Sendable () async -> (ModelContainer) = {
       @MainActor in
@@ -73,8 +74,8 @@ struct CtrusApp: App {
         .environmentObject(navigationManager)
         .environmentObject(nfcWriter)
         .environmentObject(ratingManager)
-        .environmentObject(liveActivityManager)
         .environmentObject(themeManager)
+        .environmentObject(wakeAlarmManager)
     }
     .modelContainer(container)
   }
