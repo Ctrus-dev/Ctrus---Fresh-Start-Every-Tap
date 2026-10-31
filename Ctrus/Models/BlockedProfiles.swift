@@ -22,6 +22,8 @@ class BlockedProfiles {
   var allowMultipleBreaks: Bool = false
   // Alarm mode's stand-in for breaks.
   var enableSnooze: Bool = true
+  // Alarm mode: deleted once its one session is stopped.
+  var isOneTimeAlarm: Bool = false
   var enableStrictMode: Bool = false
   var enableBlockAppInstallation: Bool = false
   var enableAllowMode: Bool = false
@@ -228,6 +230,7 @@ class BlockedProfiles {
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool? = nil,
     enableSnooze: Bool? = nil,
+    isOneTimeAlarm: Bool? = nil,
     disableBackgroundStops: Bool? = nil,
     enableEmergencyUnblock: Bool? = nil
   ) throws -> BlockedProfiles {
@@ -324,6 +327,10 @@ class BlockedProfiles {
 
     if let newEnableSnooze = enableSnooze {
       profile.enableSnooze = newEnableSnooze
+    }
+
+    if let newIsOneTimeAlarm = isOneTimeAlarm {
+      profile.isOneTimeAlarm = newIsOneTimeAlarm
     }
 
     if let newDisableBackgroundStops = disableBackgroundStops {
@@ -494,6 +501,7 @@ class BlockedProfiles {
     schedule: BlockedProfileSchedule? = nil,
     allowSkip: Bool = false,
     enableSnooze: Bool = true,
+    isOneTimeAlarm: Bool = false,
     disableBackgroundStops: Bool = false,
     enableEmergencyUnblock: Bool = true
   ) throws -> BlockedProfiles {
@@ -528,6 +536,7 @@ class BlockedProfiles {
     }
     profile.allowSkip = allowSkip
     profile.enableSnooze = enableSnooze
+    profile.isOneTimeAlarm = isOneTimeAlarm
 
     // Create the snapshot so extensions can read it immediately
     updateSnapshot(for: profile)
@@ -568,6 +577,7 @@ class BlockedProfiles {
     )
     cloned.allowSkip = source.allowSkip
     cloned.enableSnooze = source.enableSnooze
+    cloned.isOneTimeAlarm = source.isOneTimeAlarm
 
     context.insert(cloned)
     try context.save()

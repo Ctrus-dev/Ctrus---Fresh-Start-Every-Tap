@@ -88,10 +88,16 @@ struct BlockedProfileSchedule: Codable, Equatable {
   /// schedule still needs one, so it holds the window open until the end of the
   /// day — nothing stops when it closes.
   var endComponents: (hour: Int, minute: Int) {
-    guard let durationInHours else { return (23, 59) }
+    let startMinutes = startHour * 60 + startMinute
 
-    let minutesFromMidnight =
-      (startHour * 60 + startMinute + durationInHours * 60) % (24 * 60)
+    guard let durationInHours else {
+      // DeviceActivity refuses windows under 15 minutes, so a late start runs
+      // the window past midnight instead.
+      let endMinutes = max(23 * 60 + 59, startMinutes + 15) % (24 * 60)
+      return (endMinutes / 60, endMinutes % 60)
+    }
+
+    let minutesFromMidnight = (startMinutes + durationInHours * 60) % (24 * 60)
     return (minutesFromMidnight / 60, minutesFromMidnight % 60)
   }
 
@@ -128,10 +134,13 @@ struct BlockedProfileSchedule: Codable, Equatable {
       .map { $0.shortLabel }
       .joined(separator: " ")
 
+    return "\(daysSummary) · \(alarmTimeRangeText)"
+  }
+
+  var alarmTimeRangeText: String {
     let start = formattedTimeString(hour24: startHour, minute: startMinute)
     let end = formattedTimeString(hour24: alarmTime.hour, minute: alarmTime.minute)
-
-    return "\(daysSummary) · \(start) → \(end)"
+    return "\(start) → \(end)"
   }
 
   var hasValidAlarmTime: Bool {
@@ -148,6 +157,38 @@ struct BlockedProfileSchedule: Codable, Equatable {
       matching: DateComponents(hour: alarmTime.hour, minute: alarmTime.minute, second: 0),
       matchingPolicy: .nextTime
     )
+  }
+
+  /// The occurrence under way whose alarm hasn't finished ringing, give or
+  /// take `grace`. One that started before the schedule was last saved never
+  /// ran, as the Screen Time extension ignores it too.
+  func currentAlarmOccurrenceStart(
+    now: Date = Date(),
+    grace: TimeInterval,
+    skip: ScheduleSkip = ScheduleSkip(),
+    calendar: Calendar = .current
+  ) -> Date? {
+    guard isActive else { return nil }
+
+    for daysBack in 0...1 {
+      guard
+        let day = calendar.date(byAdding: .day, value: -daysBack, to: calendar.startOfDay(for: now)),
+        let weekday = Weekday(rawValue: calendar.component(.weekday, from: day)),
+        days.contains(weekday),
+        let start = calendar.date(
+          bySettingHour: startHour, minute: startMinute, second: 0, of: day),
+        start <= now,
+        isPastRegistrationSettleWindow(now: start),
+        !skip.skips(occurrenceStartingAt: start, calendar: calendar),
+        let alarmDate = alarmDate(after: start, calendar: calendar),
+        now < alarmDate.addingTimeInterval(grace)
+      else {
+        continue
+      }
+      return start
+    }
+
+    return nil
   }
 
   /// The days the alarm rings on, which move to the next day when the end

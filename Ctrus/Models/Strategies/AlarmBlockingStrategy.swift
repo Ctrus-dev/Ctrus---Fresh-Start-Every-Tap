@@ -17,7 +17,7 @@ class AlarmBlockingStrategy: BlockingStrategy {
 
   var usesNFC: Bool = true
   var startsManually: Bool = false
-  var allowsTimedBreaks: Bool = false
+  var allowsTimedBreaks: Bool = true
 
   var tags: [BlockingStrategyTag] {
     [.automaticStart, .nfc]

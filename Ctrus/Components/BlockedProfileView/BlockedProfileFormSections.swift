@@ -67,7 +67,8 @@ struct BlockedProfileStrategyFields: View {
 
     StrategyRow(
       strategy: scheduleStrategy,
-      isSelected: draft.useSchedule,
+      // Not `useSchedule`, which Alarm mode shares.
+      isSelected: draft.selectedStrategy?.getIdentifier() == ScheduleBlockingStrategy.id,
       onTap: {
         draft.selectedStrategy = ScheduleBlockingStrategy()
       }
@@ -264,18 +265,34 @@ struct BlockedProfileScheduleFields: View {
   var showsSeparators: Bool = false
 
   var body: some View {
-    weekdaySelector
-
-    if draft.useAlarm && !draft.schedule.days.isEmpty {
-      Text(
-        "The alarm rings \(draft.schedule.alarmDaysText()) at \(draft.schedule.alarmTimeText)"
+    if draft.useAlarm {
+      CustomToggle(
+        title: String(localized: "Ring only once"),
+        description: String(
+          localized:
+            "Rings the next time the end time comes around. Once you stop it, this profile is deleted."
+        ),
+        isOn: $draft.isOneTimeAlarm,
+        isDisabled: disabled
       )
-      .font(.caption)
-      .foregroundStyle(.secondary)
-      .fixedSize(horizontal: false, vertical: true)
+
+      ProfileFieldDivider(isVisible: showsSeparators)
     }
 
-    ProfileFieldDivider(isVisible: showsSeparators)
+    if !draft.useOneTimeAlarm {
+      weekdaySelector
+
+      if draft.useAlarm && !draft.schedule.days.isEmpty {
+        Text(
+          "The alarm rings \(draft.schedule.alarmDaysText()) at \(draft.schedule.alarmTimeText)"
+        )
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+      }
+
+      ProfileFieldDivider(isVisible: showsSeparators)
+    }
 
     DatePicker(
       String(localized: "Start Time"),
@@ -293,9 +310,12 @@ struct BlockedProfileScheduleFields: View {
       durationPicker
     }
 
-    ProfileFieldDivider(isVisible: showsSeparators)
+    // A one-time alarm has no later sessions to skip.
+    if !draft.useOneTimeAlarm {
+      ProfileFieldDivider(isVisible: showsSeparators)
 
-    skipSessionsBlock
+      skipSessionsBlock
+    }
   }
 
   @ViewBuilder
@@ -321,6 +341,7 @@ struct BlockedProfileScheduleFields: View {
     // A menu rather than a picker, so choosing a sound again still plays it.
     HStack {
       Text("Alarm sound")
+        .foregroundStyle(.primary)
 
       Spacer()
 
@@ -343,10 +364,16 @@ struct BlockedProfileScheduleFields: View {
           Image(systemName: "chevron.up.chevron.down")
             .font(.caption)
         }
-        .foregroundStyle(.secondary)
       }
+      // A menu's label takes the tint over its own style, so it's themed
+      // like the start and end times.
+      .tint(themeManager.themeColor)
     }
     .disabled(disabled)
+
+    ProfileFieldDivider(isVisible: showsSeparators)
+
+    BlockedProfileSnoozeFields(draft: draft, disabled: disabled)
   }
 
   private var alarmTimeBinding: Binding<Date> {
@@ -488,6 +515,13 @@ struct BlockedProfileBreaksFields: View {
         isDisabled: disabled
       )
 
+      if draft.useAlarm {
+        Text("A break only gives your apps back. The alarm still rings at the end time.")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+      }
+
       if draft.enableBreaks {
         ProfileFieldDivider(isVisible: showsSeparators)
 
@@ -549,17 +583,6 @@ struct BlockedProfileSnoozeFields: View {
       isOn: $draft.enableSnooze,
       isDisabled: disabled
     )
-  }
-}
-
-struct BlockedProfileSnoozeSection: View {
-  @ObservedObject var draft: BlockedProfileDraft
-  var disabled: Bool
-
-  var body: some View {
-    Section("Snooze") {
-      BlockedProfileSnoozeFields(draft: draft, disabled: disabled)
-    }
   }
 }
 

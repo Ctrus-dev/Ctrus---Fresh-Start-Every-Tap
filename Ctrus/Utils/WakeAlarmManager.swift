@@ -18,9 +18,10 @@ final class WakeAlarmManager: ObservableObject {
   static let silentSoundFile = "alarm_silence.caf"
   // Stands in for the system alarm sound inside the app, which apps can't play.
   private static let inAppDefaultSoundFile = "alarm_beep"
-  // An occurrence that started this recently without a session may just not
-  // have been picked up yet, so its alarm is kept.
-  private static let missedStartGrace: TimeInterval = 15 * 60
+  /// How long after its alarm an occurrence that never got a session is
+  /// still started by the app (StrategyManager), so the alarm can't be
+  /// silenced just by opening it. About as long as the spares ring.
+  static let missedSessionGrace: TimeInterval = 30 * 60
 
   /// Sounds offered for the alarm. Files dropped into `alarm_sounds/` are
   /// added here by their name, without the extension.
@@ -70,6 +71,7 @@ final class WakeAlarmManager: ObservableObject {
   private let defaults = UserDefaults.standard
   private let recordsKey = "wakeAlarmRecords"
   private let snoozedUntilKey = "wakeAlarmSnoozedUntil"
+  private let sessionEndsKey = "wakeAlarmSessionEnds"
 
   private var player: AVAudioPlayer?
   private var previewPlayer: AVAudioPlayer?
@@ -177,13 +179,23 @@ final class WakeAlarmManager: ObservableObject {
       return schedule.alarmDate(after: session.startTime)
     }
 
-    // The first occurrence whose alarm is still ahead, skipped ones aside.
-    var searchFrom = now.addingTimeInterval(-Self.missedStartGrace)
+    // An occurrence under way without a session gets one from the app, so
+    // its alarm stays — unless its session already ran and was stopped.
+    if let start = schedule.currentAlarmOccurrenceStart(
+      now: now, grace: Self.missedSessionGrace, skip: snapshot.scheduleSkip),
+      start > sessionEnds[profileId.uuidString] ?? .distantPast
+    {
+      return schedule.alarmDate(after: start)
+    }
+
+    // Otherwise the next occurrence's, leaving out one too close to the last
+    // save for the Screen Time extension to start.
+    var searchFrom = now
     while let start = schedule.nextStartDate(
       now: searchFrom, bufferSeconds: 0, skip: snapshot.scheduleSkip)
     {
-      if let alarmDate = schedule.alarmDate(after: start), alarmDate > now {
-        return alarmDate
+      if schedule.isPastRegistrationSettleWindow(now: start) {
+        return schedule.alarmDate(after: start)
       }
       searchFrom = start.addingTimeInterval(1)
     }
@@ -198,6 +210,7 @@ final class WakeAlarmManager: ObservableObject {
     stopSound()
     setSnoozedUntil(nil)
     setDueProfileId(nil)
+    setSessionEnd(Date(), for: profileId)
 
     guard #available(iOS 26.0, *) else { return }
     enqueue {
@@ -426,6 +439,16 @@ final class WakeAlarmManager: ObservableObject {
     if let data = try? JSONEncoder().encode(all) {
       defaults.set(data, forKey: recordsKey)
     }
+  }
+
+  private var sessionEnds: [String: Date] {
+    defaults.dictionary(forKey: sessionEndsKey) as? [String: Date] ?? [:]
+  }
+
+  private func setSessionEnd(_ date: Date, for profileId: UUID) {
+    var all = sessionEnds
+    all[profileId.uuidString] = date
+    defaults.set(all, forKey: sessionEndsKey)
   }
 
   private func setSnoozedUntil(_ date: Date?) {

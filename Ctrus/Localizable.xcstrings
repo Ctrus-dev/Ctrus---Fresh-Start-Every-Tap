@@ -912,6 +912,29 @@
         }
       }
     },
+    "A break only gives your apps back. The alarm still rings at the end time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A break only gives your apps back. The alarm still rings at the end time."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una pausa solo te devuelve las apps. La alarma sigue sonando a la hora de fin."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma pausa só te devolve as apps. O alarme continua a tocar à hora de fim."
+          }
+        }
+      }
+    },
     "Alarm + Ctrus NFC": {
       "extractionState": "manual",
       "localizations": {
@@ -1188,6 +1211,29 @@
         }
       }
     },
+    "Once · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una vez · %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma vez · %@"
+          }
+        }
+      }
+    },
     "Open Ctrus": {
       "extractionState": "manual",
       "localizations": {
@@ -1276,6 +1322,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Retomar horário"
+          }
+        }
+      }
+    },
+    "Ring only once": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ring only once"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonar solo una vez"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocar só uma vez"
+          }
+        }
+      }
+    },
+    "Rings the next time the end time comes around. Once you stop it, this profile is deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rings the next time the end time comes around. Once you stop it, this profile is deleted."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suena la próxima vez que llegue la hora de fin. Cuando la detengas, este perfil se elimina."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca na próxima vez que chegar a hora de fim. Quando o parares, este perfil é apagado."
           }
         }
       }

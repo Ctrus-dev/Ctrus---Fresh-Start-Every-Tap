@@ -666,6 +666,14 @@ class StrategyManager: ObservableObject {
 
     if WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId) {
       WakeAlarmManager.shared.sessionEnded(profileId: profile.id)
+
+      // Deferred so whatever is still showing the profile lets go of it first.
+      if profile.isOneTimeAlarm, let context = profile.modelContext {
+        DispatchQueue.main.async {
+          try? BlockedProfiles.deleteProfile(profile, in: context)
+          try? context.save()
+        }
+      }
     }
     self.dismissView()
     self.checkAndResetEmergencyUnblocks()
@@ -751,6 +759,49 @@ class StrategyManager: ObservableObject {
 
     // Flush completed scheduled sessions
     SharedData.flushCompletedSessionsForSchedular()
+
+    startMissedAlarmSession(context: context)
+  }
+
+  // The Screen Time extension can start a session late or not at all. Alarm
+  // mode's alarm is set regardless, so without a session here it would ring
+  // and then stop as soon as the app was opened, Ctrus or not.
+  private func startMissedAlarmSession(context: ModelContext) {
+    guard SharedData.getActiveSharedSession() == nil,
+      BlockedProfileSession.mostRecentActiveSession(in: context) == nil,
+      SharedData.lastKnownAuthorizationApproved,
+      let profiles = try? context.fetch(FetchDescriptor<BlockedProfiles>())
+    else {
+      return
+    }
+
+    for profile in profiles where WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId) {
+      guard
+        let start = profile.schedule?.currentAlarmOccurrenceStart(
+          grace: WakeAlarmManager.missedSessionGrace, skip: profile.scheduleSkip),
+        // Already ran, and was stopped.
+        !profile.sessions.contains(where: {
+          $0.startTime >= start.addingTimeInterval(-BlockedProfileSchedule.registrationSettleSeconds)
+        }),
+        let profileSnapshot = SharedData.snapshot(for: profile.id.uuidString)
+      else {
+        continue
+      }
+
+      // Started from the occurrence's start, so its alarm stays where it was.
+      let sessionSnapshot = SharedData.SessionSnapshot(
+        id: UUID().uuidString,
+        tag: profile.id.uuidString,
+        blockedProfileId: profile.id,
+        startTime: start,
+        forceStarted: true
+      )
+      SharedData.createActiveSharedSession(for: sessionSnapshot)
+      AppBlockerUtil().activateRestrictions(for: profileSnapshot)
+      BlockedProfileSession.upsertSessionFromSnapshot(in: context, withSnapshot: sessionSnapshot)
+      WakeAlarmManager.shared.refresh(profileId: profile.id)
+      return
+    }
   }
 
   private func resultFromURL(_ url: String) -> NFCResult {

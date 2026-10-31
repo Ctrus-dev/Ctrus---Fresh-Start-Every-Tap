@@ -102,11 +102,7 @@ struct BlockedProfileView: View {
 
         BlockedProfileStrictUnlocksSection(draft: draft, disabled: isBlocking)
 
-        if draft.useAlarm {
-          BlockedProfileSnoozeSection(draft: draft, disabled: isBlocking)
-        } else {
-          BlockedProfileBreaksSection(draft: draft, disabled: isBlocking)
-        }
+        BlockedProfileBreaksSection(draft: draft, disabled: isBlocking)
 
         BlockedProfileStrictSafeguardsSection(draft: draft, disabled: isBlocking)
 

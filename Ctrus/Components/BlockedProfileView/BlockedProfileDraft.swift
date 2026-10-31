@@ -29,6 +29,7 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var schedule: BlockedProfileSchedule
   @Published var allowSkip: Bool
   @Published var enableSnooze: Bool
+  @Published var isOneTimeAlarm: Bool
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -89,6 +90,7 @@ final class BlockedProfileDraft: ObservableObject {
     initialSchedule = resolvedSchedule
     allowSkip = profile?.allowSkip ?? false
     enableSnooze = profile?.enableSnooze ?? true
+    isOneTimeAlarm = profile?.isOneTimeAlarm ?? false
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -121,14 +123,26 @@ final class BlockedProfileDraft: ObservableObject {
     return selectedStrategy?.getIdentifier() == AlarmBlockingStrategy.id
   }
 
+  var useOneTimeAlarm: Bool {
+    useAlarm && isOneTimeAlarm
+  }
+
   var hasValidSchedule: Bool {
-    !schedule.days.isEmpty && (!useAlarm || schedule.hasValidAlarmTime)
+    (useOneTimeAlarm || !schedule.days.isEmpty) && (!useAlarm || schedule.hasValidAlarmTime)
   }
 
   func save(
     existingProfile: BlockedProfiles?,
     in context: ModelContext
   ) throws -> BlockedProfiles {
+    // A one-time alarm runs on whichever day its start time comes next.
+    if useOneTimeAlarm, let start = nextOneTimeStart(),
+      let weekday = Weekday(rawValue: Calendar.current.component(.weekday, from: start))
+    {
+      schedule.days = [weekday]
+      allowSkip = false
+    }
+
     if schedule != initialSchedule {
       schedule.updatedAt = Date()
     }
@@ -163,6 +177,7 @@ final class BlockedProfileDraft: ObservableObject {
         schedule: schedule,
         allowSkip: allowSkip,
         enableSnooze: enableSnooze,
+        isOneTimeAlarm: useOneTimeAlarm,
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -193,12 +208,23 @@ final class BlockedProfileDraft: ObservableObject {
       schedule: schedule,
       allowSkip: allowSkip,
       enableSnooze: enableSnooze,
+      isOneTimeAlarm: useOneTimeAlarm,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )
 
     DeviceActivityCenterUtil.scheduleTimerActivity(for: newProfile)
     return newProfile
+  }
+
+  // Far enough ahead that saving now doesn't fall inside the settle window
+  // the Screen Time extension ignores.
+  private func nextOneTimeStart(now: Date = Date()) -> Date? {
+    Calendar.current.nextDate(
+      after: now.addingTimeInterval(BlockedProfileSchedule.registrationSettleSeconds),
+      matching: DateComponents(hour: schedule.startHour, minute: schedule.startMinute, second: 0),
+      matchingPolicy: .nextTime
+    )
   }
 
   private func enforceStrategyBreaksPolicy() {
