@@ -32,6 +32,12 @@ struct TamperLogEntry: Codable, Equatable, Identifiable {
   var id = UUID()
   var type: Kind
   var at: Date
+  /// How far the date moved away from real time; negative when moved back.
+  var dateShift: TimeInterval?
+  /// How long entering the parent code was locked for.
+  var lockDuration: TimeInterval?
+  /// The profile whose session was running at the time.
+  var activeProfileName: String?
 
   var title: String {
     switch type {
@@ -39,6 +45,76 @@ struct TamperLogEntry: Codable, Equatable, Identifiable {
     case .clockChanged: return String(localized: "Phone date changed")
     case .pinLockout: return String(localized: "5 wrong codes in a row")
     }
+  }
+
+  var systemImage: String {
+    switch type {
+    case .permissionRevoked: return "shield.slash"
+    case .clockChanged: return "clock.badge.exclamationmark"
+    case .pinLockout: return "lock.fill"
+    }
+  }
+
+  /// The specifics of this entry, in a line.
+  var summary: String? {
+    switch type {
+    case .clockChanged:
+      guard let dateShift else { return nil }
+      let amount = Self.formattedDuration(abs(dateShift))
+      return dateShift > 0
+        ? String(localized: "Moved forward by about \(amount)")
+        : String(localized: "Moved back by about \(amount)")
+    case .pinLockout:
+      guard let lockDuration else { return nil }
+      return String(localized: "Code entry locked for \(Self.formattedDuration(lockDuration))")
+    case .permissionRevoked:
+      return nil
+    }
+  }
+
+  var explanation: String {
+    switch type {
+    case .permissionRevoked:
+      return String(
+        localized:
+          "Ctrus lost its Screen Time access. While it's off, Ctrus can't block any apps.")
+    case .clockChanged:
+      return String(
+        localized: "The phone's date or time was changed by hand, away from the real time.")
+    case .pinLockout:
+      return String(
+        localized:
+          "Someone entered the wrong parent code 5 times in a row, so entering it was locked for a while."
+      )
+    }
+  }
+
+  var advice: String {
+    switch type {
+    case .permissionRevoked:
+      return String(
+        localized:
+          "It can be turned off in Settings › Screen Time, and is sometimes reset by an iOS update. Open Ctrus and allow access again so apps are blocked."
+      )
+    case .clockChanged:
+      return String(
+        localized:
+          "Ctrus times sessions by the real time that has passed, so this doesn't end them sooner. Check that Set Automatically is on in Settings › General › Date & Time."
+      )
+    case .pinLockout:
+      return String(
+        localized:
+          "If it wasn't you, your child may be trying to guess the code. If you think they know it, change it in Child Mode settings."
+      )
+    }
+  }
+
+  private static func formattedDuration(_ interval: TimeInterval) -> String {
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = .full
+    formatter.allowedUnits = [.day, .hour, .minute]
+    formatter.maximumUnitCount = 1
+    return formatter.string(from: max(60, interval)) ?? ""
   }
 }
 
@@ -93,11 +169,27 @@ enum ChildModeStore {
     return parentTags.contains { normalizedUID($0.uid) == normalized }
   }
 
-  static func logTamper(_ kind: TamperLogEntry.Kind, at date: Date = Date()) {
+  static func logTamper(
+    _ kind: TamperLogEntry.Kind,
+    at date: Date = Date(),
+    dateShift: TimeInterval? = nil,
+    lockDuration: TimeInterval? = nil
+  ) {
     guard isChildMode else { return }
 
+    let activeProfileName = SharedData.getActiveSharedSession().flatMap {
+      SharedData.snapshot(for: $0.blockedProfileId.uuidString)?.name
+    }
+
     var log = tamperLog
-    log.append(TamperLogEntry(type: kind, at: date))
+    log.append(
+      TamperLogEntry(
+        type: kind,
+        at: date,
+        dateShift: dateShift,
+        lockDuration: lockDuration,
+        activeProfileName: activeProfileName
+      ))
     if log.count > maxTamperLogEntries {
       log.removeFirst(log.count - maxTamperLogEntries)
     }
@@ -112,7 +204,7 @@ enum ChildModeStore {
   static func checkForClockChange() {
     let reading = clockWatch.read()
     if reading.clockJumped {
-      logTamper(.clockChanged)
+      logTamper(.clockChanged, dateShift: reading.dateShift)
     }
   }
 

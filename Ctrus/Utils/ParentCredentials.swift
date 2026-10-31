@@ -132,7 +132,7 @@ enum ParentCredentials {
     defaults.set(duration, forKey: secret.lockRemainingKey)
 
     if secret == .parentCode {
-      ChildModeStore.logTamper(.pinLockout)
+      ChildModeStore.logTamper(.pinLockout, lockDuration: duration)
     }
 
     return .locked(remaining: duration)

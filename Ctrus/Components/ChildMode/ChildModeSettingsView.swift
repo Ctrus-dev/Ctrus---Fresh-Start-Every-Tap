@@ -394,11 +394,25 @@ struct TamperLogView: View {
           .foregroundStyle(.secondary)
       } else {
         ForEach(entries) { entry in
-          VStack(alignment: .leading, spacing: 3) {
-            Text(entry.title)
-            Text(entry.at, format: .dateTime.day().month().year().hour().minute())
-              .font(.caption)
-              .foregroundStyle(.secondary)
+          NavigationLink {
+            TamperLogEntryView(entry: entry)
+          } label: {
+            HStack(alignment: .firstTextBaseline, spacing: 12) {
+              Image(systemName: entry.systemImage)
+                .foregroundStyle(themeManager.themeColor)
+                .frame(width: 24)
+              VStack(alignment: .leading, spacing: 3) {
+                Text(entry.title)
+                if let summary = entry.summary {
+                  Text(summary)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                }
+                Text(entry.at, format: .dateTime.day().month().year().hour().minute())
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
           }
         }
       }
@@ -428,5 +442,35 @@ struct TamperLogView: View {
     .onAppear {
       ChildModeStore.tamperLogUnseen = false
     }
+  }
+}
+
+private struct TamperLogEntryView: View {
+  let entry: TamperLogEntry
+
+  var body: some View {
+    List {
+      Section("What happened") {
+        Text(entry.explanation)
+        if let summary = entry.summary {
+          Text(summary)
+        }
+      }
+
+      Section("When") {
+        LabeledContent(
+          String(localized: "Date"),
+          value: entry.at.formatted(.dateTime.day().month().year().hour().minute()))
+        if let activeProfileName = entry.activeProfileName {
+          LabeledContent(String(localized: "Session running"), value: activeProfileName)
+        }
+      }
+
+      Section("What you can do") {
+        Text(entry.advice)
+      }
+    }
+    .navigationTitle(entry.title)
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
