@@ -58,6 +58,8 @@ final class TrustedClock {
     /// The phone's date moved away from real time by more than
     /// `clockJumpTolerance` since the previous reading.
     let clockJumped: Bool
+    /// How far the date moved beyond real time; negative when moved back.
+    var dateShift: TimeInterval = 0
   }
 
   static let clockJumpTolerance: TimeInterval = 5 * 60
@@ -100,9 +102,11 @@ final class TrustedClock {
     // moved on top of it is a manual date change and is left out.
     if !rebooted {
       let elapsed = currentUptime - lastUptime
+      let shift = wallClockDelta - elapsed
       return Reading(
         elapsed: elapsed,
-        clockJumped: abs(wallClockDelta - elapsed) > Self.clockJumpTolerance
+        clockJumped: abs(shift) > Self.clockJumpTolerance,
+        dateShift: shift
       )
     }
 
@@ -114,7 +118,8 @@ final class TrustedClock {
     let poweredOffTime = min(max(0, reportedPoweredOffTime), Self.maxPoweredOffTime)
     return Reading(
       elapsed: max(0, currentUptime + poweredOffTime),
-      clockJumped: reportedPoweredOffTime < -Self.clockJumpTolerance
+      clockJumped: reportedPoweredOffTime < -Self.clockJumpTolerance,
+      dateShift: min(0, reportedPoweredOffTime)
     )
   }
 }

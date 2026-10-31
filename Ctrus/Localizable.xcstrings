@@ -15059,7 +15059,315 @@
         }
       }
     },
-    "🇵🇹": {}
+    "🇵🇹": {},
+    "What happened": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What happened"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que pasó"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que aconteceu"
+          }
+        }
+      }
+    },
+    "When": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuándo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando"
+          }
+        }
+      }
+    },
+    "Date": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
+          }
+        }
+      }
+    },
+    "Session running": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Session running"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesión activa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessão ativa"
+          }
+        }
+      }
+    },
+    "What you can do": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What you can do"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qué puedes hacer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que podes fazer"
+          }
+        }
+      }
+    },
+    "Moved forward by about %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moved forward by about %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adelantada unos %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiantada cerca de %@"
+          }
+        }
+      }
+    },
+    "Moved back by about %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moved back by about %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrasada unos %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrasada cerca de %@"
+          }
+        }
+      }
+    },
+    "Code entry locked for %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code entry locked for %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código bloqueado durante %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código bloqueado durante %@"
+          }
+        }
+      }
+    },
+    "Ctrus lost its Screen Time access. While it's off, Ctrus can't block any apps.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus lost its Screen Time access. While it's off, Ctrus can't block any apps."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus ha perdido el acceso a Tiempo de uso. Mientras esté desactivado, Ctrus no puede bloquear ninguna app."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus perdeu o acesso ao Tempo de ecrã. Enquanto estiver desligado, o Ctrus não consegue bloquear nenhuma app."
+          }
+        }
+      }
+    },
+    "The phone's date or time was changed by hand, away from the real time.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The phone's date or time was changed by hand, away from the real time."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La fecha o la hora del móvil se cambió a mano y dejó de coincidir con la hora real."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A data ou a hora do telemóvel foi alterada à mão e deixou de coincidir com a hora real."
+          }
+        }
+      }
+    },
+    "Someone entered the wrong parent code 5 times in a row, so entering it was locked for a while.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Someone entered the wrong parent code 5 times in a row, so entering it was locked for a while."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguien introdujo un código parental incorrecto 5 veces seguidas, así que se bloqueó durante un tiempo."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguém introduziu um código dos pais errado 5 vezes seguidas, por isso ficou bloqueado durante algum tempo."
+          }
+        }
+      }
+    },
+    "It can be turned off in Settings › Screen Time, and is sometimes reset by an iOS update. Open Ctrus and allow access again so apps are blocked.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It can be turned off in Settings › Screen Time, and is sometimes reset by an iOS update. Open Ctrus and allow access again so apps are blocked."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se puede desactivar en Ajustes › Tiempo de uso y a veces se restablece con una actualización de iOS. Abre Ctrus y vuelve a permitir el acceso para que las apps se bloqueen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pode ser desligado em Definições › Tempo de ecrã e às vezes é reposto por uma atualização do iOS. Abre o Ctrus e volta a permitir o acesso para que as apps sejam bloqueadas."
+          }
+        }
+      }
+    },
+    "Ctrus times sessions by the real time that has passed, so this doesn't end them sooner. Check that Set Automatically is on in Settings › General › Date & Time.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus times sessions by the real time that has passed, so this doesn't end them sooner. Check that Set Automatically is on in Settings › General › Date & Time."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus mide las sesiones con el tiempo real transcurrido, así que esto no las termina antes. Comprueba que «Ajuste automático» está activado en Ajustes › General › Fecha y hora."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus mede as sessões com o tempo real que passou, por isso isto não as termina mais cedo. Confirma que «Definir automaticamente» está ativado em Definições › Geral › Data e hora."
+          }
+        }
+      }
+    },
+    "If it wasn't you, your child may be trying to guess the code. If you think they know it, change it in Child Mode settings.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If it wasn't you, your child may be trying to guess the code. If you think they know it, change it in Child Mode settings."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si no fuiste tú, puede que estén intentando adivinar el código. Si crees que lo saben, cámbialo en los ajustes del Modo Infantil."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se não foste tu, a criança pode estar a tentar adivinhar o código. Se achas que já o sabe, muda-o nas definições do Modo Criança."
+          }
+        }
+      }
+    }
   },
   "version": "1.0"
 }
