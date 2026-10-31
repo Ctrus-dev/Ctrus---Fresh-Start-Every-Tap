@@ -1,6 +1,8 @@
+import ActivityKit
 import Combine
 import FamilyControls
 import Foundation
+import UIKit
 
 class AlertsManager: ObservableObject {
   static let shared = AlertsManager()
@@ -56,6 +58,22 @@ class AlertsManager: ObservableObject {
       )
     }
 
+    // The system shows Alarm mode's alarm as a Live Activity, so with them
+    // turned off for Ctrus it rings without ever coming up on the lock screen.
+    if profiles.contains(where: { WakeAlarmManager.isAlarmProfile($0.blockingStrategyId) }),
+      !ActivityAuthorizationInfo().areActivitiesEnabled
+    {
+      updatedAlerts.append(
+        HomeAlert(
+          type: .alarmLiveActivitiesOff,
+          title: String(localized: "Live Activities are off"),
+          message: String(localized: "Alarm mode's alarm can't show on the lock screen."),
+          detailMessage: WakeAlarmManager.liveActivitiesOffMessage,
+          primaryActionTitle: String(localized: "Open Settings"),
+          iconName: "alarm.fill"
+        ))
+    }
+
     alerts = updatedAlerts
     clearSelectedAlertIfResolved()
   }
@@ -82,7 +100,7 @@ class AlertsManager: ObservableObject {
     isBlocking: Bool
   ) -> String? {
     switch alert.type {
-    case .screenTimeAccess:
+    case .screenTimeAccess, .alarmLiveActivitiesOff:
       return nil
     case .scheduleOutOfSync(let profileId):
       if profile(with: profileId, in: profiles) == nil {
@@ -123,6 +141,10 @@ class AlertsManager: ObservableObject {
       guard let profile = profile(with: profileId, in: profiles) else { return }
       DeviceActivityCenterUtil.scheduleTimerActivity(for: profile)
       onScheduleRepaired()
+    case .alarmLiveActivitiesOff:
+      if let url = URL(string: UIApplication.openSettingsURLString) {
+        UIApplication.shared.open(url)
+      }
     }
   }
 

@@ -1,4 +1,5 @@
 import AVFoundation
+import ActivityKit
 import AudioToolbox
 import Foundation
 import SwiftUI
@@ -54,12 +55,24 @@ final class WakeAlarmManager: ObservableObject {
     localized:
       "Without alarm access, Alarm mode can't work. You can turn it on in Settings.")
 
-  /// Asked when an Alarm mode profile is saved; without it the profile isn't.
+  static let liveActivitiesOffMessage = String(
+    localized:
+      "iOS shows the alarm as a Live Activity. Turn Live Activities on for Ctrus in Settings, or the alarm won't come up on the lock screen."
+  )
+
+  /// Checked when an Alarm mode profile is saved, asking for alarm access if
+  /// it hasn't been yet. Returns why the profile can't be saved, if it can't.
   @MainActor
-  static func requestAlarmAccessIfNeeded(for draft: BlockedProfileDraft) async -> Bool {
-    guard draft.useAlarm else { return true }
-    guard #available(iOS 26.0, *) else { return false }
-    return await AlarmScheduleUtil.requestAuthorization()
+  static func alarmSetupProblem(for draft: BlockedProfileDraft) async -> String? {
+    guard draft.useAlarm else { return nil }
+    guard #available(iOS 26.0, *), await AlarmScheduleUtil.requestAuthorization() else {
+      return alarmAccessDeniedMessage
+    }
+    // Unlike alarm access, there's no asking for these: only Settings turns them on.
+    guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+      return liveActivitiesOffMessage
+    }
+    return nil
   }
 
   @Published private(set) var isRinging = false

@@ -329,8 +329,8 @@ struct BlockedProfileView: View {
 
   private func commitSave() {
     Task { @MainActor in
-      guard await WakeAlarmManager.requestAlarmAccessIfNeeded(for: draft) else {
-        showError(message: WakeAlarmManager.alarmAccessDeniedMessage)
+      if let problem = await WakeAlarmManager.alarmSetupProblem(for: draft) {
+        showError(message: problem)
         return
       }
 

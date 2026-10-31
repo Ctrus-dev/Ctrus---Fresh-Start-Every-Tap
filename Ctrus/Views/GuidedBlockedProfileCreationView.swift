@@ -417,9 +417,8 @@ struct GuidedBlockedProfileCreationView: View {
 
   private func createProfile() {
     Task { @MainActor in
-      guard await WakeAlarmManager.requestAlarmAccessIfNeeded(for: draft) else {
-        alertIdentifier = AlertIdentifier(
-          id: .error, errorMessage: WakeAlarmManager.alarmAccessDeniedMessage)
+      if let problem = await WakeAlarmManager.alarmSetupProblem(for: draft) {
+        alertIdentifier = AlertIdentifier(id: .error, errorMessage: problem)
         return
       }
 
