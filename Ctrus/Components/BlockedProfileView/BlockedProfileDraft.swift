@@ -30,6 +30,8 @@ final class BlockedProfileDraft: ObservableObject {
   @Published var allowSkip: Bool
   @Published var enableSnooze: Bool
   @Published var isOneTimeAlarm: Bool
+  @Published var childTag: ChildTag?
+  @Published var childTagCanStop: Bool
   // Captured once at load so save() can tell whether the schedule itself
   // changed, instead of always bumping `updatedAt` on every save (which
   // re-arms the "too new, skip today" guard and can silently cancel that
@@ -88,9 +90,12 @@ final class BlockedProfileDraft: ObservableObject {
       )
     schedule = resolvedSchedule
     initialSchedule = resolvedSchedule
-    allowSkip = profile?.allowSkip ?? false
     enableSnooze = profile?.enableSnooze ?? true
     isOneTimeAlarm = profile?.isOneTimeAlarm ?? false
+    // New child mode profiles allow skipping; existing ones keep theirs.
+    allowSkip = profile?.allowSkip ?? ChildModeStore.isChildMode
+    childTag = profile?.childTag
+    childTagCanStop = profile?.childTagCanStop ?? false
 
     if let profileStrategyId = profile?.blockingStrategyId {
       selectedStrategy = StrategyManager.getStrategyFromId(id: profileStrategyId)
@@ -109,6 +114,17 @@ final class BlockedProfileDraft: ObservableObject {
   var isValid: Bool {
     return !name.isEmpty
   }
+
+  var isChildMode: Bool {
+    ChildModeStore.isChildMode
+  }
+
+  // Child mode's master key is the parents' Ctrus, so a profile doesn't need
+  // tags of its own there.
+  var hasRequiredUnlocks: Bool {
+    isChildMode || !physicalUnblockItems.isEmpty
+  }
+
 
   var selectedStrategyAllowsTimedBreaks: Bool {
     return selectedStrategy?.allowsTimedBreaks ?? true
@@ -178,6 +194,8 @@ final class BlockedProfileDraft: ObservableObject {
         allowSkip: allowSkip,
         enableSnooze: enableSnooze,
         isOneTimeAlarm: useOneTimeAlarm,
+        childTag: .some(childTag),
+        childTagCanStop: childTag != nil && childTagCanStop,
         disableBackgroundStops: disableBackgroundStops,
         enableEmergencyUnblock: enableEmergencyUnblock
       )
@@ -209,6 +227,8 @@ final class BlockedProfileDraft: ObservableObject {
       allowSkip: allowSkip,
       enableSnooze: enableSnooze,
       isOneTimeAlarm: useOneTimeAlarm,
+      childTag: childTag,
+      childTagCanStop: childTag != nil && childTagCanStop,
       disableBackgroundStops: disableBackgroundStops,
       enableEmergencyUnblock: enableEmergencyUnblock
     )

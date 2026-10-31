@@ -135,7 +135,7 @@ struct GuidedBlockedProfileCreationView: View {
     case .name:
       return draft.isValid
     case .strictUnlocks:
-      return !draft.physicalUnblockItems.isEmpty
+      return draft.hasRequiredUnlocks
     case .schedule:
       return draft.hasValidSchedule
     default:
@@ -462,6 +462,13 @@ private struct GuidedProfileReviewContent: View {
       reviewRow(title: String(localized: "Breaks"), value: breaksSummary)
       reviewDivider
       reviewRow(title: String(localized: "Safeguards"), value: safeguardsSummary)
+
+      if draft.isChildMode {
+        reviewDivider
+        ChildModeSessionLimitNote()
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.vertical, 12)
+      }
     }
   }
 

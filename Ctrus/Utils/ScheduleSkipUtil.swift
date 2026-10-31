@@ -2,20 +2,22 @@ import SwiftData
 import SwiftUI
 
 // Skipping only ever removes blocking, so it takes a tap of one of the
-// profile's own tags — the same ones that can end its session. Resuming only
-// adds blocking back, so it doesn't.
+// profile's own tags — the same ones that can end its session. In child mode
+// the parents confirm it instead, before calling in with `alreadyConfirmed`.
+// Resuming only adds blocking back, so it doesn't need either.
 final class ScheduleSkipUtil {
   private let nfcScanner = NFCScannerUtil()
 
   func skipNextOccurrence(
     of profile: BlockedProfiles,
     in context: ModelContext,
+    alreadyConfirmed: Bool = false,
     onSuccess: @escaping (String) -> Void,
     onError: @escaping (String) -> Void
   ) {
     guard let nextStart = profile.schedule?.nextStartDate(bufferSeconds: 0) else { return }
 
-    authorize(profile, onError: onError) {
+    authorize(profile, alreadyConfirmed: alreadyConfirmed, onError: onError) {
       var skip = profile.scheduleSkip
       skip.skipNextOccurrence = nextStart
 
@@ -33,6 +35,7 @@ final class ScheduleSkipUtil {
     _ day: Date,
     of profile: BlockedProfiles,
     in context: ModelContext,
+    alreadyConfirmed: Bool = false,
     onSuccess: @escaping (String) -> Void,
     onError: @escaping (String) -> Void
   ) {
@@ -40,7 +43,7 @@ final class ScheduleSkipUtil {
     let lastSkippedDay = calendar.startOfDay(for: day)
     let backOn = calendar.date(byAdding: .day, value: 1, to: lastSkippedDay) ?? lastSkippedDay
 
-    authorize(profile, onError: onError) {
+    authorize(profile, alreadyConfirmed: alreadyConfirmed, onError: onError) {
       var skip = profile.scheduleSkip
       skip.skipUntil = lastSkippedDay
 
@@ -60,9 +63,15 @@ final class ScheduleSkipUtil {
 
   private func authorize(
     _ profile: BlockedProfiles,
+    alreadyConfirmed: Bool,
     onError: @escaping (String) -> Void,
     onAuthorized: @escaping () -> Void
   ) {
+    if alreadyConfirmed {
+      onAuthorized()
+      return
+    }
+
     nfcScanner.onTagScanned = { tag in
       let code = tag.url ?? tag.id
 

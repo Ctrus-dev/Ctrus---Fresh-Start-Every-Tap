@@ -11,6 +11,8 @@ struct EmergencyView: View {
 
   @State private var isPerformingEmergencyUnblock: Bool = false
 
+  private var isChildMode: Bool { ChildModeStore.isChildMode }
+
   var body: some View {
     ScrollView {
       VStack(spacing: 20) {
@@ -55,34 +57,37 @@ struct EmergencyView: View {
           }
           .padding(.vertical, 6)
 
-          Menu {
-            let currentPeriod = strategyManager.getResetPeriodInWeeks()
+          // Child mode's cycle is fixed at 4 weeks.
+          if !isChildMode {
+            Menu {
+              let currentPeriod = strategyManager.getResetPeriodInWeeks()
 
-            Button {
-              strategyManager.setResetPeriodInWeeks(2)
-            } label: {
-              if currentPeriod == 2 {
-                Label("2 weeks", systemImage: "checkmark")
-              } else {
-                Text("2 weeks")
+              Button {
+                strategyManager.setResetPeriodInWeeks(2)
+              } label: {
+                if currentPeriod == 2 {
+                  Label("2 weeks", systemImage: "checkmark")
+                } else {
+                  Text("2 weeks")
+                }
               }
-            }
 
-            Button {
-              strategyManager.setResetPeriodInWeeks(4)
-            } label: {
-              if currentPeriod == 4 {
-                Label("4 weeks", systemImage: "checkmark")
-              } else {
-                Text("4 weeks")
+              Button {
+                strategyManager.setResetPeriodInWeeks(4)
+              } label: {
+                if currentPeriod == 4 {
+                  Label("4 weeks", systemImage: "checkmark")
+                } else {
+                  Text("4 weeks")
+                }
               }
+            } label: {
+              Image(systemName: "gearshape.fill")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .padding(8)
+                .background(Circle().fill(Color.secondary.opacity(0.1)))
             }
-          } label: {
-            Image(systemName: "gearshape.fill")
-              .font(.caption)
-              .foregroundColor(.secondary)
-              .padding(8)
-              .background(Circle().fill(Color.secondary.opacity(0.1)))
           }
         }
       }

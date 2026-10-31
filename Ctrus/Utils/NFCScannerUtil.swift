@@ -16,6 +16,11 @@ class NFCScannerUtil: NSObject {
   private var urlToWrite: String?
 
   func scan(profileName: String) {
+    scan(alertMessage: String(
+      localized: "Hold your iPhone near your Ctrus to trigger \(profileName)"))
+  }
+
+  func scan(alertMessage: String) {
     guard NFCReaderSession.readingAvailable else {
       self.onError?(String(localized: "NFC scanning not available on this device"))
       return
@@ -26,8 +31,7 @@ class NFCScannerUtil: NSObject {
       delegate: self,
       queue: nil
     )
-    nfcSession?.alertMessage = String(
-      localized: "Hold your iPhone near your Ctrus to trigger \(profileName)")
+    nfcSession?.alertMessage = alertMessage
     nfcSession?.begin()
   }
 

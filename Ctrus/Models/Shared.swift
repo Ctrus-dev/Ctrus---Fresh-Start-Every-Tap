@@ -51,6 +51,9 @@ enum SharedData {
     var skipNextOccurrence: Date? = nil
     var skipUntil: Date? = nil
 
+    var childTag: ChildTag? = nil
+    var childTagCanStop: Bool? = nil
+
     var disableBackgroundStops: Bool?
     var enableEmergencyUnblock: Bool?
   }

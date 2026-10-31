@@ -26,6 +26,14 @@ class StrategyManager: ObservableObject {
     AlarmBlockingStrategy.id,
   ]
 
+  // The only strategies whose sessions already end with a Ctrus, which child
+  // mode then narrows down to the parents' (or an allowed child's) one.
+  static let childModeStrategyIds: Set<String> = [
+    NFCBlockingStrategy.id,
+    NFCManualBlockingStrategy.id,
+    ScheduleBlockingStrategy.id,
+  ]
+
   // Strategies offered when creating or editing a profile.
   static let pickerStrategies: [BlockingStrategy] = [
     NFCBlockingStrategy(),
@@ -200,7 +208,7 @@ class StrategyManager: ObservableObject {
       return .start(profile: profile)
     }
 
-    if localActiveSession.blockedProfile.disableBackgroundStops {
+    if localActiveSession.blockedProfile.blocksBackgroundStops {
       return .blockedByDisableBackgroundStops(profileName: localActiveSession.blockedProfile.name)
     }
 
@@ -372,7 +380,7 @@ class StrategyManager: ObservableObject {
         return
       }
 
-      if profile.disableBackgroundStops {
+      if profile.blocksBackgroundStops {
         print(
           "profile: \(profile.name) has disable background stops enabled, not stopping it"
         )
@@ -433,6 +441,15 @@ class StrategyManager: ObservableObject {
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
   }
 
+  /// Ends the active session once the parents have confirmed it (their
+  /// Ctrus or their code), without using an emergency unblock.
+  func endSessionConfirmedByParents(context: ModelContext) {
+    guard let activeSession = getActiveSession(context: context) else { return }
+
+    let manualStrategy = getStrategy(id: ManualBlockingStrategy.id, context: context)
+    _ = manualStrategy.stopBlocking(context: context, session: activeSession)
+  }
+
   func resetEmergencyUnblocks() {
     emergencyUnblocksRemaining = 3
     emergencyCycleElapsed = 0
@@ -453,11 +470,11 @@ class StrategyManager: ObservableObject {
   }
 
   private var emergencyCyclePeriodInSeconds: TimeInterval {
-    TimeInterval(emergencyUnblocksResetPeriodInWeeks * 7 * 24 * 60 * 60)
+    TimeInterval(getResetPeriodInWeeks() * 7 * 24 * 60 * 60)
   }
 
   func getResetPeriodInWeeks() -> Int {
-    return emergencyUnblocksResetPeriodInWeeks
+    return ChildModeStore.isChildMode ? 4 : emergencyUnblocksResetPeriodInWeeks
   }
 
   func setResetPeriodInWeeks(_ weeks: Int) {
@@ -744,8 +761,8 @@ class StrategyManager: ObservableObject {
     let completedScheduleSessions = SharedData.getCompletedSessionsForSchedular()
 
     // A session that ended on its own while the app was closed (a schedule's
-    // fixed duration) never reaches handleSessionEnded, but it still counts
-    // as having been through a whole session.
+    // fixed duration, child mode's limit) never reaches handleSessionEnded,
+    // but it still counts as having been through a whole session.
     if !completedScheduleSessions.isEmpty {
       hasCompletedFirstSession = true
     }
@@ -844,7 +861,14 @@ class StrategyManager: ObservableObject {
       return
     }
 
-    if let strategyId = session.blockedProfile.blockingStrategyId {
+    if var strategyId = session.blockedProfile.blockingStrategyId {
+      // In child mode every session ends with a Ctrus, whatever strategy the
+      // profile was set up with — a strategy that would end it from the app
+      // alone (e.g. Manual) goes through the NFC check instead.
+      if ChildModeStore.isChildMode && !StrategyManager.childModeStrategyIds.contains(strategyId) {
+        strategyId = NFCBlockingStrategy.id
+      }
+
       let strategy = getStrategy(id: strategyId, context: context)
       let view = strategy.stopBlocking(context: context, session: session)
 
@@ -950,6 +974,12 @@ class StrategyManager: ObservableObject {
   // breaks left. The code is fetched from recover.ctrus.pt, outside the app,
   // and is single-use.
   func unlockWithRecoveryCode(_ code: String, context: ModelContext) async -> RecoveryCodeVerification {
+    // Child mode never contacts recover.ctrus.pt — only the parents end
+    // sessions there.
+    guard !ChildModeStore.isChildMode else {
+      return .invalid
+    }
+
     // Do not allow verification if the recovery unlock is still on cooldown
     guard recoveryUnlocksRemaining > 0 else {
       return .invalid

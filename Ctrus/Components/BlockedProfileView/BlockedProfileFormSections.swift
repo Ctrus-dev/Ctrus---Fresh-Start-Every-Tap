@@ -240,10 +240,97 @@ struct BlockedProfileStrictUnlocksFields: View {
   var disabled: Bool
 
   var body: some View {
-    BlockedProfilePhysicalUnblockSelector(
-      physicalUnblockItems: $draft.physicalUnblockItems,
-      disabled: disabled
-    )
+    if draft.isChildMode {
+      ChildModeProfileTagFields(draft: draft, disabled: disabled)
+    } else {
+      BlockedProfilePhysicalUnblockSelector(
+        physicalUnblockItems: $draft.physicalUnblockItems,
+        disabled: disabled
+      )
+    }
+  }
+}
+
+/// Child mode's Ctrus step: the parents' Ctrus is always there and can't be
+/// changed here; the child's own Ctrus is optional.
+struct ChildModeProfileTagFields: View {
+  @ObservedObject var draft: BlockedProfileDraft
+  @EnvironmentObject private var themeManager: ThemeManager
+  var disabled: Bool
+
+  @State private var tagReader = TagReader()
+
+  var body: some View {
+    HStack {
+      themedLabel("Parents' Ctrus")
+      Spacer()
+      Image(systemName: "checkmark.circle.fill")
+        .foregroundStyle(themeManager.themeColor)
+    }
+
+    if draft.childTag != nil {
+      HStack {
+        themedLabel("Child's Ctrus")
+        Spacer()
+        Button {
+          draft.childTag = nil
+          draft.childTagCanStop = false
+        } label: {
+          Image(systemName: "trash")
+        }
+        .buttonStyle(.borderless)
+        .foregroundStyle(.red)
+        .disabled(disabled)
+        .accessibilityLabel(String(localized: "Remove"))
+      }
+
+      Toggle(
+        String(localized: "The child's Ctrus can also end the session"),
+        isOn: $draft.childTagCanStop
+      )
+      .tint(themeManager.themeColor)
+      .disabled(disabled)
+    } else {
+      Button {
+        tagReader.read(prompt: String(localized: "Add the child's Ctrus")) { result in
+          // A parents' Ctrus is already the master key; it isn't the child's.
+          guard !ChildModeStore.isParentTag(uid: result.id) else { return }
+          draft.childTag = ChildTag(
+            uid: ChildModeStore.normalizedUID(result.id), url: result.url)
+        }
+      } label: {
+        Label("Add the child's Ctrus", systemImage: "plus")
+      }
+      .foregroundStyle(themeManager.themeColor)
+      .disabled(disabled)
+    }
+  }
+
+  private func themedLabel(_ title: LocalizedStringKey) -> some View {
+    Label {
+      Text(title)
+    } icon: {
+      Image(systemName: "wave.3.right")
+        .foregroundStyle(themeManager.themeColor)
+    }
+  }
+}
+
+/// The fixed note every child mode profile shows.
+struct ChildModeSessionLimitNote: View {
+  var body: some View {
+    Label {
+      Text("In Child Mode, sessions end on their own after 24 hours.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    } icon: {
+      Image(systemName: "clock")
+        .foregroundStyle(.secondary)
+    }
+    // A list lines the separator up with a label's text, not its icon; this
+    // starts it at the row's edge like the other rows.
+    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
   }
 }
 
@@ -334,6 +421,11 @@ struct BlockedProfileScheduleFields: View {
           .font(.caption)
           .foregroundStyle(.red)
       }
+    }
+
+    // Child mode caps every session at 24 hours, so it says so right here.
+    if draft.isChildMode {
+      ChildModeSessionLimitNote()
     }
 
     ProfileFieldDivider(isVisible: showsSeparators)

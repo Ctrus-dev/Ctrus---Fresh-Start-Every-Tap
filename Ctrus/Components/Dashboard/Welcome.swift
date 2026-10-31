@@ -5,29 +5,13 @@ struct Welcome: View {
   let onGuidedTap: () -> Void
 
   var body: some View {
-    VStack(spacing: 14) {
-      Text("First Steps")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.fixedLightPrimaryText)
-
-      Text("Let's get you started by creating your first profile")
-        .font(.subheadline)
-        .foregroundColor(.fixedLightSecondaryText)
-        .multilineTextAlignment(.center)
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 8)
-
-      ShimmerLauncherButton(
-        title: String(localized: "Create Profile"),
-        iconName: "person.crop.circle",
-        height: 56,
-        showShimmer: false,
-        accessibilityLabel: String(localized: "Start guided profile setup"),
-        action: onGuidedTap
-      )
-      .padding(.top, 6)
-    }
+    IntroCard(
+      title: String(localized: "First Steps"),
+      subtitle: String(localized: "Let's get you started by creating your first profile."),
+      iconName: "person.crop.circle",
+      action: onGuidedTap
+    )
+    .accessibilityLabel(String(localized: "Start guided profile setup"))
     .frame(maxWidth: .infinity)
     .padding(.vertical, 22)
   }

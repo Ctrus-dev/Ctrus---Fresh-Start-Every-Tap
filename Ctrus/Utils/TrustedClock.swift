@@ -36,9 +36,22 @@ final class TrustedClock {
     TimeInterval(clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW)) / 1_000_000_000
   }
 
+  struct Reading {
+    let elapsed: TimeInterval
+    /// The phone's date moved away from real time by more than
+    /// `clockJumpTolerance` since the previous reading.
+    let clockJumped: Bool
+  }
+
+  static let clockJumpTolerance: TimeInterval = 5 * 60
+
   /// Real time since the previous call. Whenever it can't be sure, it counts
   /// less, never more.
   func trustedElapsed() -> TimeInterval {
+    read().elapsed
+  }
+
+  func read() -> Reading {
     let now = wallClock()
     let currentUptime = uptime()
 
@@ -50,23 +63,32 @@ final class TrustedClock {
     guard defaults.object(forKey: lastUptimeKey) != nil,
       defaults.object(forKey: lastWallClockKey) != nil
     else {
-      return 0
+      return Reading(elapsed: 0, clockJumped: false)
     }
 
     let lastUptime = defaults.double(forKey: lastUptimeKey)
     let lastWallClock = Date(
       timeIntervalSinceReferenceDate: defaults.double(forKey: lastWallClockKey))
+    let wallClockDelta = now.timeIntervalSince(lastWallClock)
 
     // Same boot: the uptime difference is the real time. Any extra the date
     // moved on top of it is a manual date change and is left out.
     if currentUptime >= lastUptime {
-      return currentUptime - lastUptime
+      let elapsed = currentUptime - lastUptime
+      return Reading(
+        elapsed: elapsed,
+        clockJumped: abs(wallClockDelta - elapsed) > Self.clockJumpTolerance
+      )
     }
 
     // Rebooted: the uptime only covers time since boot. The date is the only
     // hint at how long the phone was off, so it's trusted up to a cap.
-    let wallClockDelta = now.timeIntervalSince(lastWallClock)
-    let poweredOffTime = min(max(0, wallClockDelta - currentUptime), Self.maxPoweredOffTime)
-    return max(0, currentUptime + poweredOffTime)
+    let reportedPoweredOffTime = wallClockDelta - currentUptime
+    let poweredOffTime = min(max(0, reportedPoweredOffTime), Self.maxPoweredOffTime)
+    return Reading(
+      elapsed: max(0, currentUptime + poweredOffTime),
+      clockJumped: reportedPoweredOffTime < -Self.clockJumpTolerance
+        || reportedPoweredOffTime > Self.maxPoweredOffTime
+    )
   }
 }
