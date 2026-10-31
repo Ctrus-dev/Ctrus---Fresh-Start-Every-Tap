@@ -113,9 +113,12 @@ struct ProfileBalloonRow: View {
       isPressed = false
       if !newValue {
         isExpanded = false
-      } else if wakeAlarmManager.expandRequestProfileId == profile.id {
-        isExpanded = true
-        wakeAlarmManager.expandRequestProfileId = nil
+      } else {
+        if wakeAlarmManager.expandRequestProfileId == profile.id {
+          isExpanded = true
+          wakeAlarmManager.expandRequestProfileId = nil
+        }
+        handleStopRequest()
       }
     }
     // The alarm opened the app on this profile: show its buttons straight away.
@@ -123,6 +126,9 @@ struct ProfileBalloonRow: View {
       guard isActive, profileId == profile.id else { return }
       isExpanded = true
       wakeAlarmManager.expandRequestProfileId = nil
+    }
+    .onChange(of: wakeAlarmManager.stopRequestProfileId, initial: true) { _, _ in
+      handleStopRequest()
     }
     .sheet(isPresented: $showEmergencyView) {
       EmergencyView()
@@ -257,20 +263,38 @@ struct ProfileBalloonRow: View {
       // usage chart occupies when inactive — keeps the card's size and
       // layout identical between the two states.
       Button(action: toggleExpanded) {
-        SessionTimeAccessory(
-          displayTime: displayTime,
-          isBreakActive: isBreakActive,
-          isPauseActive: isPauseActive,
-          color: themeManager.themeColor
-        )
-        .frame(width: 118, height: 62)
-        .contentShape(Rectangle())
+        sessionTimeAccessory
+          .contentShape(Rectangle())
       }
       .buttonStyle(.plain)
 
       activeMenu
     }
     .padding(16)
+  }
+
+  @ViewBuilder
+  private var sessionTimeAccessory: some View {
+    if isAlarmProfile {
+      // A little taller during a break, to fit the break's clock under the alarm's.
+      AlarmSessionTimeAccessory(
+        alarmDate: wakeAlarmManager.alarmDate(for: profile.id),
+        snoozedUntil: wakeAlarmManager.snoozedUntil,
+        isRinging: isAlarmDue && !wakeAlarmManager.isSnoozed,
+        breakTime: isBreakActive ? displayTime : nil,
+        fallbackTime: displayTime,
+        color: themeManager.themeColor
+      )
+      .frame(width: 118, height: isBreakActive ? 84 : 62)
+    } else {
+      SessionTimeAccessory(
+        displayTime: displayTime,
+        isBreakActive: isBreakActive,
+        isPauseActive: isPauseActive,
+        color: themeManager.themeColor
+      )
+      .frame(width: 118, height: 62)
+    }
   }
 
   private var activeMenu: some View {
@@ -327,33 +351,27 @@ struct ProfileBalloonRow: View {
     return String(localized: "Active Profile \(profile.name)")
   }
 
-  private var isAlarmDue: Bool {
+  private var isAlarmProfile: Bool {
     WakeAlarmManager.isAlarmProfile(profile.blockingStrategyId)
-      && wakeAlarmManager.dueProfileId == profile.id
   }
 
-  private var snoozeCountdownText: String {
-    let snoozedUntil = wakeAlarmManager.snoozedUntil ?? wakeAlarmManager.now
-    let remaining = max(0, Int(ceil(snoozedUntil.timeIntervalSince(wakeAlarmManager.now))))
-    let time = String(format: "%d:%02d", remaining / 60, remaining % 60)
-    return String(localized: "Snoozed · \(time)")
+  private var isAlarmDue: Bool {
+    isAlarmProfile && wakeAlarmManager.dueProfileId == profile.id
   }
 
   private var expandedActions: some View {
     VStack(spacing: 12) {
-      // Alarm mode's snooze sits where the break button would, once it rings.
-      if isAlarmDue && profile.enableSnooze {
+      // Only while it rings: a snooze counts down in the clock instead, and
+      // the button comes back once it's over.
+      if isAlarmDue && profile.enableSnooze && !wakeAlarmManager.isSnoozed {
         SessionActionButton(
-          title: wakeAlarmManager.isSnoozed
-            ? snoozeCountdownText : String(localized: "Snooze"),
+          title: String(localized: "Snooze"),
           iconName: "zzz",
           role: .standard,
           themeColor: themeManager.themeColor,
-          action: {
-            guard !wakeAlarmManager.isSnoozed else { return }
-            wakeAlarmManager.snooze()
-          }
+          action: wakeAlarmManager.snooze
         )
+        .transition(.opacity)
       }
 
       if !isPauseActive && isBreakAvailable {
@@ -398,6 +416,20 @@ struct ProfileBalloonRow: View {
     UIImpactFeedbackGenerator(style: .light).impactOccurred()
     withAnimation(.easeInOut(duration: 0.3)) {
       isExpanded.toggle()
+    }
+  }
+
+  /// Slid away on the alarm: Stop is pressed for you, so the Ctrus scan comes
+  /// straight up. The buttons stay open in case the scan is cancelled.
+  private func handleStopRequest() {
+    guard isActive, showStopButton, wakeAlarmManager.stopRequestProfileId == profile.id else {
+      return
+    }
+    wakeAlarmManager.stopRequestProfileId = nil
+
+    // The scan sheet can't come up while the app is still opening.
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+      onStopTapped()
     }
   }
 

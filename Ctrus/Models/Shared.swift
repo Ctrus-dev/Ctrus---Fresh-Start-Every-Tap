@@ -56,6 +56,7 @@ enum SharedData {
 
     var disableBackgroundStops: Bool?
     var enableEmergencyUnblock: Bool?
+    var enableSnooze: Bool? = nil
   }
 
   // MARK: – Serializable snapshot of a session (no profile object)

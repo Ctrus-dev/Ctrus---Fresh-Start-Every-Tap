@@ -21,6 +21,9 @@ final class WakeAlarmManager: ObservableObject {
   /// still started by the app (StrategyManager), so the alarm can't be
   /// silenced just by opening it. About as long as the spares ring.
   static let missedSessionGrace: TimeInterval = 30 * 60
+  // While it rings in the app, the system alarms are held this far ahead,
+  // moved every 30 seconds.
+  private static let inAppSparesLead: TimeInterval = 60
 
   /// Sounds offered for the alarm. Files dropped into `alarm_sounds/` are
   /// added here by their name, without the extension.
@@ -58,6 +61,8 @@ final class WakeAlarmManager: ObservableObject {
   @Published private(set) var dueProfileId: UUID?
   /// Set when the alarm opens the app, so that profile's card opens expanded.
   @Published var expandRequestProfileId: UUID?
+  /// Set alongside it, so that card goes straight to scanning the Ctrus.
+  @Published var stopRequestProfileId: UUID?
   @Published private(set) var now = Date()
 
   private struct AlarmRecord: Codable {
@@ -65,6 +70,9 @@ final class WakeAlarmManager: ObservableObject {
     /// snooze or the app being open.
     var alarmDate: Date
     var alarmIds: [UUID]
+    // Optional so records from before the Snooze button still decode, and
+    // get set again with it.
+    var allowsSnooze: Bool?
   }
 
   private let defaults = UserDefaults.standard
@@ -102,12 +110,15 @@ final class WakeAlarmManager: ObservableObject {
     }
   }
 
-  private func enqueue(_ operation: @escaping @MainActor () async -> Void) {
+  @discardableResult
+  private func enqueue(_ operation: @escaping @MainActor () async -> Void) -> Task<Void, Never> {
     let previous = lastOperation
-    lastOperation = Task { @MainActor in
+    let task = Task { @MainActor in
       await previous?.value
       await operation()
     }
+    lastOperation = task
+    return task
   }
 
   // MARK: - Keeping the alarms in line with the profiles
@@ -145,9 +156,11 @@ final class WakeAlarmManager: ObservableObject {
       return
     }
 
+    let allowsSnooze = snapshot.enableSnooze ?? true
+
     // Already set for this alarm; a due one is looked after by the ringing
     // and snooze below.
-    if let record, record.alarmDate == desiredDate {
+    if let record, record.alarmDate == desiredDate, record.allowsSnooze == allowsSnooze {
       return
     }
 
@@ -160,9 +173,12 @@ final class WakeAlarmManager: ObservableObject {
       at: max(desiredDate, Date().addingTimeInterval(1)),
       profileId: profileId,
       profileName: snapshot.name,
-      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
+      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound,
+      allowsSnooze: allowsSnooze
     )
-    setRecord(AlarmRecord(alarmDate: desiredDate, alarmIds: ids), for: profileId)
+    setRecord(
+      AlarmRecord(alarmDate: desiredDate, alarmIds: ids, allowsSnooze: allowsSnooze),
+      for: profileId)
   }
 
   /// The running session's alarm, or else the next session's.
@@ -227,6 +243,7 @@ final class WakeAlarmManager: ObservableObject {
   func alarmOpenedApp(profileId: String) {
     guard let profileId = UUID(uuidString: profileId) else { return }
     expandRequestProfileId = profileId
+    stopRequestProfileId = profileId
     updateDueState()
     now = Date()
 
@@ -238,6 +255,13 @@ final class WakeAlarmManager: ObservableObject {
 
   func snooze() {
     guard let profileId = dueProfileId else { return }
+    Task { await snooze(profileId: profileId) }
+  }
+
+  /// Also reached from the alarm's own Snooze button, with the app in the
+  /// background, so it waits for the spares to have moved.
+  @MainActor
+  func snooze(profileId: UUID) async {
     let snoozeMinutes =
       SharedData.snapshot(for: profileId.uuidString)?.schedule?.alarmSnoozeMinutes
       ?? BlockedProfileSchedule.defaultSnoozeMinutes
@@ -246,8 +270,14 @@ final class WakeAlarmManager: ObservableObject {
     stopSound()
 
     if #available(iOS 26.0, *) {
-      enqueue { await self.moveSpares(of: profileId, to: until) }
+      await enqueue { await self.moveSpares(of: profileId, to: until) }.value
     }
+  }
+
+  /// When the running session's alarm is due, kept while a snooze moves the
+  /// spares about.
+  func alarmDate(for profileId: UUID) -> Date? {
+    records[profileId.uuidString]?.alarmDate
   }
 
   var isSnoozed: Bool {
@@ -263,6 +293,8 @@ final class WakeAlarmManager: ObservableObject {
   private func appEnteredBackground() {
     tickTimer?.invalidate()
     tickTimer = nil
+    // Only meant for the opening the alarm caused.
+    stopRequestProfileId = nil
 
     guard isRinging, let profileId = dueProfileId else { return }
     stopSound()
@@ -317,7 +349,7 @@ final class WakeAlarmManager: ObservableObject {
     // so they only ring once the app is gone.
     if #available(iOS 26.0, *), currentDate.timeIntervalSince(lastSparesPush) >= 30 {
       lastSparesPush = currentDate
-      let sparesAt = currentDate.addingTimeInterval(AlarmScheduleUtil.alarmRepeatSeconds)
+      let sparesAt = currentDate.addingTimeInterval(Self.inAppSparesLead)
       enqueue { await self.moveSpares(of: profileId, to: sparesAt) }
     }
   }
@@ -347,13 +379,16 @@ final class WakeAlarmManager: ObservableObject {
       return
     }
 
+    let allowsSnooze = snapshot.enableSnooze ?? true
     AlarmScheduleUtil.cancel(record.alarmIds)
     record.alarmIds = await AlarmScheduleUtil.schedule(
       at: date,
       profileId: profileId,
       profileName: snapshot.name,
-      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
+      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound,
+      allowsSnooze: allowsSnooze
     )
+    record.allowsSnooze = allowsSnooze
     setRecord(record, for: profileId)
   }
 

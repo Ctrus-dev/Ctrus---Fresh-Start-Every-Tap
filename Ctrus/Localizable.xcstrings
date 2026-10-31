@@ -6132,6 +6132,29 @@
         }
       }
     },
+    "If an app isn't blocked when you choose its whole category, open the category and select its apps one by one instead.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If an app isn't blocked when you choose its whole category, open the category and select its apps one by one instead."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si una app no se bloquea al elegir su categoría entera, abre la categoría y selecciona sus apps una a una."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se uma app não ficar bloqueada ao escolheres a categoria inteira, abre a categoria e marca as apps uma a uma."
+          }
+        }
+      }
+    },
     "If you lose your Ctrus and forget the code, this key is the only way back. Take a photo or write it down. It won't be shown again.": {
       "extractionState": "manual",
       "localizations": {
@@ -9265,6 +9288,29 @@
         }
       }
     },
+    "Ringing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ringing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonando"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tocar"
+          }
+        }
+      }
+    },
     "Rings the next time the end time comes around. Once you stop it, this profile is deleted.": {
       "extractionState": "manual",
       "localizations": {
@@ -10408,6 +10454,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adiar cala o alarme durante algum tempo. Depois volta a tocar."
+          }
+        }
+      }
+    },
+    "Snooze the alarm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snooze the alarm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posponer la alarma"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adiar o alarme"
           }
         }
       }

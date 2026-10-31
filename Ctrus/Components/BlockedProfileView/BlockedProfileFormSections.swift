@@ -120,6 +120,14 @@ struct BlockedProfileAppsFields: View {
       disabled: disabled
     )
 
+    // iOS doesn't always shield every app in a chosen category.
+    if !draft.enableAllowMode {
+      Text("If an app isn't blocked when you choose its whole category, open the category and select its apps one by one instead.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
     ProfileFieldDivider(isVisible: showsSeparators)
 
     CustomToggle(

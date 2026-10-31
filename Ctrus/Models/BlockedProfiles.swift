@@ -452,7 +452,8 @@ class BlockedProfiles {
       childTag: profile.childTag,
       childTagCanStop: profile.childTagCanStop,
       disableBackgroundStops: profile.disableBackgroundStops,
-      enableEmergencyUnblock: profile.enableEmergencyUnblock
+      enableEmergencyUnblock: profile.enableEmergencyUnblock,
+      enableSnooze: profile.enableSnooze
     )
   }
 
