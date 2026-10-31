@@ -291,7 +291,6 @@ private struct ProfileSummaryStatusLine: View {
       )
     } else if mode == .scheduleOrIndicators {
       ProfileSummaryCompactIndicators(
-        enableLiveActivity: profile.enableLiveActivity,
         hasReminders: profile.reminderTimeInSeconds != nil,
         enableBreaks: profile.enableBreaks,
         enableStrictMode: profile.enableStrictMode,
@@ -328,7 +327,6 @@ private struct ProfileSummaryNextScheduleLine: View {
 }
 
 private struct ProfileSummaryCompactIndicators: View {
-  let enableLiveActivity: Bool
   let hasReminders: Bool
   let enableBreaks: Bool
   let enableStrictMode: Bool
@@ -342,9 +340,6 @@ private struct ProfileSummaryCompactIndicators: View {
     }
     if enableStrictMode {
       values.append(String(localized: "Deletion Blocked"))
-    }
-    if enableLiveActivity {
-      values.append(String(localized: "Live Activity"))
     }
     if hasReminders {
       values.append(String(localized: "Reminders"))

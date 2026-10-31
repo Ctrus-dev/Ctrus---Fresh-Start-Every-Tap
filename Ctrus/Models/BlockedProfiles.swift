@@ -15,6 +15,7 @@ class BlockedProfiles {
   var strategyData: Data?
   var order: Int = 0
 
+  // No longer used, as there's no Live Activity; kept so stored profiles still load.
   var enableLiveActivity: Bool = false
   var reminderTimeInSeconds: UInt32?
   var enableBreaks: Bool = false

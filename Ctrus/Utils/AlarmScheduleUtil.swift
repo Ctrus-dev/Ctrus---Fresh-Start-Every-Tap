@@ -7,12 +7,12 @@ import SwiftUI
 /// ring with the app closed, the phone locked, on silent or in a Focus.
 @available(iOS 26.0, *)
 enum AlarmScheduleUtil {
-  /// The alarm, then this many spares 15 seconds apart, so it keeps coming
-  /// back for half an hour if it's silenced some other way than the Ctrus —
-  /// slid away with the app then closed, the side button, or its
-  /// notification swiped off.
-  static let alarmRepeatCount = 120
-  static let alarmRepeatSeconds: TimeInterval = 15
+  /// When the alarm and its spares ring, from its own time: every minute for
+  /// half an hour, so it comes back if it's silenced some other way than the
+  /// Ctrus — slid away with the app then closed, the side button, or its
+  /// notification swiped off. Not closer together: each spare takes over
+  /// from one still ringing, so the alarm would keep restarting on screen.
+  static let spareOffsets: [TimeInterval] = Array(stride(from: 0, through: 30 * 60, by: 60))
 
   static var isAuthorized: Bool {
     AlarmManager.shared.authorizationState == .authorized
@@ -41,11 +41,12 @@ enum AlarmScheduleUtil {
     allowsSnooze: Bool
   ) async -> [UUID] {
     guard isAuthorized else { return [] }
+    installSoundsIfNeeded()
 
     var ids: [UUID] = []
-    for index in 0...alarmRepeatCount {
+    for offset in spareOffsets {
       let id = UUID()
-      let fireDate = date.addingTimeInterval(Double(index) * alarmRepeatSeconds)
+      let fireDate = date.addingTimeInterval(offset)
       do {
         _ = try await AlarmManager.shared.schedule(
           id: id,
@@ -62,8 +63,46 @@ enum AlarmScheduleUtil {
     return ids
   }
 
+  private static var hasInstalledSounds = false
+
+  /// Copies the tones to Library/Sounds. Alert sounds are looked for there as
+  /// well as in the app, and one that isn't found plays the system's sound
+  /// instead without a word.
+  private static func installSoundsIfNeeded() {
+    guard !hasInstalledSounds else { return }
+    hasInstalledSounds = true
+
+    let fileManager = FileManager.default
+    guard
+      let library = fileManager.urls(for: .libraryDirectory, in: .userDomainMask).first,
+      let bundled = Bundle.main.urls(forResourcesWithExtension: "caf", subdirectory: nil)
+    else {
+      return
+    }
+
+    let sounds = library.appendingPathComponent("Sounds", isDirectory: true)
+    try? fileManager.createDirectory(at: sounds, withIntermediateDirectories: true)
+
+    for source in bundled {
+      let destination = sounds.appendingPathComponent(source.lastPathComponent)
+      // Replaced every launch, so a tone changed in an update doesn't keep its old sound.
+      try? fileManager.removeItem(at: destination)
+      do {
+        try fileManager.copyItem(at: source, to: destination)
+      } catch {
+        print("Alarm mode: couldn't copy \(source.lastPathComponent) to Library/Sounds: \(error)")
+      }
+    }
+  }
+
+  static var allAlarms: [Alarm] {
+    (try? AlarmManager.shared.alarms) ?? []
+  }
+
   static func cancel(_ ids: [UUID]) {
     for id in ids {
+      // One that's ringing is stopped first, so it leaves the screen too.
+      try? AlarmManager.shared.stop(id: id)
       try? AlarmManager.shared.cancel(id: id)
     }
   }
@@ -118,13 +157,8 @@ enum AlarmScheduleUtil {
   }
 
   private static func alertSound(for soundId: String) -> AlertConfiguration.AlertSound {
-    switch soundId {
-    case BlockedProfileSchedule.defaultAlarmSound:
-      return .default
-    case BlockedProfileSchedule.vibrateAlarmSound:
-      return .named(WakeAlarmManager.silentSoundFile)
-    default:
-      return .named("\(soundId).caf")
-    }
+    // The same files the app plays while it's open, so the two sound alike.
+    soundId == BlockedProfileSchedule.vibrateAlarmSound
+      ? .named(WakeAlarmManager.silentSoundFile) : .named("\(soundId).caf")
   }
 }

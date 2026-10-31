@@ -15,8 +15,6 @@ final class WakeAlarmManager: ObservableObject {
   static let shared = WakeAlarmManager()
 
   static let silentSoundFile = "alarm_silence.caf"
-  // Stands in for the system alarm sound inside the app, which apps can't play.
-  private static let inAppDefaultSoundFile = "alarm_beep"
   /// How long after its alarm an occurrence that never got a session is
   /// still started by the app (StrategyManager), so the alarm can't be
   /// silenced just by opening it. About as long as the spares ring.
@@ -25,17 +23,25 @@ final class WakeAlarmManager: ObservableObject {
   // moved every 30 seconds.
   private static let inAppSparesLead: TimeInterval = 60
 
-  /// Sounds offered for the alarm. Files dropped into `alarm_sounds/` are
-  /// added here by their name, without the extension.
-  static let availableSounds = [
-    BlockedProfileSchedule.vibrateAlarmSound,
-    BlockedProfileSchedule.defaultAlarmSound,
-  ]
+  /// Sounds offered for the alarm. Each tone is under 30 seconds, the most
+  /// AlarmKit plays.
+  static let availableSounds =
+    BlockedProfileSchedule.alarmToneIds + [BlockedProfileSchedule.vibrateAlarmSound]
 
   static func soundTitle(for soundId: String) -> String {
     switch soundId {
+    case "ctrus_urgent": return String(localized: "Urgent")
+    case "ctrus_morning": return String(localized: "Morning")
+    case "ctrus_lumen": return String(localized: "Lumen")
+    case "ctrus_pulsar": return String(localized: "Pulsar")
+    case "ctrus_orbit": return String(localized: "Orbit")
+    case "ctrus_lagoon": return String(localized: "Lagoon")
+    case "ctrus_spark": return String(localized: "Spark")
+    case "ctrus_waves": return String(localized: "Waves")
+    case "ctrus_daybreak": return String(localized: "Daybreak")
+    case "ctrus_musicbox": return String(localized: "Music Box")
+    case "ctrus_rally": return String(localized: "Rally")
     case BlockedProfileSchedule.vibrateAlarmSound: return String(localized: "Vibrate only")
-    case BlockedProfileSchedule.defaultAlarmSound: return String(localized: "Ctrus Alarm")
     default: return soundId
     }
   }
@@ -70,9 +76,10 @@ final class WakeAlarmManager: ObservableObject {
     /// snooze or the app being open.
     var alarmDate: Date
     var alarmIds: [UUID]
-    // Optional so records from before the Snooze button still decode, and
-    // get set again with it.
+    // Optional so records from before these still decode, and get set
+    // again with them.
     var allowsSnooze: Bool?
+    var soundId: String?
   }
 
   private let defaults = UserDefaults.standard
@@ -82,6 +89,7 @@ final class WakeAlarmManager: ObservableObject {
 
   private var player: AVAudioPlayer?
   private var previewPlayer: AVAudioPlayer?
+  private var previewStop: DispatchWorkItem?
   private var vibrationTimer: Timer?
   private var tickTimer: Timer?
   private var lastSparesPush = Date.distantPast
@@ -138,8 +146,20 @@ final class WakeAlarmManager: ObservableObject {
       for profileId in profileIds {
         await self.refreshAlarm(for: profileId)
       }
+      self.removeStrayAlarms()
       self.updateDueState()
     }
+  }
+
+  /// Alarms no record knows about — left by an earlier version, or by a
+  /// record that was replaced — would ring, or stay in the Dynamic Island,
+  /// with nothing in the app to stop them.
+  @available(iOS 26.0, *)
+  @MainActor
+  private func removeStrayAlarms() {
+    let known = Set(records.values.flatMap(\.alarmIds))
+    let strays = AlarmScheduleUtil.allAlarms.filter { !known.contains($0.id) }
+    AlarmScheduleUtil.cancel(strays.map(\.id))
   }
 
   @available(iOS 26.0, *)
@@ -157,10 +177,13 @@ final class WakeAlarmManager: ObservableObject {
     }
 
     let allowsSnooze = snapshot.enableSnooze ?? true
+    let soundId = snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
 
     // Already set for this alarm; a due one is looked after by the ringing
     // and snooze below.
-    if let record, record.alarmDate == desiredDate, record.allowsSnooze == allowsSnooze {
+    if let record, record.alarmDate == desiredDate, record.allowsSnooze == allowsSnooze,
+      record.soundId == soundId
+    {
       return
     }
 
@@ -173,11 +196,12 @@ final class WakeAlarmManager: ObservableObject {
       at: max(desiredDate, Date().addingTimeInterval(1)),
       profileId: profileId,
       profileName: snapshot.name,
-      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound,
+      soundId: soundId,
       allowsSnooze: allowsSnooze
     )
     setRecord(
-      AlarmRecord(alarmDate: desiredDate, alarmIds: ids, allowsSnooze: allowsSnooze),
+      AlarmRecord(
+        alarmDate: desiredDate, alarmIds: ids, allowsSnooze: allowsSnooze, soundId: soundId),
       for: profileId)
   }
 
@@ -380,15 +404,17 @@ final class WakeAlarmManager: ObservableObject {
     }
 
     let allowsSnooze = snapshot.enableSnooze ?? true
+    let soundId = snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
     AlarmScheduleUtil.cancel(record.alarmIds)
     record.alarmIds = await AlarmScheduleUtil.schedule(
       at: date,
       profileId: profileId,
       profileName: snapshot.name,
-      soundId: snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound,
+      soundId: soundId,
       allowsSnooze: allowsSnooze
     )
     record.allowsSnooze = allowsSnooze
+    record.soundId = soundId
     setRecord(record, for: profileId)
   }
 
@@ -409,13 +435,13 @@ final class WakeAlarmManager: ObservableObject {
     isRinging = true
     lastSparesPush = .distantPast
 
-    if soundId == BlockedProfileSchedule.vibrateAlarmSound {
-      vibrationTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { _ in
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-      }
+    // The system alarm vibrates alongside its sound, so the app does too.
+    vibrationTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { _ in
       AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-      return
     }
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+
+    guard soundId != BlockedProfileSchedule.vibrateAlarmSound else { return }
 
     player = makePlayer(for: soundId)
     player?.numberOfLoops = -1
@@ -444,20 +470,25 @@ final class WakeAlarmManager: ObservableObject {
 
     try? AVAudioSession.sharedInstance().setCategory(.playback)
     try? AVAudioSession.sharedInstance().setActive(true)
+    previewPlayer?.stop()
     previewPlayer = makePlayer(for: soundId)
     previewPlayer?.numberOfLoops = -1
+    previewPlayer?.prepareToPlay()
     previewPlayer?.play()
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+    // Replaced on every pick, so an earlier pick's stop can't cut this one
+    // short — or stop it before it's heard at all.
+    previewStop?.cancel()
+    let stop = DispatchWorkItem { [weak self] in
       self?.previewPlayer?.stop()
       self?.previewPlayer = nil
     }
+    previewStop = stop
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: stop)
   }
 
   private func makePlayer(for soundId: String) -> AVAudioPlayer? {
-    let fileName =
-      soundId == BlockedProfileSchedule.defaultAlarmSound ? Self.inAppDefaultSoundFile : soundId
-    guard let url = Bundle.main.url(forResource: fileName, withExtension: "caf") else {
+    guard let url = Bundle.main.url(forResource: soundId, withExtension: "caf") else {
       return nil
     }
     return try? AVAudioPlayer(contentsOf: url)

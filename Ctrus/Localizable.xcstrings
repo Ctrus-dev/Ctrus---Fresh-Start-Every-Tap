@@ -1395,29 +1395,6 @@
         }
       }
     },
-    "A break only gives your apps back. The alarm still rings at the end time.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A break only gives your apps back. The alarm still rings at the end time."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una pausa solo te devuelve las apps. La alarma sigue sonando a la hora de fin."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uma pausa só te devolve as apps. O alarme continua a tocar à hora de fim."
-          }
-        }
-      }
-    },
     "A Ctrus session is currently active.": {
       "extractionState": "manual",
       "localizations": {
@@ -4350,6 +4327,29 @@
         }
       }
     },
+    "Daybreak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daybreak"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amanecer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amanhecer"
+          }
+        }
+      }
+    },
     "Debug information has been copied as Markdown.": {
       "extractionState": "manual",
       "localizations": {
@@ -5833,6 +5833,29 @@
         }
       }
     },
+    "Get your apps back for a while during the session. The break ends on its own, and the alarm still rings at the end time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get your apps back for a while during the session. The break ends on its own, and the alarm still rings at the end time."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recupera tus apps un rato durante la sesión. La pausa termina sola y la alarma sigue sonando a la hora de fin."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recupera as tuas apps durante algum tempo na sessão. A pausa acaba sozinha e o alarme continua a tocar à hora de fim."
+          }
+        }
+      }
+    },
     "Got it": {
       "extractionState": "manual",
       "localizations": {
@@ -6385,6 +6408,29 @@
         }
       }
     },
+    "Lagoon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lagoon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laguna"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lagoa"
+          }
+        }
+      }
+    },
     "Last Month": {
       "extractionState": "manual",
       "localizations": {
@@ -6657,6 +6703,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "À Procura de Respostas?"
+          }
+        }
+      }
+    },
+    "Lumen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lumen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lumen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lúmen"
           }
         }
       }
@@ -6937,6 +7006,29 @@
         }
       }
     },
+    "Morning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mañana"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manhã"
+          }
+        }
+      }
+    },
     "Moves the profile and settings buttons to the left": {
       "extractionState": "manual",
       "localizations": {
@@ -6956,6 +7048,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Move os botões de perfil e definições para a esquerda"
+          }
+        }
+      }
+    },
+    "Music Box": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music Box"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caja de música"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caixa de música"
           }
         }
       }
@@ -8167,6 +8282,29 @@
         }
       }
     },
+    "Orbit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orbit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Órbita"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Órbita"
+          }
+        }
+      }
+    },
     "Over 50 App Limit": {
       "extractionState": "manual",
       "localizations": {
@@ -8903,6 +9041,29 @@
         }
       }
     },
+    "Pulsar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulsar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Púlsar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulsar"
+          }
+        }
+      }
+    },
     "Quick pause": {
       "extractionState": "manual",
       "localizations": {
@@ -8922,6 +9083,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pausa rápida"
+          }
+        }
+      }
+    },
+    "Rally": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rally"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diana"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alvorada"
           }
         }
       }
@@ -10546,6 +10730,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algo correu mal ao obter o perfil"
+          }
+        }
+      }
+    },
+    "Spark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spark"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chispa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faísca"
           }
         }
       }
@@ -13442,6 +13649,29 @@
         }
       }
     },
+    "Urgent": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urgent"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urgente"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urgente"
+          }
+        }
+      }
+    },
     "URL too long for this tag (%lld > %lld bytes)": {
       "extractionState": "manual",
       "localizations": {
@@ -13737,6 +13967,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aviso!"
+          }
+        }
+      }
+    },
+    "Waves": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waves"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olas"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ondas"
           }
         }
       }

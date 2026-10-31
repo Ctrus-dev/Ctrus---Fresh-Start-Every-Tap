@@ -54,8 +54,6 @@ class StrategyManager: ObservableObject {
   @Published var errorMessage: String?
 
   @AppStorage("emergencyUnblocksRemaining") private var emergencyUnblocksRemaining: Int = 3
-  @AppStorage("emergencyUnblocksResetPeriodInWeeks") private
-    var emergencyUnblocksResetPeriodInWeeks: Int = 4
   // Real time counted towards the current cycle by TrustedClock — the
   // phone's date can be moved forward, so it isn't used to tell when the
   // unblocks come back.
@@ -74,8 +72,6 @@ class StrategyManager: ObservableObject {
   // (Stop, Emergency, or a recovery code), since `handleSessionEnded` below
   // is the one place all of those paths funnel through.
   @AppStorage("hasCompletedFirstSession") private var hasCompletedFirstSession = false
-
-  private let liveActivityManager = LiveActivityManager.shared
 
   private let timersUtil = TimersUtil()
   private let appBlocker = AppBlockerUtil()
@@ -108,19 +104,10 @@ class StrategyManager: ObservableObject {
 
     if activeSession?.isActive == true {
       startTimer()
-
-      // Start live activity for existing session if one exists
-      // live activities can only be started when the app is in the foreground
-      if let session = activeSession {
-        liveActivityManager.startSessionActivity(session: session)
-      }
     } else {
       stopTimer()
       elapsedTime = 0
       sessionDisplayTime = 0
-
-      // Close live activity if no session is active and a scheduled session might have ended
-      liveActivityManager.endSessionActivity()
     }
 
     // Reload widget to reflect any changes from extension (e.g., timer expiration)
@@ -430,7 +417,6 @@ class StrategyManager: ObservableObject {
     )
 
     // Do end sections for the profile
-    self.liveActivityManager.endSessionActivity()
     self.scheduleReminder(profile: activeSession.blockedProfile)
     self.stopTimer()
 
@@ -474,16 +460,7 @@ class StrategyManager: ObservableObject {
   }
 
   func getResetPeriodInWeeks() -> Int {
-    return ChildModeStore.isChildMode ? 4 : emergencyUnblocksResetPeriodInWeeks
-  }
-
-  func setResetPeriodInWeeks(_ weeks: Int) {
-    emergencyUnblocksResetPeriodInWeeks = weeks
-    // Changing how long a cycle is must not move when the current cycle
-    // started — that discards however much of the wait was already done.
-    // Re-checking against the new period length instead correctly resets
-    // immediately if the shorter period means today already qualifies.
-    checkAndResetEmergencyUnblocks()
+    return 4
   }
 
   func getRemainingRecoveryUnlocks() -> Int {
@@ -601,9 +578,6 @@ class StrategyManager: ObservableObject {
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
 
     updateSessionTimes()
-
-    // Update live activity to show break state
-    liveActivityManager.updateBreakState(session: session)
   }
 
   private func stopBreak(context: ModelContext) {
@@ -632,9 +606,6 @@ class StrategyManager: ObservableObject {
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
 
     updateSessionTimes()
-
-    // Update live activity to show break has ended
-    liveActivityManager.updateBreakState(session: session)
   }
 
   private func handlePauseStarted(context: ModelContext) {
@@ -645,11 +616,6 @@ class StrategyManager: ObservableObject {
 
     // Refresh widgets when pause starts
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
-
-    // Update live activity to show pause state
-    if let session = activeSession {
-      liveActivityManager.updatePauseState(session: session)
-    }
   }
 
   private func handleSessionStarted(session: BlockedProfileSession) {
@@ -671,8 +637,6 @@ class StrategyManager: ObservableObject {
 
     self.activeSession = session
     self.startTimer()
-    self.liveActivityManager
-      .startSessionActivity(session: session)
 
     // Refresh widgets when session starts
     WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
@@ -702,7 +666,6 @@ class StrategyManager: ObservableObject {
     // Remove any timers and notifications that were scheduled
     self.timersUtil.cancelAll()
     self.activeSession = nil
-    self.liveActivityManager.endSessionActivity()
     self.scheduleReminder(profile: profile)
 
     self.stopTimer()
@@ -1008,7 +971,6 @@ class StrategyManager: ObservableObject {
         session: activeSession
       )
 
-      self.liveActivityManager.endSessionActivity()
       self.scheduleReminder(profile: activeSession.blockedProfile)
       self.stopTimer()
     }

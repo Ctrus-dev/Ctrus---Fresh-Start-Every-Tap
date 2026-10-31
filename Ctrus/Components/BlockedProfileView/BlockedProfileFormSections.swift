@@ -606,21 +606,18 @@ struct BlockedProfileBreaksFields: View {
     if draft.selectedStrategyAllowsTimedBreaks {
       CustomToggle(
         title: String(localized: "Allow Timed Breaks"),
-        description:
-          String(
+        description: draft.useAlarm
+          ? String(
+            localized:
+              "Get your apps back for a while during the session. The break ends on its own, and the alarm still rings at the end time."
+          )
+          : String(
             localized:
               "Take a break during your session. The break will automatically end after the selected duration."
           ),
         isOn: $draft.enableBreaks,
         isDisabled: disabled
       )
-
-      if draft.useAlarm {
-        Text("A break only gives your apps back. The alarm still rings at the end time.")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .fixedSize(horizontal: false, vertical: true)
-      }
 
       if draft.enableBreaks {
         ProfileFieldDivider(isVisible: showsSeparators)

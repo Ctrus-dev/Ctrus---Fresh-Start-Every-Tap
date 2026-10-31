@@ -64,15 +64,36 @@ struct BlockedProfileSchedule: Codable, Equatable {
   static let availableSnoozeMinutes = Array(1...15)
   static let defaultSnoozeMinutes = 9
 
-  static let defaultAlarmSound = "default"
+  /// The tones in `alarm_sounds/`, by file name without the extension.
+  static let alarmToneIds = [
+    "ctrus_urgent",
+    "ctrus_morning",
+    "ctrus_lumen",
+    "ctrus_pulsar",
+    "ctrus_orbit",
+    "ctrus_lagoon",
+    "ctrus_spark",
+    "ctrus_waves",
+    "ctrus_daybreak",
+    "ctrus_musicbox",
+    "ctrus_rally",
+  ]
+  static let defaultAlarmSound = "ctrus_morning"
   static let vibrateAlarmSound = "vibrate"
 
   var alarmTime: (hour: Int, minute: Int) {
     (alarmHour ?? 7, alarmMinute ?? 0)
   }
 
+  /// Falls back to the default for a sound that's no longer offered, like
+  /// the system's own alarm sound from before the Ctrus tones.
   var alarmSoundId: String {
-    alarmSound ?? Self.defaultAlarmSound
+    guard let alarmSound,
+      alarmSound == Self.vibrateAlarmSound || Self.alarmToneIds.contains(alarmSound)
+    else {
+      return Self.defaultAlarmSound
+    }
+    return alarmSound
   }
 
   var alarmSnoozeMinutes: Int {

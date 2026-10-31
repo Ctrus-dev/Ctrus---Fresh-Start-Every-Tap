@@ -99,13 +99,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8015A1F62D80E29B0037DFE9 /* Exceptions for "CtrusWidget" folder in "Ctrus" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CtrusWidgetLiveActivity.swift,
-			);
-			target = 801B20942CB363A10073E9E2 /* Ctrus */;
-		};
 		801713172DE6C78C00B77FE1 /* Exceptions for "CtrusDeviceMonitor" folder in "CtrusDeviceMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -259,7 +252,6 @@
 		80FF38902D80DB540032BC5E /* CtrusWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8015A1F62D80E29B0037DFE9 /* Exceptions for "CtrusWidget" folder in "Ctrus" target */,
 				80FF38A02D80DB560032BC5E /* Exceptions for "CtrusWidget" folder in "CtrusWidgetExtension" target */,
 			);
 			path = CtrusWidget;
