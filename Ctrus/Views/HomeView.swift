@@ -570,6 +570,7 @@ struct HomeView: View {
   private func checkChildMode() {
     guard ChildModeStore.isChildMode else {
       unseenTamperEntry = nil
+      ChildSessionLimit.check()
       return
     }
     ChildModeStore.checkForClockChange()

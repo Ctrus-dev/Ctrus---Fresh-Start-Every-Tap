@@ -202,6 +202,14 @@ class ScheduleTimerActivity: TimerActivity {
       return
     }
 
+    // The phone's date says the window is over; check the real time first,
+    // in case the date was moved forward.
+    if ChildSessionLimit.tracksActiveSession {
+      log.info("Interval ended for scheduled profile \(profileId), checking the real time passed")
+      ChildSessionLimit.check()
+      return
+    }
+
     // End restrictions
     appBlocker.deactivateRestrictions()
 

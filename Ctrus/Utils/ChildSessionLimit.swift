@@ -11,6 +11,9 @@ private let log = Logger(subsystem: "com.Ctrus.monitor", category: "ChildSession
 // anything, the real time since the session started is checked with
 // TrustedClock, and if it hasn't actually passed the end is set again for
 // what's left. Shared with the device monitor so it works with the app closed.
+//
+// Outside child mode the same check guards a Schedule mode session with a
+// fixed duration, so moving the date forward can't end it early.
 enum ChildSessionLimit {
   static let activityId = "ChildSessionLimitActivity"
   static let maxSessionDuration: TimeInterval = 24 * 60 * 60
@@ -40,7 +43,7 @@ enum ChildSessionLimit {
   // MARK: - Session lifecycle
 
   static func begin(sessionId: String, profile: SharedData.ProfileSnapshot, startedAt: Date) {
-    guard ChildModeStore.isChildMode else { return }
+    guard ChildModeStore.isChildMode || hasFixedScheduleEnd(profile) else { return }
 
     // Reading the clock here resets it, so only time from now on is counted.
     _ = clock.trustedElapsed()
@@ -64,12 +67,17 @@ enum ChildSessionLimit {
     clear()
   }
 
+  /// Whether this limit decides when the active session ends.
+  static var tracksActiveSession: Bool {
+    guard let sessionId = suite.string(forKey: Key.childSessionId.rawValue) else { return false }
+    return SharedData.getActiveSharedSession()?.id == sessionId
+  }
+
   /// Ends the session if its real time is up, otherwise sets the next check.
   /// Returns whether it ended the session.
   @discardableResult
   static func check() -> Bool {
-    guard ChildModeStore.isChildMode,
-      let sessionId = suite.string(forKey: Key.childSessionId.rawValue),
+    guard let sessionId = suite.string(forKey: Key.childSessionId.rawValue),
       let activeSession = SharedData.getActiveSharedSession(),
       activeSession.id == sessionId,
       let profile = SharedData.snapshot(for: activeSession.blockedProfileId.uuidString)
@@ -77,7 +85,9 @@ enum ChildSessionLimit {
       return false
     }
 
-    ChildModeStore.checkForClockChange()
+    if ChildModeStore.isChildMode {
+      ChildModeStore.checkForClockChange()
+    }
 
     let elapsed = suite.double(forKey: Key.childSessionElapsed.rawValue) + clock.trustedElapsed()
     suite.set(elapsed, forKey: Key.childSessionElapsed.rawValue)
@@ -94,7 +104,7 @@ enum ChildSessionLimit {
       return false
     }
 
-    log.info("Session \(sessionId) reached its child mode limit, ending it")
+    log.info("Session \(sessionId) reached its real time limit, ending it")
     DeviceActivityCenter().stopMonitoring([activityName(for: profile.id)])
     AppBlockerUtil().deactivateRestrictions()
     SharedData.endActiveSharedSession()
@@ -120,6 +130,13 @@ enum ChildSessionLimit {
     startedAt: Date,
     calendar: Calendar = .current
   ) -> Plan {
+    guard ChildModeStore.isChildMode else {
+      return Plan(
+        limit: remainingFixedDuration(for: profile, startedAt: startedAt, calendar: calendar),
+        makesWayForNextSession: false
+      )
+    }
+
     var limit = maxSessionDuration
 
     guard let schedule = profile.schedule, schedule.isActive else {
@@ -147,6 +164,36 @@ enum ChildSessionLimit {
     return Plan(limit: limit, makesWayForNextSession: false)
   }
 
+  static func hasFixedScheduleEnd(_ profile: SharedData.ProfileSnapshot) -> Bool {
+    // Spelled out: the strategy types aren't part of the device monitor.
+    guard profile.blockingStrategyId == "ScheduleBlockingStrategy",
+      let schedule = profile.schedule
+    else { return false }
+    return schedule.isActive && schedule.hasAutomaticEnd
+  }
+
+  /// The fixed duration counts from the schedule's start, so a session that
+  /// began a little late still ends when its window does.
+  static func remainingFixedDuration(
+    for profile: SharedData.ProfileSnapshot,
+    startedAt: Date,
+    calendar: Calendar = .current
+  ) -> TimeInterval {
+    guard let schedule = profile.schedule,
+      let duration = schedule.automaticEndDurationInSeconds,
+      var windowStart = calendar.date(
+        bySettingHour: schedule.startHour, minute: schedule.startMinute, second: 0, of: startedAt)
+    else {
+      return maxSessionDuration
+    }
+    if windowStart > startedAt,
+      let previousDay = calendar.date(byAdding: .day, value: -1, to: windowStart)
+    {
+      windowStart = previousDay
+    }
+    return max(0, duration - startedAt.timeIntervalSince(windowStart))
+  }
+
   // MARK: - Helpers
 
   private static func scheduleCheck(for profileId: UUID, in seconds: TimeInterval) {
@@ -171,7 +218,7 @@ enum ChildSessionLimit {
     do {
       try center.startMonitoring(name, during: schedule)
     } catch {
-      log.error("Failed to schedule the child mode limit: \(error.localizedDescription)")
+      log.error("Failed to schedule the real time limit: \(error.localizedDescription)")
     }
   }
 
