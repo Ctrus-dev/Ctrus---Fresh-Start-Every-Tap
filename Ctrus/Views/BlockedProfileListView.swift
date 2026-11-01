@@ -33,9 +33,9 @@ struct BlockedProfileListView: View {
           List {
             ForEach(profiles) { profile in
               HStack(spacing: 12) {
-                // Edit stays on the leading side; delete moves to the
-                // trailing side (replacing the system's reorder handle)
-                // so the two aren't next to each other and easy to mix up.
+                // Edit stays on the leading side and delete on the trailing
+                // side, just before the system's reorder handle, so edit and
+                // delete aren't next to each other and easy to mix up.
                 if editMode == .active {
                   Button(action: { profileToEdit = profile }) {
                     Image(systemName: "pencil.circle.fill")
@@ -75,8 +75,10 @@ struct BlockedProfileListView: View {
               .listRowBackground(Color.clear)
               .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
             }
+            .onMove(perform: editMode == .active ? moveProfiles : nil)
           }
           .listStyle(.plain)
+          .environment(\.editMode, $editMode)
         }
       }
       .navigationTitle("Profiles")
@@ -181,6 +183,16 @@ struct BlockedProfileListView: View {
     }
   }
 
+  private func moveProfiles(from source: IndexSet, to destination: Int) {
+    var reorderedProfiles = Array(profiles)
+    reorderedProfiles.move(fromOffsets: source, toOffset: destination)
+
+    do {
+      try BlockedProfiles.reorderProfiles(reorderedProfiles, in: context)
+    } catch {
+      print("Failed to reorder profiles: \(error)")
+    }
+  }
 }
 
 #Preview {
