@@ -67,6 +67,11 @@ class StrategyManager: ObservableObject {
   @AppStorage("recoveryCycleElapsed") private var recoveryCycleElapsed: Double = 0
   @AppStorage("isRecoveryCycleRunning") private var isRecoveryCycleRunning = false
 
+  // A break's end is set on the phone's date, so moving it back would make
+  // the break longer; the real time it has run is counted here instead.
+  @AppStorage("breakRealElapsed") private var breakRealElapsed: Double = 0
+  @AppStorage("breakRealAllowance") private var breakRealAllowance: Double = 0
+
   // Drives the how-to caption under the profile list on Home — dismissed
   // for good the first time a session actually ends, however it ends
   // (Stop, Emergency, or a recovery code), since `handleSessionEnded` below
@@ -103,6 +108,7 @@ class StrategyManager: ObservableObject {
     activeSession = getActiveSession(context: context)
 
     if activeSession?.isActive == true {
+      endBreakIfRealTimeIsUp()
       startTimer()
     } else {
       stopTimer()
@@ -140,6 +146,7 @@ class StrategyManager: ObservableObject {
     updateSessionTimes()
 
     timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+      self?.endBreakIfRealTimeIsUp()
       self?.updateSessionTimes()
     }
   }
@@ -558,6 +565,9 @@ class StrategyManager: ObservableObject {
     }
 
     session.startBreak()
+    _ = TrustedClock.breakTime.trustedElapsed()
+    breakRealElapsed = 0
+    breakRealAllowance = remainingBreakAllowance
     appBlocker.deactivateRestrictionsForBreak(
       for: BlockedProfiles.getSnapshot(for: session.blockedProfile))
     try? context.save()
@@ -592,6 +602,7 @@ class StrategyManager: ObservableObject {
     }
 
     session.endBreak()
+    breakRealAllowance = 0
     appBlocker.activateRestrictions(for: BlockedProfiles.getSnapshot(for: session.blockedProfile))
     try? context.save()
 
@@ -857,6 +868,17 @@ class StrategyManager: ObservableObject {
         message: message,
         seconds: TimeInterval(reminderTimeInSeconds)
       )
+  }
+
+  private func endBreakIfRealTimeIsUp() {
+    guard let session = activeSession, session.isBreakActive, breakRealAllowance > 0,
+      let context = session.modelContext
+    else { return }
+
+    breakRealElapsed += TrustedClock.breakTime.trustedElapsed()
+    if breakRealElapsed >= breakRealAllowance {
+      stopBreak(context: context)
+    }
   }
 
   private func scheduleBreakReminder(
