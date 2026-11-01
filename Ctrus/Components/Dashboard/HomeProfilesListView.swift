@@ -25,6 +25,15 @@ struct HomeProfilesListView: View {
   var onSkipUntilTapped: (BlockedProfiles) -> Void = { _ in }
   var onResumeScheduleTapped: (BlockedProfiles) -> Void = { _ in }
 
+  // The running profile moves to the top; the rest keep their saved order,
+  // so it drops back into its own place once the session ends.
+  private var orderedProfiles: [BlockedProfiles] {
+    guard let activeId = activeSessionProfileId,
+      let active = profiles.first(where: { $0.id == activeId })
+    else { return profiles }
+    return [active] + profiles.filter { $0.id != activeId }
+  }
+
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(spacing: 8) {
@@ -45,7 +54,7 @@ struct HomeProfilesListView: View {
       .padding(.bottom, 10)
 
       VStack(spacing: 12) {
-        ForEach(profiles, id: \.id) { profile in
+        ForEach(orderedProfiles, id: \.id) { profile in
           ProfileBalloonRow(
             profile: profile,
             isBlocking: isBlocking,
@@ -81,6 +90,7 @@ struct HomeProfilesListView: View {
           )
         }
       }
+      .animation(.spring(duration: 0.4), value: activeSessionProfileId)
     }
   }
 }
