@@ -1,6 +1,7 @@
 import AVFoundation
 import ActivityKit
 import AudioToolbox
+import CallKit
 import Foundation
 import SwiftUI
 import UIKit
@@ -23,6 +24,14 @@ final class WakeAlarmManager: ObservableObject {
   // While it rings in the app, the system alarms are held this far ahead,
   // moved every 30 seconds.
   private static let inAppSparesLead: TimeInterval = 60
+  // Below this the app's sound is too quiet to count, and the system alarm,
+  // which has its own volume, rings instead.
+  private static let minimumInAppVolume: Float = 0.25
+  // During a call (an emergency one, say) the alarm is held back this far,
+  // again and again while the app can tell the call is still going.
+  private static let callHold: TimeInterval = 5 * 60
+  // How long after the app is left a call that starts still holds it back.
+  private static let leaveCallWatch: TimeInterval = 20
 
   /// Sounds offered for the alarm. Each tone is under 30 seconds, the most
   /// AlarmKit plays.
@@ -106,6 +115,12 @@ final class WakeAlarmManager: ObservableObject {
   private var vibrationTimer: Timer?
   private var tickTimer: Timer?
   private var lastSparesPush = Date.distantPast
+  private var ringingSoundId: String?
+  // The app's sound couldn't be heard, so the system alarm was set to ring.
+  private var handedToSystem = false
+  private let callObserver = CXCallObserver()
+  private var leaveWatch: Task<Void, Never>?
+  private var leaveWatchBackgroundTask = UIBackgroundTaskIdentifier.invalid
   // AlarmKit calls run one after another, so two refreshes can't both set an
   // alarm for the same profile and leave one of them behind.
   private var lastOperation: Task<Void, Never>?
@@ -322,7 +337,14 @@ final class WakeAlarmManager: ObservableObject {
     return snoozedUntil > now
   }
 
+  private var isOnCall: Bool {
+    callObserver.calls.contains { !$0.hasEnded }
+  }
+
   private func appBecameActive() {
+    leaveWatch?.cancel()
+    leaveWatch = nil
+    endLeaveWatchBackgroundTask()
     refreshAll()
     startTicking()
   }
@@ -333,18 +355,40 @@ final class WakeAlarmManager: ObservableObject {
     // Only meant for the opening the alarm caused.
     stopRequestProfileId = nil
 
-    guard isRinging, let profileId = dueProfileId else { return }
+    guard let profileId = dueProfileId, !isSnoozed else { return }
     stopSound()
 
     // The sound can't outlive the app, so the system alarm comes straight
     // back. Leaving to force-quit the app comes through here too.
     guard #available(iOS 26.0, *) else { return }
-    let backgroundTask = UIApplication.shared.beginBackgroundTask()
-    let ringAgainAt = Date().addingTimeInterval(1)
-    enqueue {
-      await self.moveSpares(of: profileId, to: ringAgainAt)
-      UIApplication.shared.endBackgroundTask(backgroundTask)
+    leaveWatch?.cancel()
+    endLeaveWatchBackgroundTask()
+    leaveWatchBackgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+      self?.leaveWatch?.cancel()
+      self?.endLeaveWatchBackgroundTask()
     }
+    let ringAgainAt = Date().addingTimeInterval(isOnCall ? Self.callHold : 1)
+    enqueue { await self.moveSpares(of: profileId, to: ringAgainAt) }
+
+    // Left to make a call: once it starts, the alarm stops ringing over it.
+    leaveWatch = Task { @MainActor in
+      let watchUntil = Date().addingTimeInterval(Self.leaveCallWatch)
+      while !Task.isCancelled, Date() < watchUntil {
+        if self.isOnCall {
+          let holdUntil = Date().addingTimeInterval(Self.callHold)
+          await self.enqueue { await self.moveSpares(of: profileId, to: holdUntil) }.value
+          break
+        }
+        try? await Task.sleep(for: .seconds(1))
+      }
+      self.endLeaveWatchBackgroundTask()
+    }
+  }
+
+  private func endLeaveWatchBackgroundTask() {
+    guard leaveWatchBackgroundTask != .invalid else { return }
+    UIApplication.shared.endBackgroundTask(leaveWatchBackgroundTask)
+    leaveWatchBackgroundTask = .invalid
   }
 
   private func startTicking() {
@@ -378,17 +422,54 @@ final class WakeAlarmManager: ObservableObject {
       setSnoozedUntil(nil)
     }
 
-    if !isRinging {
+    guard #available(iOS 26.0, *) else {
+      if !isRinging { startSound(for: profileId) }
+      return
+    }
+
+    // Quiet during a call; it rings again once the call is over.
+    if isOnCall {
+      stopSound()
+      if currentDate.timeIntervalSince(lastSparesPush) >= 30 {
+        lastSparesPush = currentDate
+        let holdUntil = currentDate.addingTimeInterval(Self.callHold)
+        enqueue { await self.moveSpares(of: profileId, to: holdUntil) }
+      }
+      return
+    }
+
+    // Another sound (music from Control Center, say) cuts it off; it's
+    // started again rather than left silent.
+    if !isRinging || !isSoundPlaying {
+      stopSound()
       startSound(for: profileId)
     }
 
-    // While it rings in the app the system alarms are kept a minute ahead,
-    // so they only ring once the app is gone.
-    if #available(iOS 26.0, *), currentDate.timeIntervalSince(lastSparesPush) >= 30 {
-      lastSparesPush = currentDate
-      let sparesAt = currentDate.addingTimeInterval(Self.inAppSparesLead)
-      enqueue { await self.moveSpares(of: profileId, to: sparesAt) }
+    // While it can be heard in the app the system alarms are kept a minute
+    // ahead, so they only ring once the app is gone. If it can't — cut off
+    // or turned down — they ring now.
+    let isAudible =
+      isSoundPlaying
+      && (ringingSoundId == BlockedProfileSchedule.vibrateAlarmSound
+        || AVAudioSession.sharedInstance().outputVolume >= Self.minimumInAppVolume)
+    if isAudible {
+      handedToSystem = false
+      if currentDate.timeIntervalSince(lastSparesPush) >= 30 {
+        lastSparesPush = currentDate
+        let sparesAt = currentDate.addingTimeInterval(Self.inAppSparesLead)
+        enqueue { await self.moveSpares(of: profileId, to: sparesAt) }
+      }
+    } else if !handedToSystem {
+      handedToSystem = true
+      lastSparesPush = .distantPast
+      let ringAt = currentDate.addingTimeInterval(1)
+      enqueue { await self.moveSpares(of: profileId, to: ringAt) }
     }
+  }
+
+  private var isSoundPlaying: Bool {
+    guard isRinging else { return false }
+    return ringingSoundId == BlockedProfileSchedule.vibrateAlarmSound || player?.isPlaying == true
   }
 
   private func updateDueState() {
@@ -446,6 +527,7 @@ final class WakeAlarmManager: ObservableObject {
     }
 
     isRinging = true
+    ringingSoundId = soundId
     lastSparesPush = .distantPast
 
     // The system alarm vibrates alongside its sound, so the app does too.
@@ -466,6 +548,7 @@ final class WakeAlarmManager: ObservableObject {
     player = nil
     vibrationTimer?.invalidate()
     vibrationTimer = nil
+    ringingSoundId = nil
 
     guard isRinging else { return }
     isRinging = false
