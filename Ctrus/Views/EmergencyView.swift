@@ -101,12 +101,6 @@ struct EmergencyView: View {
         }
       }
       .frame(height: 56)
-
-      if !hasRemaining {
-        Text("No emergency unblocks remaining. You're out of luck.")
-          .font(.footnote)
-          .foregroundColor(.red)
-      }
     }
     .padding(16)
     .background(
