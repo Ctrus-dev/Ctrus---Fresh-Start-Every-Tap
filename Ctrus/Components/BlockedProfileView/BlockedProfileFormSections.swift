@@ -299,7 +299,9 @@ struct ChildModeProfileTagFields: View {
       .disabled(disabled)
     } else {
       Button {
-        tagReader.read(prompt: String(localized: "Add the child's Ctrus")) { result in
+        tagReader.read(
+          prompt: String(localized: "Add the child's Ctrus"), requiresGenuineCtrus: true
+        ) { result in
           // A parents' Ctrus is already the master key; it isn't the child's.
           guard !ChildModeStore.isParentTag(uid: result.id) else { return }
           draft.childTag = ChildTag(

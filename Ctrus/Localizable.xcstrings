@@ -12639,6 +12639,29 @@
         }
       }
     },
+    "This isn't a Ctrus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This isn't a Ctrus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto no es un Ctrus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isto não é um Ctrus."
+          }
+        }
+      }
+    },
     "This isn't a parents' Ctrus.": {
       "extractionState": "manual",
       "localizations": {

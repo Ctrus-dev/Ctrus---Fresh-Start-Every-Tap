@@ -247,8 +247,15 @@ struct ParentConfirmationView: View {
 final class TagReader {
   private let scanner = NFCScannerUtil()
 
-  func read(prompt: String, onRead: @escaping (NFCResult) -> Void) {
+  /// Registering a Ctrus takes a real one; checking one already registered
+  /// goes by its UID alone.
+  func read(
+    prompt: String,
+    requiresGenuineCtrus: Bool = false,
+    onRead: @escaping (NFCResult) -> Void
+  ) {
     scanner.onTagScanned = onRead
+    scanner.requiresGenuineCtrus = requiresGenuineCtrus
     scanner.scan(alertMessage: prompt)
   }
 }

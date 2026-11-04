@@ -5,12 +5,16 @@ struct NFCResult: Equatable {
   var id: String
   var url: String?
   var DateScanned: Date
+  /// Carries a valid Ctrus signature (CtrusTagSignature).
+  var isGenuineCtrus = false
 }
 
 class NFCScannerUtil: NSObject {
   // Callback closures for handling results and errors
   var onTagScanned: ((NFCResult) -> Void)?
   var onError: ((String) -> Void)?
+  /// Turns away any tag that isn't a Ctrus, in the scan sheet itself.
+  var requiresGenuineCtrus = false
 
   private var nfcSession: NFCReaderSession?
   private var urlToWrite: String?
@@ -126,6 +130,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
         self.handleTagData(
           id: tagId,
           url: nil,
+          isGenuine: false,
           session: session
         )
         return
@@ -135,6 +140,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
       self.handleTagData(
         id: tag.identifier.hexEncodedString(),
         url: url,
+        isGenuine: CtrusTagSignature.isGenuine(uid: tag.identifier, message: message),
         session: session
       )
     }
@@ -154,6 +160,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
         self.handleTagData(
           id: tagId,
           url: nil,
+          isGenuine: false,
           session: session
         )
         return
@@ -163,6 +170,7 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
       self.handleTagData(
         id: tag.identifier.hexEncodedString(),
         url: url,
+        isGenuine: CtrusTagSignature.isGenuine(uid: tag.identifier, message: message),
         session: session
       )
     }
@@ -173,12 +181,20 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
     self.handleTagData(
       id: tagId,
       url: nil,
+      isGenuine: false,
       session: session
     )
   }
 
-  private func handleTagData(id: String, url: String?, session: NFCTagReaderSession) {
-    let result = NFCResult(id: id, url: url, DateScanned: Date())
+  private func handleTagData(
+    id: String, url: String?, isGenuine: Bool, session: NFCTagReaderSession
+  ) {
+    if requiresGenuineCtrus && !isGenuine {
+      session.invalidate(errorMessage: String(localized: "This isn't a Ctrus."))
+      return
+    }
+
+    let result = NFCResult(id: id, url: url, DateScanned: Date(), isGenuineCtrus: isGenuine)
 
     DispatchQueue.main.async {
       self.onTagScanned?(result)
