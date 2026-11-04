@@ -106,10 +106,6 @@ struct EmergencyView: View {
         Text("No emergency unblocks remaining. You're out of luck.")
           .font(.footnote)
           .foregroundColor(.red)
-      } else {
-        Text("This will reduce your remaining count by 1.")
-          .font(.footnote)
-          .foregroundColor(.secondary)
       }
     }
     .padding(16)

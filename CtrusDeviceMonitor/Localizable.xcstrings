@@ -11287,29 +11287,6 @@
         }
       }
     },
-    "This will reduce your remaining count by 1." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This will reduce your remaining count by 1."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Te quedará uno menos."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vais ficar com menos um."
-          }
-        }
-      }
-    },
     "Thursday" : {
       "extractionState" : "manual",
       "localizations" : {
