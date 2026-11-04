@@ -13,6 +13,7 @@ class PhysicalReader {
       onSuccess(tagId)
     }
     nfcScanner.onError = onFailure
+    nfcScanner.requiresGenuineCtrus = true
 
     nfcScanner.scan(profileName: "")
   }

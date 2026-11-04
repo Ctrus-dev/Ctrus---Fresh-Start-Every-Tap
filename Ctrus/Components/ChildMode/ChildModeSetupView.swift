@@ -318,7 +318,9 @@ struct ChildModeSetupView: View {
   // MARK: - Actions
 
   private func scanParentTag() {
-    tagReader.read(prompt: String(localized: "Tap the parents' Ctrus")) { result in
+    tagReader.read(
+      prompt: String(localized: "Tap the parents' Ctrus"), requiresGenuineCtrus: true
+    ) { result in
       let uid = ChildModeStore.normalizedUID(result.id)
       guard !parentTags.contains(where: { $0.uid == uid }) else { return }
 

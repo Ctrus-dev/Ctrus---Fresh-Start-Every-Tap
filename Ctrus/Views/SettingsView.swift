@@ -257,6 +257,17 @@ struct SettingsView: View {
           }
         }
 
+        // Only in the developer build, which carries the signing key.
+        #if CTRUS_DEVELOPER
+          Section {
+            NavigationLink {
+              CtrusTagWriterView()
+            } label: {
+              Text(verbatim: "Gravar Ctrus")
+            }
+          }
+        #endif
+
         Section("About") {
           HStack {
             Text("Version")
