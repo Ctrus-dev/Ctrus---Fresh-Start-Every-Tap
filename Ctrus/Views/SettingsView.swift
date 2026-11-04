@@ -263,7 +263,7 @@ struct SettingsView: View {
             NavigationLink {
               CtrusTagWriterView()
             } label: {
-              Text(verbatim: "Gravar Ctrus")
+              Text(verbatim: CtrusTagWriterView.title)
             }
           }
         #endif
