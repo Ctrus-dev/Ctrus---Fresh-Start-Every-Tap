@@ -6759,29 +6759,6 @@
         }
       }
     },
-    "No emergency unblocks remaining. You're out of luck.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No emergency unblocks remaining. You're out of luck."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No quedan desbloqueos de emergencia. Mala suerte."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não restam desbloqueios de emergência. Azar."
-          }
-        }
-      }
-    },
     "No opens left": {
       "extractionState": "manual",
       "localizations": {
