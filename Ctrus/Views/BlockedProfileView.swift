@@ -314,10 +314,12 @@ struct BlockedProfileView: View {
       }
     }
 
-    // Creating a profile only ever adds blocking; changing one can loosen it.
-    if draft.isChildMode && isEditing {
+    // Changing a profile can loosen it, and a new one can be started ahead of
+    // the parents' schedule to keep it from starting.
+    if draft.isChildMode {
       parentConfirmationRequest = ParentConfirmationRequest(
-        reason: String(localized: "To edit this profile")
+        reason: isEditing
+          ? String(localized: "To edit this profile") : String(localized: "To create a profile")
       ) {
         commitSave()
       }
