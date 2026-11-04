@@ -93,15 +93,25 @@ class ScheduleTimerActivity: TimerActivity {
         return
       }
 
-      // A different profile is already active (started manually, by NFC, or
-      // by another schedule). Never end it or swap its restrictions here —
-      // leave it running until it's stopped the normal way, and just skip
-      // this trigger.
-      log.info(
-        "Start schedule timer activity for \(profileId), a different profile is already active, skipping"
-      )
-      notifyBlockedBySkippedStart(for: profile, activeProfileId: existingSession.blockedProfileId)
-      return
+      if ChildModeStore.isChildMode && !isScheduledSession(existingSession) {
+        // In child mode a session the child started could otherwise keep the
+        // parents' schedule from ever starting, so the schedule takes over.
+        log.info(
+          "Start schedule timer activity for \(profileId), child mode schedule takes over from a session started by hand"
+        )
+        ChildSessionLimit.end()
+        SharedData.endActiveSharedSession()
+      } else {
+        // A different profile is already active (started manually, by NFC, or
+        // by another schedule). Never end it or swap its restrictions here —
+        // leave it running until it's stopped the normal way, and just skip
+        // this trigger.
+        log.info(
+          "Start schedule timer activity for \(profileId), a different profile is already active, skipping"
+        )
+        notifyBlockedBySkippedStart(for: profile, activeProfileId: existingSession.blockedProfileId)
+        return
+      }
     }
 
     // Create a new active scheduled session for the profile
@@ -115,6 +125,13 @@ class ScheduleTimerActivity: TimerActivity {
     }
 
     ScheduleReminderUtil.cancel(forProfileId: profile.id)
+  }
+
+  // Spelled out: the strategy types aren't part of the device monitor.
+  private func isScheduledSession(_ session: SharedData.SessionSnapshot) -> Bool {
+    let strategyId = SharedData.snapshot(for: session.blockedProfileId.uuidString)?
+      .blockingStrategyId
+    return strategyId == "ScheduleBlockingStrategy" || strategyId == "AlarmBlockingStrategy"
   }
 
   private func notifyBlockedBySkippedStart(

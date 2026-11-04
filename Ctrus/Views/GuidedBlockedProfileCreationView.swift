@@ -104,6 +104,7 @@ struct GuidedBlockedProfileCreationView: View {
   @State private var showingActivityPicker = false
   @State private var showingDomainPicker = false
   @State private var alertIdentifier: AlertIdentifier?
+  @State private var parentConfirmationRequest: ParentConfirmationRequest? = nil
   @State private var navigationDirection: CGFloat = 1
 
   private var steps: [GuidedProfileStep] {
@@ -213,6 +214,7 @@ struct GuidedBlockedProfileCreationView: View {
           allowMode: draft.enableAllowModeDomain
         )
       }
+      .parentConfirmation($parentConfirmationRequest)
       .alert(item: $alertIdentifier) { alert in
         Alert(
           title: Text("Error"),
@@ -416,6 +418,21 @@ struct GuidedBlockedProfileCreationView: View {
   }
 
   private func createProfile() {
+    // A new profile can be started, or scheduled, ahead of the parents'
+    // schedule and keep it from starting, so it needs them too.
+    if draft.isChildMode {
+      parentConfirmationRequest = ParentConfirmationRequest(
+        reason: String(localized: "To create a profile")
+      ) {
+        commitCreate()
+      }
+      return
+    }
+
+    commitCreate()
+  }
+
+  private func commitCreate() {
     Task { @MainActor in
       if let problem = await WakeAlarmManager.alarmSetupProblem(for: draft) {
         alertIdentifier = AlertIdentifier(id: .error, errorMessage: problem)

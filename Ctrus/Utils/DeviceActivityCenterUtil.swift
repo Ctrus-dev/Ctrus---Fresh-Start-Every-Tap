@@ -241,6 +241,13 @@ class DeviceActivityCenterUtil {
     stopActivities(for: [deviceActivityName], with: center)
     try center.startMonitoring(deviceActivityName, during: deviceActivitySchedule)
     print("Scheduled pause timer activity from \(intervalStart) to \(intervalEnd)")
+
+    // Its end is on the phone's date, so the app also counts its real time
+    // (StrategyManager) and ends it once that's up.
+    _ = TrustedClock.pauseTime.trustedElapsed()
+    UserDefaults.standard.set(0.0, forKey: "pauseRealElapsed")
+    UserDefaults.standard.set(
+      TimeInterval(pauseData.pauseDurationInMinutes * 60), forKey: "pauseRealAllowance")
   }
 
   static func removePauseTimerActivity(for profile: BlockedProfiles) {

@@ -52,6 +52,14 @@ class StrategyTimerActivity: TimerActivity {
       return
     }
 
+    // The phone's date says the timer is up; check the real time first, in
+    // case the date was moved forward.
+    if ChildSessionLimit.tracksActiveSession {
+      log.info("Strategy timer ended for \(profileId), checking the real time passed")
+      ChildSessionLimit.check()
+      return
+    }
+
     // End restrictions
     appBlocker.deactivateRestrictions()
 

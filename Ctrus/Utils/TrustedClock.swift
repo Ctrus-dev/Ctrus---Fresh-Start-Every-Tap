@@ -7,6 +7,7 @@ final class TrustedClock {
   static let emergencyCycle = TrustedClock(key: "emergencyCycle")
   static let recoveryCycle = TrustedClock(key: "recoveryCycle")
   static let breakTime = TrustedClock(key: "breakTime")
+  static let pauseTime = TrustedClock(key: "pauseTime")
 
   static let maxPoweredOffTime: TimeInterval = 24 * 60 * 60
 
