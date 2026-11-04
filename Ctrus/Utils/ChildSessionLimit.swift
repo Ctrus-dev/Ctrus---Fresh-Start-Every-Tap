@@ -13,7 +13,8 @@ private let log = Logger(subsystem: "com.Ctrus.monitor", category: "ChildSession
 // what's left. Shared with the device monitor so it works with the app closed.
 //
 // Outside child mode the same check guards a Schedule mode session with a
-// fixed duration, so moving the date forward can't end it early.
+// fixed duration and a timer session, so moving the date forward can't end
+// them early.
 enum ChildSessionLimit {
   static let activityId = "ChildSessionLimitActivity"
   static let maxSessionDuration: TimeInterval = 24 * 60 * 60
@@ -43,7 +44,7 @@ enum ChildSessionLimit {
   // MARK: - Session lifecycle
 
   static func begin(sessionId: String, profile: SharedData.ProfileSnapshot, startedAt: Date) {
-    guard ChildModeStore.isChildMode || hasFixedScheduleEnd(profile) else { return }
+    guard ChildModeStore.isChildMode || hasFixedEnd(profile) else { return }
 
     // Reading the clock here resets it, so only time from now on is counted.
     _ = clock.trustedElapsed()
@@ -131,10 +132,10 @@ enum ChildSessionLimit {
     calendar: Calendar = .current
   ) -> Plan {
     guard ChildModeStore.isChildMode else {
-      return Plan(
-        limit: remainingFixedDuration(for: profile, startedAt: startedAt, calendar: calendar),
-        makesWayForNextSession: false
-      )
+      let limit =
+        timerDuration(of: profile)
+        ?? remainingFixedDuration(for: profile, startedAt: startedAt, calendar: calendar)
+      return Plan(limit: limit, makesWayForNextSession: false)
     }
 
     var limit = maxSessionDuration
@@ -164,12 +165,31 @@ enum ChildSessionLimit {
     return Plan(limit: limit, makesWayForNextSession: false)
   }
 
-  static func hasFixedScheduleEnd(_ profile: SharedData.ProfileSnapshot) -> Bool {
-    // Spelled out: the strategy types aren't part of the device monitor.
+  // Spelled out: the strategy types aren't part of the device monitor.
+  private static let timerStrategyIds: Set<String> = [
+    "NFCTimerBlockingStrategy", "ShortcutTimerBlockingStrategy",
+  ]
+
+  static func hasFixedEnd(_ profile: SharedData.ProfileSnapshot) -> Bool {
+    if timerDuration(of: profile) != nil { return true }
     guard profile.blockingStrategyId == "ScheduleBlockingStrategy",
       let schedule = profile.schedule
     else { return false }
     return schedule.isActive && schedule.hasAutomaticEnd
+  }
+
+  private static func timerDuration(of profile: SharedData.ProfileSnapshot) -> TimeInterval? {
+    guard timerStrategyIds.contains(profile.blockingStrategyId ?? ""),
+      let strategyData = profile.strategyData
+    else { return nil }
+    // StrategyTimerData's duration, which falls back to 15 minutes the same way.
+    let minutes = (try? JSONDecoder().decode(TimerDuration.self, from: strategyData))?
+      .durationInMinutes ?? 15
+    return TimeInterval(minutes * 60)
+  }
+
+  private struct TimerDuration: Decodable {
+    let durationInMinutes: Int
   }
 
   /// The fixed duration counts from the schedule's start, so a session that

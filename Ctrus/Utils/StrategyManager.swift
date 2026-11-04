@@ -71,6 +71,9 @@ class StrategyManager: ObservableObject {
   // the break longer; the real time it has run is counted here instead.
   @AppStorage("breakRealElapsed") private var breakRealElapsed: Double = 0
   @AppStorage("breakRealAllowance") private var breakRealAllowance: Double = 0
+  // The same for a pause, set when it's scheduled (DeviceActivityCenterUtil).
+  @AppStorage("pauseRealElapsed") private var pauseRealElapsed: Double = 0
+  @AppStorage("pauseRealAllowance") private var pauseRealAllowance: Double = 0
 
   // Drives the how-to caption under the profile list on Home — dismissed
   // for good the first time a session actually ends, however it ends
@@ -109,6 +112,7 @@ class StrategyManager: ObservableObject {
 
     if activeSession?.isActive == true {
       endBreakIfRealTimeIsUp()
+      endPauseIfRealTimeIsUp()
       startTimer()
     } else {
       stopTimer()
@@ -147,6 +151,7 @@ class StrategyManager: ObservableObject {
 
     timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
       self?.endBreakIfRealTimeIsUp()
+      self?.endPauseIfRealTimeIsUp()
       self?.updateSessionTimes()
     }
   }
@@ -879,6 +884,23 @@ class StrategyManager: ObservableObject {
     if breakRealElapsed >= breakRealAllowance {
       stopBreak(context: context)
     }
+  }
+
+  private func endPauseIfRealTimeIsUp() {
+    guard let session = activeSession, session.isPauseActive, pauseRealAllowance > 0,
+      let context = session.modelContext
+    else { return }
+
+    pauseRealElapsed += TrustedClock.pauseTime.trustedElapsed()
+    guard pauseRealElapsed >= pauseRealAllowance else { return }
+
+    pauseRealAllowance = 0
+    session.endPause()
+    appBlocker.activateRestrictions(for: BlockedProfiles.getSnapshot(for: session.blockedProfile))
+    try? context.save()
+    DeviceActivityCenterUtil.removePauseTimerActivity(for: session.blockedProfile)
+    WidgetCenter.shared.reloadTimelines(ofKind: "ProfileControlWidget")
+    updateSessionTimes()
   }
 
   private func scheduleBreakReminder(
