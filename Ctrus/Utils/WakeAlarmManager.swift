@@ -40,17 +40,16 @@ final class WakeAlarmManager: ObservableObject {
 
   static func soundTitle(for soundId: String) -> String {
     switch soundId {
-    case "ctrus_urgent": return String(localized: "Urgent")
     case "ctrus_morning": return String(localized: "Morning")
     case "ctrus_lumen": return String(localized: "Lumen")
-    case "ctrus_pulsar": return String(localized: "Pulsar")
-    case "ctrus_orbit": return String(localized: "Orbit")
     case "ctrus_lagoon": return String(localized: "Lagoon")
-    case "ctrus_spark": return String(localized: "Spark")
-    case "ctrus_waves": return String(localized: "Waves")
     case "ctrus_daybreak": return String(localized: "Daybreak")
-    case "ctrus_musicbox": return String(localized: "Music Box")
-    case "ctrus_rally": return String(localized: "Rally")
+    case "ctrus_timber": return String(localized: "Timber")
+    case "ctrus_serenade": return String(localized: "Serenade")
+    case "ctrus_arcade": return String(localized: "Arcade")
+    case "ctrus_groove": return String(localized: "Groove")
+    case "ctrus_oldclock": return String(localized: "Old Clock")
+    case "ctrus_birdsong": return String(localized: "Birdsong")
     case BlockedProfileSchedule.vibrateAlarmSound: return String(localized: "Vibrate only")
     default: return soundId
     }

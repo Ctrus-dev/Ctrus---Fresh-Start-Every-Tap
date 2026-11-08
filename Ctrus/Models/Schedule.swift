@@ -66,17 +66,16 @@ struct BlockedProfileSchedule: Codable, Equatable {
 
   /// The tones in `alarm_sounds/`, by file name without the extension.
   static let alarmToneIds = [
-    "ctrus_urgent",
     "ctrus_morning",
     "ctrus_lumen",
-    "ctrus_pulsar",
-    "ctrus_orbit",
     "ctrus_lagoon",
-    "ctrus_spark",
-    "ctrus_waves",
     "ctrus_daybreak",
-    "ctrus_musicbox",
-    "ctrus_rally",
+    "ctrus_timber",
+    "ctrus_serenade",
+    "ctrus_arcade",
+    "ctrus_groove",
+    "ctrus_oldclock",
+    "ctrus_birdsong",
   ]
   static let defaultAlarmSound = "ctrus_morning"
   static let vibrateAlarmSound = "vibrate"

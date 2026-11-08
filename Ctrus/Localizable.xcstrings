@@ -7145,29 +7145,6 @@
         }
       }
     },
-    "Music Box": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Music Box"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Caja de música"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Caixa de música"
-          }
-        }
-      }
-    },
     "Name": {
       "extractionState": "manual",
       "localizations": {
@@ -8387,29 +8364,6 @@
         }
       }
     },
-    "Orbit": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Orbit"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Órbita"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Órbita"
-          }
-        }
-      }
-    },
     "Over 50 App Limit": {
       "extractionState": "manual",
       "localizations": {
@@ -9146,29 +9100,6 @@
         }
       }
     },
-    "Pulsar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pulsar"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Púlsar"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pulsar"
-          }
-        }
-      }
-    },
     "Quick pause": {
       "extractionState": "manual",
       "localizations": {
@@ -9188,29 +9119,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pausa rápida"
-          }
-        }
-      }
-    },
-    "Rally": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rally"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diana"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alvorada"
           }
         }
       }
@@ -10841,29 +10749,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ocorreu um erro ao carregar o perfil"
-          }
-        }
-      }
-    },
-    "Spark": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spark"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chispa"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faísca"
           }
         }
       }
@@ -13789,29 +13674,6 @@
         }
       }
     },
-    "Urgent": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Urgent"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Urgente"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Urgente"
-          }
-        }
-      }
-    },
     "URL too long for this tag (%lld > %lld bytes)": {
       "extractionState": "manual",
       "localizations": {
@@ -14107,29 +13969,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aviso!"
-          }
-        }
-      }
-    },
-    "Waves": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Waves"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Olas"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ondas"
           }
         }
       }
@@ -15364,6 +15203,144 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se não foste tu, a criança pode estar a tentar adivinhar o código. Se achas que já o sabe, muda-o nas definições do Modo Criança."
+          }
+        }
+      }
+    },
+    "Timber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timber"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Madera"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Madeira"
+          }
+        }
+      }
+    },
+    "Serenade": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serenade"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serenata"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serenata"
+          }
+        }
+      }
+    },
+    "Arcade": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arcade"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arcade"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arcade"
+          }
+        }
+      }
+    },
+    "Groove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groove"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groove"
+          }
+        }
+      }
+    },
+    "Old Clock": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Old Clock"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reloj antiguo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relógio antigo"
+          }
+        }
+      }
+    },
+    "Birdsong": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birdsong"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canto de pájaros"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canto dos pássaros"
           }
         }
       }
