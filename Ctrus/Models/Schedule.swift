@@ -60,9 +60,13 @@ struct BlockedProfileSchedule: Codable, Equatable {
   var alarmMinute: Int?
   var alarmSound: String?
   var snoozeMinutes: Int?
+  var snoozeLimit: Int?
 
   static let availableSnoozeMinutes = Array(1...15)
   static let defaultSnoozeMinutes = 9
+  static let unlimitedSnoozes = 0
+  static let availableSnoozeLimits = [1, 2, 3, unlimitedSnoozes]
+  static let defaultSnoozeLimit = 1
 
   /// The tones in `alarm_sounds/`, by file name without the extension.
   static let alarmToneIds = [
@@ -98,6 +102,15 @@ struct BlockedProfileSchedule: Codable, Equatable {
   var alarmSnoozeMinutes: Int {
     get { snoozeMinutes ?? Self.defaultSnoozeMinutes }
     set { snoozeMinutes = newValue }
+  }
+
+  var alarmSnoozeLimit: Int {
+    get { snoozeLimit ?? Self.defaultSnoozeLimit }
+    set { snoozeLimit = newValue }
+  }
+
+  func allowsSnooze(afterUsing snoozesUsed: Int) -> Bool {
+    alarmSnoozeLimit == Self.unlimitedSnoozes || snoozesUsed < alarmSnoozeLimit
   }
 
   var isActive: Bool {

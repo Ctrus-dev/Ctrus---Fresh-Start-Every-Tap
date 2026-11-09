@@ -362,8 +362,10 @@ struct ProfileBalloonRow: View {
   private var expandedActions: some View {
     VStack(spacing: 12) {
       // Only while it rings: a snooze counts down in the clock instead, and
-      // the button comes back once it's over.
-      if isAlarmDue && profile.enableSnooze && !wakeAlarmManager.isSnoozed {
+      // the button comes back once it's over, unless that was the last one.
+      if isAlarmDue && !wakeAlarmManager.isSnoozed
+        && wakeAlarmManager.canSnooze(profileId: profile.id)
+      {
         SessionActionButton(
           title: String(localized: "Snooze"),
           iconName: "zzz",
