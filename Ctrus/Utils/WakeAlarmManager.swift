@@ -101,6 +101,8 @@ final class WakeAlarmManager: ObservableObject {
     // again with them.
     var allowsSnooze: Bool?
     var soundId: String?
+    /// How many times this alarm has been snoozed.
+    var snoozesUsed: Int?
   }
 
   private let defaults = UserDefaults.standard
@@ -203,7 +205,10 @@ final class WakeAlarmManager: ObservableObject {
       return
     }
 
-    let allowsSnooze = snapshot.enableSnooze ?? true
+    // A change of sound or snooze settings sets the same alarm again, which
+    // doesn't give back the snoozes it has used.
+    let snoozesUsed = record?.alarmDate == desiredDate ? record?.snoozesUsed ?? 0 : 0
+    let allowsSnooze = isSnoozeAvailable(in: snapshot, snoozesUsed: snoozesUsed)
     let soundId = snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
 
     // Already set for this alarm; a due one is looked after by the ringing
@@ -228,7 +233,8 @@ final class WakeAlarmManager: ObservableObject {
     )
     setRecord(
       AlarmRecord(
-        alarmDate: desiredDate, alarmIds: ids, allowsSnooze: allowsSnooze, soundId: soundId),
+        alarmDate: desiredDate, alarmIds: ids, allowsSnooze: allowsSnooze, soundId: soundId,
+        snoozesUsed: snoozesUsed),
       for: profileId)
   }
 
@@ -313,6 +319,10 @@ final class WakeAlarmManager: ObservableObject {
   /// background, so it waits for the spares to have moved.
   @MainActor
   func snooze(profileId: UUID) async {
+    // Checked against the clock: `now` stands still with the app in the background.
+    let isAlreadySnoozed = snoozedUntil.map { $0 > Date() } ?? false
+    guard !isAlreadySnoozed, canSnooze(profileId: profileId) else { return }
+
     let snoozeMinutes =
       SharedData.snapshot(for: profileId.uuidString)?.schedule?.alarmSnoozeMinutes
       ?? BlockedProfileSchedule.defaultSnoozeMinutes
@@ -321,8 +331,33 @@ final class WakeAlarmManager: ObservableObject {
     stopSound()
 
     if #available(iOS 26.0, *) {
-      await enqueue { await self.moveSpares(of: profileId, to: until) }.value
+      // Counted in the queue, so a move of the spares under way can't write
+      // its older record over the count. The spares set here go without the
+      // Snooze button if this was the last one.
+      await enqueue {
+        self.countSnooze(of: profileId)
+        await self.moveSpares(of: profileId, to: until)
+      }.value
     }
+  }
+
+  func canSnooze(profileId: UUID) -> Bool {
+    guard let snapshot = SharedData.snapshot(for: profileId.uuidString) else { return false }
+    return isSnoozeAvailable(
+      in: snapshot, snoozesUsed: records[profileId.uuidString]?.snoozesUsed ?? 0)
+  }
+
+  private func isSnoozeAvailable(
+    in snapshot: SharedData.ProfileSnapshot, snoozesUsed: Int
+  ) -> Bool {
+    guard snapshot.enableSnooze ?? true else { return false }
+    return snapshot.schedule?.allowsSnooze(afterUsing: snoozesUsed) ?? true
+  }
+
+  private func countSnooze(of profileId: UUID) {
+    guard var record = records[profileId.uuidString] else { return }
+    record.snoozesUsed = (record.snoozesUsed ?? 0) + 1
+    setRecord(record, for: profileId)
   }
 
   /// When the running session's alarm is due, kept while a snooze moves the
@@ -496,7 +531,7 @@ final class WakeAlarmManager: ObservableObject {
       return
     }
 
-    let allowsSnooze = snapshot.enableSnooze ?? true
+    let allowsSnooze = isSnoozeAvailable(in: snapshot, snoozesUsed: record.snoozesUsed ?? 0)
     let soundId = snapshot.schedule?.alarmSoundId ?? BlockedProfileSchedule.defaultAlarmSound
     AlarmScheduleUtil.cancel(record.alarmIds)
     record.alarmIds = await AlarmScheduleUtil.schedule(

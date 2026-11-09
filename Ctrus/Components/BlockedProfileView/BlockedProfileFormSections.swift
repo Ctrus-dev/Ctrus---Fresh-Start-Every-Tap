@@ -719,6 +719,28 @@ struct BlockedProfileSnoozeFields: View {
         .tint(themeManager.themeColor)
       }
       .disabled(disabled)
+
+      ProfileFieldDivider(isVisible: showsSeparators)
+
+      HStack {
+        Text("Snooze Limit")
+
+        Spacer()
+
+        Picker("Snooze Limit", selection: $draft.schedule.alarmSnoozeLimit) {
+          ForEach(BlockedProfileSchedule.availableSnoozeLimits, id: \.self) { limit in
+            Text(
+              limit == BlockedProfileSchedule.unlimitedSnoozes
+                ? String(localized: "Unlimited") : "\(limit)"
+            )
+            .tag(limit)
+          }
+        }
+        .labelsHidden()
+        .pickerStyle(.menu)
+        .tint(themeManager.themeColor)
+      }
+      .disabled(disabled)
     }
   }
 }
