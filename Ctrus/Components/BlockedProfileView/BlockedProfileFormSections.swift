@@ -300,10 +300,16 @@ struct ChildModeProfileTagFields: View {
     } else {
       Button {
         tagReader.read(
-          prompt: String(localized: "Add the child's Ctrus"), requiresGenuineCtrus: true
+          prompt: String(localized: "Add the child's Ctrus"),
+          requiresGenuineCtrus: true,
+          // A parents' Ctrus is already the master key; it can't be the child's
+          // too. Easy to mix up with several Ctrus about, so the scan says so.
+          rejectionMessage: { result in
+            ChildModeStore.isParentTag(uid: result.id)
+              ? String(localized: "That's the parents' Ctrus")
+              : nil
+          }
         ) { result in
-          // A parents' Ctrus is already the master key; it isn't the child's.
-          guard !ChildModeStore.isParentTag(uid: result.id) else { return }
           draft.childTag = ChildTag(
             uid: ChildModeStore.normalizedUID(result.id), url: result.url)
         }

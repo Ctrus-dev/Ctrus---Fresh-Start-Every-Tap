@@ -15,6 +15,9 @@ class NFCScannerUtil: NSObject {
   var onError: ((String) -> Void)?
   /// Turns away any tag that isn't a Ctrus, in the scan sheet itself.
   var requiresGenuineCtrus = false
+  /// Turns away a tag that can't be used here, with the reason, also in the
+  /// scan sheet. Returns nil for a tag that's fine.
+  var rejectionMessage: ((NFCResult) -> String?)?
 
   private var nfcSession: NFCReaderSession?
   private var urlToWrite: String?
@@ -197,6 +200,10 @@ extension NFCScannerUtil: NFCTagReaderSessionDelegate {
     let result = NFCResult(id: id, url: url, DateScanned: Date(), isGenuineCtrus: isGenuine)
 
     DispatchQueue.main.async {
+      if let message = self.rejectionMessage?(result) {
+        session.invalidate(errorMessage: message)
+        return
+      }
       self.onTagScanned?(result)
       session.invalidate()
     }
