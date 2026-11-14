@@ -306,10 +306,10 @@ struct SettingsView: View {
             Spacer()
             HStack(spacing: 8) {
               Circle()
-                .fill(requestAuthorizer.getAuthorizationStatus() == .approved ? .green : .red)
+                .fill(requestAuthorizer.effectiveStatus == .approved ? .green : .red)
                 .frame(width: 8, height: 8)
               Text(
-                requestAuthorizer.getAuthorizationStatus() == .approved
+                requestAuthorizer.effectiveStatus == .approved
                   ? "Authorized" : "Not Authorized"
               )
               .foregroundStyle(.secondary)

@@ -15390,6 +15390,29 @@
           }
         }
       }
+    },
+    "That's the parents' Ctrus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That's the parents' Ctrus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese es el Ctrus de los padres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esse é o Ctrus dos pais"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

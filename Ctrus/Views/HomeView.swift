@@ -617,7 +617,7 @@ struct HomeView: View {
   private func refreshAlerts() {
     alertsManager.refreshAlerts(
       profiles: profiles,
-      authorizationStatus: requestAuthorizer.getAuthorizationStatus()
+      authorizationStatus: requestAuthorizer.effectiveStatus
     )
   }
 

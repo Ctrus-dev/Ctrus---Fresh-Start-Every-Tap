@@ -252,10 +252,12 @@ final class TagReader {
   func read(
     prompt: String,
     requiresGenuineCtrus: Bool = false,
+    rejectionMessage: ((NFCResult) -> String?)? = nil,
     onRead: @escaping (NFCResult) -> Void
   ) {
     scanner.onTagScanned = onRead
     scanner.requiresGenuineCtrus = requiresGenuineCtrus
+    scanner.rejectionMessage = rejectionMessage
     scanner.scan(alertMessage: prompt)
   }
 }
