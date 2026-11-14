@@ -24,6 +24,30 @@
           }
         }
       }
+    },
+    "NFCReaderUsageDescription": {
+      "comment": "Asked before the app can scan a Ctrus with NFC.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus uses NFC to read your Ctrus and start or end a session."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Ctrus usa o NFC para ler o teu Ctrus e começar ou terminar uma sessão."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrus usa el NFC para leer tu Ctrus e iniciar o terminar una sesión."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
