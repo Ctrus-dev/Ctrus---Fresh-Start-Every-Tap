@@ -511,7 +511,6 @@ private struct GuidedProfileReviewContent: View {
 
   private var reviewDivider: some View {
     Divider()
-      .padding(.leading, 118)
   }
 
   private var scheduleSummary: String {
