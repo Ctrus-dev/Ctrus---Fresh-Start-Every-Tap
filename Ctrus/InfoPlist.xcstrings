@@ -1,54 +1,78 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "NSAlarmKitUsageDescription": {
-      "comment": "Asked before Alarm mode can set alarms.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus uses alarms to wake you up in Alarm mode."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Ctrus usa alarmes para te acordar no modo Despertador."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus usa alarmas para despertarte en el modo Despertador."
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ctrus"
           }
         }
       }
     },
-    "NFCReaderUsageDescription": {
-      "comment": "Asked before the app can scan a Ctrus with NFC.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus uses NFC to read your Ctrus and start or end a session."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ctrus - Fresh Start, Every Tap"
+          }
+        }
+      }
+    },
+    "NFCReaderUsageDescription" : {
+      "comment" : "Asked before the app can scan a Ctrus with NFC.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrus uses NFC to read your Ctrus and start or end a session."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O Ctrus usa o NFC para ler o teu Ctrus e começar ou terminar uma sessão."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrus usa el NFC para leer tu Ctrus e iniciar o terminar una sesión."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ctrus usa el NFC para leer tu Ctrus e iniciar o terminar una sesión."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Ctrus usa o NFC para ler o teu Ctrus e começar ou terminar uma sessão."
+          }
+        }
+      }
+    },
+    "NSAlarmKitUsageDescription" : {
+      "comment" : "Asked before Alarm mode can set alarms.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrus uses alarms to wake you up in Alarm mode."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrus usa alarmas para despertarte en el modo Despertador."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Ctrus usa alarmes para te acordar no modo Despertador."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

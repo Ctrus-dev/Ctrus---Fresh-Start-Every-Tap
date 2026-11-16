@@ -983,29 +983,6 @@
         }
       }
     },
-    "5 wrong codes in a row" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "5 wrong codes in a row"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "5 códigos incorrectos seguidos"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "5 códigos errados seguidos"
-          }
-        }
-      }
-    },
     ">5h" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1025,75 +1002,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : ">5h"
-          }
-        }
-      }
-    },
-    "Phone date changed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Phone date changed"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fecha del móvil cambiada"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data do telemóvel alterada"
-          }
-        }
-      }
-    },
-    "Some permissions may have been turned off" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Some permissions may have been turned off"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Algumas permissões podem ter sido desligadas"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es posible que se hayan desactivado algunos permisos"
-          }
-        }
-      }
-    },
-    "Starting Soon!" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Starting Soon!"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¡Está a Punto de Empezar!"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quase a Começar!"
           }
         }
       }
@@ -1370,6 +1278,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "5 minutos"
+          }
+        }
+      }
+    },
+    "5 wrong codes in a row" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 wrong codes in a row"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 códigos incorrectos seguidos"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 códigos errados seguidos"
           }
         }
       }
@@ -3651,6 +3582,9 @@
         }
       }
     },
+    "Code entry locked for %@" : {
+
+    },
     "Concentrate on what matters most" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4042,6 +3976,9 @@
         }
       }
     },
+    "Ctrus lost its Screen Time access. While it's off, Ctrus can't block any apps." : {
+
+    },
     "Ctrus needs Screen Time access to block apps and websites. Grant access again to restore blocking." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4133,6 +4070,9 @@
           }
         }
       }
+    },
+    "Ctrus times sessions by the real time that has passed, so this doesn't end them sooner. Check that Set Automatically is on in Settings › General › Date & Time." : {
+
     },
     "Customize the look of your app" : {
       "extractionState" : "manual",
@@ -5974,6 +5914,9 @@
         }
       }
     },
+    "If it wasn't you, your child may be trying to guess the code. If you think they know it, change it in Child Mode settings." : {
+
+    },
     "Immerse yourself in this moment" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6180,6 +6123,9 @@
           }
         }
       }
+    },
+    "It can be turned off in Settings › Screen Time, and is sometimes reset by an iOS update. Open Ctrus and allow access again so apps are blocked." : {
+
     },
     "Item Name" : {
       "extractionState" : "manual",
@@ -6686,6 +6632,12 @@
           }
         }
       }
+    },
+    "Moved back by about %@" : {
+
+    },
+    "Moved forward by about %@" : {
+
     },
     "Name" : {
       "extractionState" : "manual",
@@ -7925,6 +7877,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Em Pausa"
+          }
+        }
+      }
+    },
+    "Phone date changed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone date changed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha del móvil cambiada"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data do telemóvel alterada"
           }
         }
       }
@@ -9631,6 +9606,32 @@
         }
       }
     },
+    "Some permissions may have been turned off" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some permissions may have been turned off"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es posible que se hayan desactivado algunos permisos"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algumas permissões podem ter sido desligadas"
+          }
+        }
+      }
+    },
+    "Someone entered the wrong parent code 5 times in a row, so entering it was locked for a while." : {
+
+    },
     "Something went wrong fetching profile" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9903,6 +9904,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Iniciada"
+          }
+        }
+      }
+    },
+    "Starting Soon!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting Soon!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Está a Punto de Empezar!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quase a Começar!"
           }
         }
       }
@@ -10849,6 +10873,9 @@
           }
         }
       }
+    },
+    "The phone's date or time was changed by hand, away from the real time." : {
+
     },
     "The scanned code was empty." : {
       "extractionState" : "manual",
