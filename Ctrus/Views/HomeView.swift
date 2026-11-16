@@ -448,13 +448,13 @@ struct HomeView: View {
     if scheduleCount > 0 {
       return String(
         localized:
-          "Press and hold your profile to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
+          "Press and hold your profile's name for 2s to start the session, or wait for its scheduled time. Tap it while it's active to access the stop, emergency and break options."
       )
     }
 
     return String(
       localized:
-        "Press and hold your profile to start the session. Tap it while it's active to access the stop, emergency and break options."
+        "Press and hold your profile's name for 2s to start the session. Tap it while it's active to access the stop, emergency and break options."
     )
   }
 
